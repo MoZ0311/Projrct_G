@@ -1,9 +1,13 @@
 ﻿# include <Siv3D.hpp>
 
+#include "TitleScene.hpp"
 #include "GameScene.hpp"
 
 void Main()
 {
+	// フォントのアセット化
+	FontAsset::Register(U"MAKINAS", FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
+
 	// ウィンドウの名前設定
 	Window::SetTitle(U"世界復興計画");
 
@@ -12,6 +16,7 @@ void Main()
 
 	// 各シーンの登録
 	App manager;
+	manager.add<TitleScene>(State::TITLE);
 	manager.add<GameScene>(State::GAME);
 
 	// メインループ
