@@ -2,6 +2,7 @@
 
 #include "TitleScene.hpp"
 #include "GameScene.hpp"
+#include "GameOverScene.hpp"
 
 void Main()
 {
@@ -18,6 +19,7 @@ void Main()
 	App manager;
 	manager.add<TitleScene>(State::TITLE);
 	manager.add<GameScene>(State::GAME);
+	manager.add<GameOverScene>(State::OVER);
 
 	// メインループ
 	while (System::Update())

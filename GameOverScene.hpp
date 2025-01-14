@@ -21,7 +21,7 @@ public:
 private:
 
 	// リトライボタン
-	Rect retryButton = { Arg::center = Scene::Center(),
+	Rect retryButton = { Arg::center = Scene::Center().movedBy(0, 100),
 		BUTTON_WIDTH, BUTTON_HEIGHT };
 	Transition retryTransition = buttonTransition;
 
