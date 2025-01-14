@@ -1,14 +1,26 @@
 ﻿# include <Siv3D.hpp>
 
-#include "Player.hpp"
+#include "GameScene.hpp"
 
 void Main()
 {
-	Player::Init();
+	// ウィンドウの名前設定
+	Window::SetTitle(U"世界復興計画");
+
+	// ウィンドウサイズの変更
+	Window::Resize(1376, 768);
+
+	// 各シーンの登録
+	App manager;
+	manager.add<GameScene>(State::GAME);
+
+	// メインループ
 	while (System::Update())
 	{
-		Player::GetPlayerInstance()->Update();
-		Player::GetPlayerInstance()->Draw();
+		if (!manager.update())
+		{
+			// 更新に失敗で終了
+			break;
+		}
 	}
-	Player::Release();
 }
