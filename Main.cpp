@@ -1,5 +1,6 @@
 ﻿# include <Siv3D.hpp>
 
+#include "TitleScene.hpp"
 #include "GameScene.hpp"
 
 void Main()
@@ -12,6 +13,7 @@ void Main()
 
 	// 各シーンの登録
 	App manager;
+	manager.add<TitleScene>(State::TITLE);
 	manager.add<GameScene>(State::GAME);
 
 	// メインループ
