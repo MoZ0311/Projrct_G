@@ -5,6 +5,9 @@
 
 void Main()
 {
+	// フォントのアセット化
+	FontAsset::Register(U"MAKINAS", FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
+
 	// ウィンドウの名前設定
 	Window::SetTitle(U"世界復興計画");
 
