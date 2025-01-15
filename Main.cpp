@@ -1,6 +1,4 @@
-﻿# include <Siv3D.hpp>
-
-#include "TitleScene.hpp"
+﻿#include "TitleScene.hpp"
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
 
