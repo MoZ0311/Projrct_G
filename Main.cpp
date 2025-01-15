@@ -4,6 +4,8 @@
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
 
+#include "Constants.hpp"
+
 void Main()
 {
 	// フォントのアセット化
@@ -13,7 +15,7 @@ void Main()
 	Window::SetTitle(U"世界復興計画");
 
 	// ウィンドウサイズの変更
-	Window::Resize(1376, 768);
+	Window::Resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// 各シーンの登録
 	App manager;

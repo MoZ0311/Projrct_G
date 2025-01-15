@@ -332,6 +332,7 @@
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Components.hpp" />
+    <ClInclude Include="Constants.hpp" />
     <ClInclude Include="GameOverScene.hpp" />
     <ClInclude Include="GameScene.hpp" />
     <ClInclude Include="Player.hpp" />
