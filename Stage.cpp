@@ -118,6 +118,9 @@ void Stage::Draw()
 	{
 		ToTile(mouseOveredTile, N).draw(ColorF{ 1.0, 0.2 });
 	}
+
+	// debug
+	mapCollider.draw();
 	
 	// マップ上のグリッドを表示する
 	if (showGrid)

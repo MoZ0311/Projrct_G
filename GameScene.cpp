@@ -69,5 +69,5 @@ void GameScene::draw() const
 	UI::GetUIInstance()->Draw();
 
 	// 2D カメラの UI を表示する
-	camera.draw(Palette::Orange);
+	camera.draw(Palette::Deepskyblue);
 }

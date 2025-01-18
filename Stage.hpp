@@ -105,4 +105,7 @@ private:
 
 	// マップにグリッドを表示するか
 	bool showGrid = false;
+
+	// マップ端の当たり判定用図形
+	const Shape2D mapCollider = Shape2D::Rhombus(TileOffset.x * 2 * N, TileOffset.y * 2 * N, Vec2{ 0, 0 });
 };
