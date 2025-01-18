@@ -65,7 +65,6 @@ void Stage::Update()
 		if (const auto index = ToIndex(Cursor::PosF(), columnQuads, rowQuads))
 		{
 			// マウスカーソルがあるタイルを取得
-			ToTile(*index, N).draw(ColorF{ 1.0, 0.2 });
 			mouseOveredTile = *index;
 
 			// マウスの左ボタンが押されていたら
