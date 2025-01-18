@@ -1,6 +1,7 @@
 ﻿// Stage class
 
 #include "Stage.hpp"
+#include "UI.hpp"
 
 // インスタンスをnullptrで初期化
 Stage* Stage::stageInstance = nullptr;
@@ -57,67 +58,24 @@ void Stage::Release()
 
 void Stage::Update()
 {
-	if (KeySpace.down())
-	{
-		Print << U"押された!!";
-	}
-
-	if (KeySpace.up())
-	{
-		ClearPrint();
-	}
-
-	// タイルメニューの四角形の上にマウスカーソルがあるか
-	const bool onTileMenu = TileMenuRoundRect.mouseOver();
-
 	// マウスカーソルがタイルメニュー上に無ければ
-	if (not onTileMenu)
+	if (!UI::GetUIInstance()->GetOnTileMenu())
 	{
 		// マウスカーソルがマップ上のどのタイルの上にあるかを取得する
 		if (const auto index = ToIndex(Cursor::PosF(), columnQuads, rowQuads))
 		{
-			// マウスカーソルがあるタイルを強調表示する
+			// マウスカーソルがあるタイルを取得
 			ToTile(*index, N).draw(ColorF{ 1.0, 0.2 });
+			mouseOveredTile = *index;
 
 			// マウスの左ボタンが押されていたら
 			if (MouseL.pressed())
 			{
 				// タイルの種類を更新する
-				if (grid[*index] != tileTypeSelected)
+				if (grid[*index] != UI::GetUIInstance()->GetTileTypeSelected())
 				{
-					grid[*index] = tileTypeSelected;
+					grid[*index] = UI::GetUIInstance()->GetTileTypeSelected();
 					Print << U"地形チェンジ!!";
-				}
-			}
-		}
-	}
-
-	// タイルメニューを表示する
-	{
-		// 各タイル
-		for (int32 y = 0; y < 4; ++y)
-		{
-			for (int32 x = 0; x < 22; ++x)
-			{
-				// タイルの長方形
-				const Rect rect{ (20 + x * 56), (20 + y * 50), 56, 50 };
-
-				// タイルの種類
-				const int32 tileType = (y * 22 + x);
-
-				// タイルの上にマウスカーソルがあれば
-				if (rect.mouseOver())
-				{
-					// カーソルを手のアイコンにする
-					Cursor::RequestStyle(CursorStyle::Hand);
-
-					// 左クリックされたら		
-					if (MouseL.down())
-					{
-						// 選択しているタイルの種類を更新する
-						tileTypeSelected = tileType;
-						ClearPrint();
-					}
 				}
 			}
 		}
@@ -150,6 +108,9 @@ void Stage::Draw()
 		}
 	}
 
+	// マウスカーソルがあるタイルを強調表示する
+	ToTile(mouseOveredTile, N).draw(ColorF{ 1.0, 0.2 });
+
 	// マップ上のグリッドを表示する
 	if (showGrid)
 	{
@@ -163,32 +124,6 @@ void Stage::Draw()
 		for (const auto& rowQuad : rowQuads)
 		{
 			rowQuad.drawFrame(2);
-		}
-	}
-
-	// UI背景
-	TileMenuRoundRect.draw();
-
-	// 各タイル
-	for (int32 y = 0; y < 4; ++y)
-	{
-		for (int32 x = 0; x < 22; ++x)
-		{
-			// タイルの長方形
-			const Rect rect{ (20 + x * 56), (20 + y * 50), 56, 50 };
-
-			// タイルの種類
-			const int32 tileType = (y * 22 + x);
-
-			// 現在選択されているタイルであれば
-			if (tileType == tileTypeSelected)
-			{
-				// 背景を灰色にする
-				rect.draw(ColorF{ 0.85 });
-			}
-
-			// タイルを表示する
-			tileTextureArray[tileType].scaled(0.5).drawAt(rect.center());
 		}
 	}
 }
@@ -296,4 +231,9 @@ Optional<Point> Stage::ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, 
 Stage* Stage::GetStageInstance()
 {
 	return stageInstance;
+}
+
+Array<Texture> Stage::GetTileTextureArray()
+{
+	return tileTextureArray;
 }

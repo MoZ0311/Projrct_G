@@ -21,6 +21,8 @@ void Main()
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
 
+	manager.init(State::GAME);
+
 	// メインループ
 	while (System::Update())
 	{

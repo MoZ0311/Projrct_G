@@ -21,6 +21,9 @@ public:
 	// インスタンスのゲッター関数
 	static Stage* GetStageInstance();
 
+	// テクスチャ配列のゲッター関数
+	Array<Texture> GetTileTextureArray();
+
 private:
 
 	// コンストラクタ
@@ -94,11 +97,11 @@ private:
 	// タイルの種類
 	Grid<int32> grid;
 
-	// タイルメニューで選択されているタイルの種類
-	int32 tileTypeSelected = 30;
+	// マップ上にカーソルがあるか
+	bool onMap = false;
 
-	// タイルメニューの四角形
-	const RoundRect TileMenuRoundRect = RectF{ 20, 20, (56 * 22), (50 * 4) }.stretched(10).rounded(8);
+	// マウスカーソルが置かれたタイルのインデックス
+	Point mouseOveredTile;
 
 	// マップにグリッドを表示するか
 	bool showGrid = false;

@@ -7,7 +7,7 @@ Player* Player::playerInstance = nullptr;
 
 Player::Player()
 {
-	playerPosition = Scene::Center();
+	playerPosition = { Scene::Center()};
 	playerMovement = { 0, 0 };
 	flipX = false;
 	isIdol = true;
