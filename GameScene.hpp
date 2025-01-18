@@ -22,5 +22,5 @@ public:
 
 private:
 	// マップ表示用の 2D カメラ
-	Camera2D camera{ Scene::Center(), 1.0};
+	Camera2D camera{ { 0, 150 }, 1.5 };
 };

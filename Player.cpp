@@ -7,7 +7,7 @@ Player* Player::playerInstance = nullptr;
 
 Player::Player()
 {
-	playerPosition = { Scene::Center()};
+	playerPosition = { 0, 185 };
 	playerMovement = { 0, 0 };
 	flipX = false;
 	isIdol = true;
@@ -71,8 +71,8 @@ void Player::Move()
 	playerPosition.moveBy(playerMovement.setLength(MOVE_SPEED)* Scene::DeltaTime());
 
 	// 画面外に出ないようにする処理
-	playerPosition.x = Clamp(playerPosition.x, static_cast<double>(PLAYER_BASE.width() / 2), static_cast<double>(Scene::Width() - PLAYER_BASE.width() / 2));
-	playerPosition.y = Clamp(playerPosition.y, static_cast<double>(PLAYER_BASE.height() / 2), static_cast<double>(Scene::Height() - PLAYER_BASE.height() / 2));
+	//playerPosition.x = Clamp(playerPosition.x, static_cast<double>(PLAYER_BASE.width() / 2), static_cast<double>(Scene::Width() - PLAYER_BASE.width() / 2));
+	//playerPosition.y = Clamp(playerPosition.y, static_cast<double>(PLAYER_BASE.height() / 2), static_cast<double>(Scene::Height() - PLAYER_BASE.height() / 2));
 }
 
 void Player::Draw()
@@ -102,7 +102,7 @@ void Player::Draw()
 	}
 
 	// プレイヤーを描く
-	animation[index].mirrored(flipX).drawAt(playerPosition.x, playerPosition.y);
+	animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y);
 }
 
 Player* Player::GetPlayerInstance()
