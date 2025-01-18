@@ -47,10 +47,10 @@ void Player::Update()
 void Player::Move()
 {
 	// キー入力を二次元ベクトルに
-	int upInput = static_cast<int>(KeyW.pressed());
-	int downInput = static_cast<int>(KeyS.pressed());
-	int leftInput = static_cast<int>(KeyA.pressed());
-	int rightInput = static_cast<int>(KeyD.pressed());
+	int upInput = KeyW.pressed() ? 1 : 0;
+	int downInput = KeyS.pressed() ? 1 : 0;
+	int leftInput = KeyA.pressed() ? 1 : 0;
+	int rightInput = KeyD.pressed() ? 1: 0;
 
 	playerMovement = { rightInput - leftInput, downInput - upInput };
 

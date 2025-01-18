@@ -80,19 +80,22 @@ private:
 	Array<Texture> tileTextureArray;
 
 	// タイルの一辺の長さ（ピクセル）
-	const Vec2 TileOffset{ 50, 25 };
+	const Vec2 TILE_OFFSET{ 50, 25 };
 
 	// タイルの厚み（ピクセル）
-	const int32 TileThickness = 15;
+	const int32 TILE_THICKNESS = 15;
 
 	// マップの一辺のタイル数
-	const int32 N = 12;
+	const int32 TILE_NUM = 12;
 
 	// 各列の四角形
-	const Array<Quad> columnQuads = MakeColumnQuads(N);
+	const Array<Quad> COLUMN_QUADS = MakeColumnQuads(TILE_NUM);
 
 	// 各行の四角形
-	const Array<Quad> rowQuads = MakeRowQuads(N);
+	const Array<Quad> ROW_QUADS = MakeRowQuads(TILE_NUM);
+
+	// マップ端の当たり判定用図形
+	const Shape2D MAP_COLLIDER = Shape2D::Rhombus(TILE_OFFSET.x * 2 * TILE_NUM, TILE_OFFSET.y * 2 * TILE_NUM, Vec2{ 0, 0 });
 
 	// タイルの種類
 	Grid<int32> grid;
@@ -105,7 +108,4 @@ private:
 
 	// マップにグリッドを表示するか
 	bool showGrid = false;
-
-	// マップ端の当たり判定用図形
-	const Shape2D mapCollider = Shape2D::Rhombus(TileOffset.x * 2 * N, TileOffset.y * 2 * N, Vec2{ 0, 0 });
 };
