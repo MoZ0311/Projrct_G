@@ -1,8 +1,8 @@
-﻿# include <Siv3D.hpp>
-
-#include "TitleScene.hpp"
+﻿#include "TitleScene.hpp"
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
+
+#include "Constants.hpp"
 
 void Main()
 {
@@ -13,13 +13,15 @@ void Main()
 	Window::SetTitle(U"世界復興計画");
 
 	// ウィンドウサイズの変更
-	Window::Resize(1376, 768);
+	Window::Resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// 各シーンの登録
 	App manager;
 	manager.add<TitleScene>(State::TITLE);
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
+
+	manager.init(State::GAME);
 
 	// メインループ
 	while (System::Update())

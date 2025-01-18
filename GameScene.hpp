@@ -21,5 +21,6 @@ public:
 	void draw() const override;
 
 private:
-
+	// マップ表示用の 2D カメラ
+	Camera2D camera{ { 0, 150 }, 1.5 };
 };

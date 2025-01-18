@@ -45,6 +45,9 @@ private:
 	const Array<Texture> PLAYER_IDOL_ARRAY = { PLAYER_BASE, PLAYER_IDOL };
 	const Array<Texture> PLAYER_WALK_ARRAY = { PLAYER_BASE, PLAYER_WALK_01, PLAYER_WALK_02, PLAYER_WALK_01 };
 
+	// プレイヤーの描画スケール
+	const double PLAYER_SCALE = 0.5;
+
 	// プレイヤーの移動スピード
 	const double MOVE_SPEED = 500;
 
