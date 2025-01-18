@@ -64,6 +64,8 @@ void Stage::Update()
 		// マウスカーソルがマップ上のどのタイルの上にあるかを取得する
 		if (const auto index = ToIndex(Cursor::PosF(), columnQuads, rowQuads))
 		{
+			onMap = true;
+
 			// マウスカーソルがあるタイルを取得
 			mouseOveredTile = *index;
 
@@ -77,6 +79,10 @@ void Stage::Update()
 					Print << U"地形チェンジ!!";
 				}
 			}
+		}
+		else
+		{
+			onMap = false;
 		}
 	}
 }
@@ -108,8 +114,11 @@ void Stage::Draw()
 	}
 
 	// マウスカーソルがあるタイルを強調表示する
-	ToTile(mouseOveredTile, N).draw(ColorF{ 1.0, 0.2 });
-
+	if (onMap)
+	{
+		ToTile(mouseOveredTile, N).draw(ColorF{ 1.0, 0.2 });
+	}
+	
 	// マップ上のグリッドを表示する
 	if (showGrid)
 	{
