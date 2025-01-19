@@ -103,6 +103,11 @@ void Player::Draw()
 
 	// プレイヤーを描く
 	animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y);
+
+	// debug
+	ColorF color;
+	playerCollider = { playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2), PLAYER_BASE.width() * PLAYER_SCALE / 4, PLAYER_BASE.height() * PLAYER_SCALE / 8};
+	playerCollider.draw(ColorF{ 0, 255, 0, 0.5 });
 }
 
 Player* Player::GetPlayerInstance()

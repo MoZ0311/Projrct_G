@@ -57,6 +57,9 @@ private:
 	// 歩行アニメーションの再生速度
 	const double WALK_ANIMATION_SPEED = 10;
 
+	// プレイヤーの当たり判定用図形
+	Ellipse playerCollider;
+
 	// プレイヤーの表示座標
 	Vec2 playerPosition;
 
