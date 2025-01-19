@@ -120,7 +120,7 @@ void Stage::Draw()
 	}
 
 	// debug
-	MAP_COLLIDER.draw();
+	MAP_COLLIDER.draw(ColorF{1.0, 0.3});
 	
 	// マップ上のグリッドを表示する
 	if (showGrid)
