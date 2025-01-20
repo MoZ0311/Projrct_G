@@ -58,7 +58,7 @@ private:
 	const double WALK_ANIMATION_SPEED = 10;
 
 	// プレイヤーの当たり判定用図形
-	Ellipse playerCollider;
+	Polygon playerCollider;
 
 	// プレイヤーの表示座標
 	Vec2 playerPosition;
@@ -77,4 +77,7 @@ private:
 
 	// アニメーションカウント
 	double animationCount;
+
+	// マップ上に立っているか
+	bool onMap = false;
 };

@@ -1,6 +1,7 @@
 ﻿// Stage class
 
 #include "Stage.hpp"
+
 #include "UI.hpp"
 
 // インスタンスをnullptrで初期化
@@ -118,9 +119,6 @@ void Stage::Draw()
 	{
 		ToTile(mouseOveredTile, TILE_NUM).draw(ColorF{ 1.0, 0.2 });
 	}
-
-	// debug
-	MAP_COLLIDER.draw(ColorF{1.0, 0.3});
 	
 	// マップ上のグリッドを表示する
 	if (showGrid)
@@ -247,4 +245,9 @@ Stage* Stage::GetStageInstance()
 Array<Texture> Stage::GetTileTextureArray()
 {
 	return tileTextureArray;
+}
+
+Polygon Stage::GetMapCollider()
+{
+	return MAP_COLLIDER;
 }

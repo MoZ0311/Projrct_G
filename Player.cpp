@@ -2,11 +2,14 @@
 
 #include "Player.hpp"
 
+#include "Stage.hpp"
+
 // インスタンスをnullptrで初期化
 Player* Player::playerInstance = nullptr;
 
 Player::Player()
 {
+	//playerCollider = nullptr;
 	playerPosition = { 0, 185 };
 	playerMovement = { 0, 0 };
 	flipX = false;
@@ -73,6 +76,16 @@ void Player::Move()
 	// 画面外に出ないようにする処理
 	//playerPosition.x = Clamp(playerPosition.x, static_cast<double>(PLAYER_BASE.width() / 2), static_cast<double>(Scene::Width() - PLAYER_BASE.width() / 2));
 	//playerPosition.y = Clamp(playerPosition.y, static_cast<double>(PLAYER_BASE.height() / 2), static_cast<double>(Scene::Height() - PLAYER_BASE.height() / 2));
+
+	// マップの判定を取得
+	Polygon mapCollider = Stage::GetStageInstance()->GetMapCollider();
+
+	// プレイヤーの判定を生成
+	playerCollider = Shape2D::Rhombus(
+		PLAYER_BASE.width() * PLAYER_SCALE / 1.5,
+		PLAYER_BASE.width() * PLAYER_SCALE / 3,
+		playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2));
+	onMap = mapCollider.contains(playerCollider);
 }
 
 void Player::Draw()
@@ -105,9 +118,8 @@ void Player::Draw()
 	animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y);
 
 	// debug
-	ColorF color;
-	playerCollider = { playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2), PLAYER_BASE.width() * PLAYER_SCALE / 4, PLAYER_BASE.height() * PLAYER_SCALE / 8};
-	playerCollider.draw(ColorF{ 0, 255, 0, 0.5 });
+	ColorF color = onMap ? ColorF{ 0, 255, 0, 0.5 } : ColorF{ 255, 0, 0, 0.5 };
+	playerCollider.draw(color);
 }
 
 Player* Player::GetPlayerInstance()
