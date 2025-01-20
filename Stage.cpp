@@ -31,6 +31,9 @@ Stage::Stage()
 	// タイルの種類
 	Grid<int32> gr(Size{ TILE_NUM, TILE_NUM });
 	grid = gr;
+
+	onMap = false;
+	showGrid = false;
 }
 
 Stage::~Stage()

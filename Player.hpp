@@ -63,6 +63,9 @@ private:
 	// プレイヤーの表示座標
 	Vec2 playerPosition;
 
+	// プレイヤーの直前表示座標
+	Vec2 prevPlayerPosition;
+
 	// プレイヤーの移動ベクトル
 	Vec2 playerMovement;
 
@@ -79,5 +82,5 @@ private:
 	double animationCount;
 
 	// マップ上に立っているか
-	bool onMap = false;
+	bool onMap;
 };

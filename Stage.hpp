@@ -104,11 +104,11 @@ private:
 	Grid<int32> grid;
 
 	// マップ上にカーソルがあるか
-	bool onMap = false;
+	bool onMap;
 
 	// マウスカーソルが置かれたタイルのインデックス
 	Point mouseOveredTile;
 
 	// マップにグリッドを表示するか
-	bool showGrid = false;
+	bool showGrid;
 };
