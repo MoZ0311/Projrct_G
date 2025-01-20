@@ -1,6 +1,7 @@
 ﻿// UI class
 
 #include "UI.hpp"
+
 #include "Stage.hpp"
 
 UI* UI::UIInstance = nullptr;

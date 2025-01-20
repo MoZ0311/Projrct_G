@@ -28,5 +28,4 @@ private:
 	// 終了ボタン
 	Rect exitButton = retryButton.movedBy(0, 100);
 	Transition exitTransition = buttonTransition;
-	
 };

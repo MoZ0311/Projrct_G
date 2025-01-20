@@ -57,8 +57,14 @@ private:
 	// 歩行アニメーションの再生速度
 	const double WALK_ANIMATION_SPEED = 10;
 
+	// プレイヤーの当たり判定用図形
+	Polygon playerCollider;
+
 	// プレイヤーの表示座標
 	Vec2 playerPosition;
+
+	// プレイヤーの直前表示座標
+	Vec2 prevPlayerPosition;
 
 	// プレイヤーの移動ベクトル
 	Vec2 playerMovement;
@@ -74,4 +80,7 @@ private:
 
 	// アニメーションカウント
 	double animationCount;
+
+	// マップ上に立っているか
+	bool onMap;
 };

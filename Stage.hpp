@@ -24,6 +24,9 @@ public:
 	// テクスチャ配列のゲッター関数
 	Array<Texture> GetTileTextureArray();
 
+	// 当たり判定のゲッター関数
+	Polygon GetMapCollider();
+
 private:
 
 	// コンストラクタ
@@ -80,29 +83,35 @@ private:
 	Array<Texture> tileTextureArray;
 
 	// タイルの一辺の長さ（ピクセル）
-	const Vec2 TileOffset{ 50, 25 };
+	const Vec2 TILE_OFFSET{ 50, 25 };
 
 	// タイルの厚み（ピクセル）
-	const int32 TileThickness = 15;
+	const int32 TILE_THICKNESS = 15;
 
 	// マップの一辺のタイル数
-	const int32 N = 12;
+	const int32 TILE_NUM = 12;
 
 	// 各列の四角形
-	const Array<Quad> columnQuads = MakeColumnQuads(N);
+	const Array<Quad> COLUMN_QUADS = MakeColumnQuads(TILE_NUM);
 
 	// 各行の四角形
-	const Array<Quad> rowQuads = MakeRowQuads(N);
+	const Array<Quad> ROW_QUADS = MakeRowQuads(TILE_NUM);
+
+	// マップ端の当たり判定用図形
+	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
+		TILE_OFFSET.x * 2 * TILE_NUM,
+		TILE_OFFSET.y * 2 * TILE_NUM,
+		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2});
 
 	// タイルの種類
 	Grid<int32> grid;
 
 	// マップ上にカーソルがあるか
-	bool onMap = false;
+	bool onMap;
 
 	// マウスカーソルが置かれたタイルのインデックス
 	Point mouseOveredTile;
 
 	// マップにグリッドを表示するか
-	bool showGrid = false;
+	bool showGrid;
 };

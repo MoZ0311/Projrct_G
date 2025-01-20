@@ -2,17 +2,21 @@
 
 #include "Player.hpp"
 
+#include "Stage.hpp"
+
 // インスタンスをnullptrで初期化
 Player* Player::playerInstance = nullptr;
 
 Player::Player()
 {
 	playerPosition = { 0, 185 };
+	prevPlayerPosition = { 0, 185 };
 	playerMovement = { 0, 0 };
 	flipX = false;
 	isIdol = true;
 	animationSpeed = 0;
 	animationCount = 0;
+	onMap = true;
 }
 
 Player::~Player()
@@ -47,10 +51,10 @@ void Player::Update()
 void Player::Move()
 {
 	// キー入力を二次元ベクトルに
-	int upInput = static_cast<int>(KeyW.pressed());
-	int downInput = static_cast<int>(KeyS.pressed());
-	int leftInput = static_cast<int>(KeyA.pressed());
-	int rightInput = static_cast<int>(KeyD.pressed());
+	int upInput = KeyW.pressed() ? 1 : 0;
+	int downInput = KeyS.pressed() ? 1 : 0;
+	int leftInput = KeyA.pressed() ? 1 : 0;
+	int rightInput = KeyD.pressed() ? 1: 0;
 
 	playerMovement = { rightInput - leftInput, downInput - upInput };
 
@@ -70,9 +74,28 @@ void Player::Move()
 	// 移動処理
 	playerPosition.moveBy(playerMovement.setLength(MOVE_SPEED)* Scene::DeltaTime());
 
-	// 画面外に出ないようにする処理
-	//playerPosition.x = Clamp(playerPosition.x, static_cast<double>(PLAYER_BASE.width() / 2), static_cast<double>(Scene::Width() - PLAYER_BASE.width() / 2));
-	//playerPosition.y = Clamp(playerPosition.y, static_cast<double>(PLAYER_BASE.height() / 2), static_cast<double>(Scene::Height() - PLAYER_BASE.height() / 2));
+	// マップの判定を取得
+	Polygon mapCollider = Stage::GetStageInstance()->GetMapCollider();
+
+	// プレイヤーの判定を生成
+	playerCollider = Shape2D::Rhombus(
+		PLAYER_BASE.width() * PLAYER_SCALE / 1.5,
+		PLAYER_BASE.width() * PLAYER_SCALE / 3,
+		playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2));
+
+	// マップ上かの真偽判定
+	onMap = mapCollider.contains(playerCollider);
+
+	if (onMap)
+	{
+		// 直前表示座標を更新
+		prevPlayerPosition = playerPosition;
+	}
+	else
+	{
+		// 直前座標に戻す
+		playerPosition = prevPlayerPosition;
+	}
 }
 
 void Player::Draw()
