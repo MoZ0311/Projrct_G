@@ -21,6 +21,9 @@ public:
 	// インスタンスのゲッター関数
 	static Player* GetPlayerInstance();
 
+	// プレイヤー座標のゲッター関数
+	Vec2 GetPlayerPosition();
+
 private:
 
 	// コンストラクタ(void)
