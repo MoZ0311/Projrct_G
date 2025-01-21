@@ -23,6 +23,9 @@ GameScene::GameScene(const InitData& init)
 
 	// カメラの倍率を設定
 	camera.setTargetScale(1.5);
+
+	// ゲームモード設定
+	gameMode = GameMode::SIMULATE;
 }
 
 GameScene::~GameScene()
