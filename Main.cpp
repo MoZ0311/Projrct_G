@@ -21,7 +21,8 @@ void Main()
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
 
-	manager.init(State::GAME);
+	// 最初のシーンを初期化
+	manager.init(State::GAME, 0.5s);
 
 	// メインループ
 	while (System::Update())

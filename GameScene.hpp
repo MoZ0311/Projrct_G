@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// エディット中かのゲッター関数
+	bool GetIsEditing();
+
 private:
 
 	// カメラの表示範囲の絶対値
@@ -27,4 +30,7 @@ private:
 
 	// マップ表示用の 2D カメラ
 	Camera2D camera;
+
+	// マップのエディット中か
+	bool isEditing;
 };

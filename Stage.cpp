@@ -7,7 +7,7 @@
 // インスタンスをnullptrで初期化
 Stage* Stage::stageInstance = nullptr;
 
-Stage::Stage()
+Stage::Stage(GameScene* instance)
 {
 	// png フォルダ内のファイルを列挙する
 	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
@@ -28,6 +28,9 @@ Stage::Stage()
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
 
+	// GameScene クラスのインスタンスを格納
+	gameSceneInstance = instance;
+
 	// タイルの種類
 	Grid<int32> gr(Size{ TILE_NUM, TILE_NUM });
 	grid = gr;
@@ -41,14 +44,14 @@ Stage::~Stage()
 
 }
 
-void Stage::Init()
+void Stage::Init(GameScene* instance)
 {
 	if (stageInstance != nullptr)
 	{
 		return;
 	}
 
-	stageInstance = new Stage();
+	stageInstance = new Stage(instance);
 }
 
 void Stage::Release()
@@ -74,13 +77,12 @@ void Stage::Update()
 			mouseOveredTile = *index;
 
 			// マウスの左ボタンが押されていたら
-			if (MouseL.pressed())
+			if (MouseL.pressed() && !MouseR.pressed())
 			{
 				// タイルの種類を更新する
 				if (grid[*index] != UI::GetUIInstance()->GetTileTypeSelected())
 				{
 					grid[*index] = UI::GetUIInstance()->GetTileTypeSelected();
-					Print << U"地形チェンジ!!";
 				}
 			}
 		}
@@ -118,7 +120,7 @@ void Stage::Draw()
 	}
 
 	// マウスカーソルがあるタイルを強調表示する
-	if (onMap)
+	if (onMap && gameSceneInstance->GetIsEditing())
 	{
 		ToTile(mouseOveredTile, TILE_NUM).draw(ColorF{ 1.0, 0.2 });
 	}

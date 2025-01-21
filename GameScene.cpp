@@ -10,10 +10,10 @@ GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
 	// Stage class の生成
-	Stage::Init();
+	Stage::Init(this);
 
 	// Player class の生成
-	Player::Init();
+	Player::Init(this);
 
 	// UI class の生成
 	UI::Init();
@@ -23,6 +23,9 @@ GameScene::GameScene(const InitData& init)
 
 	// カメラの倍率を設定
 	camera.setTargetScale(1.5);
+
+	// ゲームモード設定
+	isEditing = false;
 }
 
 GameScene::~GameScene()
@@ -45,18 +48,54 @@ void GameScene::update()
 	{
 		const auto tr = camera.createTransformer();
 
-		// Stage class の更新処理
-		Stage::GetStageInstance()->Update();
-
-		// Player class の更新処理
-		Player::GetPlayerInstance()->Update();
+		if (isEditing)
+		{
+			// Stage class の更新処理
+			Stage::GetStageInstance()->Update();
+		}
+		else
+		{
+			// Player class の更新処理
+			Player::GetPlayerInstance()->Update();
+		}
 	}
 
-	// カメラをプレイヤーに追従
-	camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
+	if (isEditing)
+	{
+		// カメラを操作可能に
+		camera.setParameters(Camera2DParameters::MouseOnly());
 
-	// UI class の更新処理
-	UI::GetUIInstance()->Update();
+		// UI class の更新処理
+		UI::GetUIInstance()->Update();
+	}
+	else
+	{
+		// カメラを操作不能に
+		camera.setParameters(Camera2DParameters::NoControl());
+
+		// カメラをプレイヤーに追従
+		camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
+		camera.setTargetScale(1.5);
+	}
+
+	// ゲームモードの切り替え
+	if (KeyF.down())
+	{
+		if (!isEditing)
+		{
+			// エディットモードになった時、カメラを再設定
+			camera.setTargetCenter(Vec2{0, 105});
+			camera.setTargetScale(0.85);
+		}
+		isEditing = !isEditing;
+	}
+
+	// カメラリセット
+	if (MouseM.down() && isEditing)
+	{
+		camera.setTargetCenter(Vec2{ 0, 105 });
+		camera.setTargetScale(0.85);
+	}
 }
 
 void GameScene::draw() const
@@ -71,9 +110,17 @@ void GameScene::draw() const
 		Player::GetPlayerInstance()->Draw();
 	}
 
-	// UI class の描画処理
-	UI::GetUIInstance()->Draw();
+	if (isEditing)
+	{
+		// UI class の描画処理
+		UI::GetUIInstance()->Draw();
 
-	// 2D カメラの UI を表示する
-	camera.draw(Palette::Deepskyblue);
+		// 2D カメラの UI を表示する
+		camera.draw(Palette::Deepskyblue);
+	}
+}
+
+bool GameScene::GetIsEditing()
+{
+	return isEditing;
 }
