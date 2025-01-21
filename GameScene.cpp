@@ -13,7 +13,7 @@ GameScene::GameScene(const InitData& init)
 	Stage::Init(this);
 
 	// Player class の生成
-	Player::Init();
+	Player::Init(this);
 
 	// UI class の生成
 	UI::Init();

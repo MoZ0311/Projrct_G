@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "GameScene.hpp"
+
 class Player
 {
 public:
 
 	// 初期化処理 void(void)
-	static void Init();
+	static void Init(GameScene* instance);
 
 	// 解放処理 void(void)
 	static void Release();
@@ -27,7 +29,7 @@ public:
 private:
 
 	// コンストラクタ(void)
-	Player();
+	Player(GameScene* instance);
 
 	// デストラクタ(void)
 	~Player();
@@ -37,6 +39,9 @@ private:
 
 	// シングルトンクラスのインスタンスのポインタ
 	static Player* playerInstance;
+
+	// GameScene クラスのインスタンスのポインタ
+	GameScene* gameSceneInstance;
 
 	// プレイヤーのテクスチャ
 	const Texture PLAYER_BASE{ U"image/player/player.png" };

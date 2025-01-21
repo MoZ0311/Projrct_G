@@ -7,8 +7,9 @@
 // インスタンスをnullptrで初期化
 Player* Player::playerInstance = nullptr;
 
-Player::Player()
+Player::Player(GameScene* instance)
 {
+	gameSceneInstance = instance;
 	playerPosition = { 0, 185 };
 	prevPlayerPosition = { 0, 185 };
 	playerMovement = { 0, 0 };
@@ -24,14 +25,14 @@ Player::~Player()
 
 }
 
-void Player::Init()
+void Player::Init(GameScene* instance)
 {
 	if (playerInstance != nullptr)
 	{
 		return;
 	}
 
-	playerInstance = new Player();
+	playerInstance = new Player(instance);
 }
 
 void Player::Release()
@@ -125,7 +126,14 @@ void Player::Draw()
 	}
 
 	// プレイヤーを描く
-	animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y);
+	if (gameSceneInstance->GetIsEditing())
+	{
+		animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y, ColorF{1, 0.3});
+	}
+	else
+	{
+		animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y);
+	}
 }
 
 Player* Player::GetPlayerInstance()
