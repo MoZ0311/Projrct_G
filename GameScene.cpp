@@ -89,6 +89,13 @@ void GameScene::update()
 		}
 		isEditing = !isEditing;
 	}
+
+	// カメラリセット
+	if (MouseM.down() && isEditing)
+	{
+		camera.setTargetCenter(Vec2{ 0, 105 });
+		camera.setTargetScale(0.85);
+	}
 }
 
 void GameScene::draw() const
