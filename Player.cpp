@@ -103,8 +103,9 @@ void Player::Draw()
 {
 	// 描画に使用するテクスチャ配列
 	Array<Texture> animation;
-	if (isIdol)
+	if (isIdol || gameSceneInstance->GetIsEditing())
 	{
+		// 移動ベクトルが0、または編集中はアイドルモーションが適用
 		animationSpeed = IDOL_ANIMATION_SPEED;
 		animation = PLAYER_IDOL_ARRAY;
 	}
