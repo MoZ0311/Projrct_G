@@ -25,7 +25,7 @@ GameScene::GameScene(const InitData& init)
 	camera.setTargetScale(1.5);
 
 	// ゲームモード設定
-	gameMode = GameMode::SIMULATE;
+	isEditing = false;
 }
 
 GameScene::~GameScene()
@@ -60,6 +60,15 @@ void GameScene::update()
 
 	// UI class の更新処理
 	UI::GetUIInstance()->Update();
+
+	//debug
+	ClearPrint();
+	Print << isEditing;
+
+	if (KeyM.down())
+	{
+		isEditing = !isEditing;
+	}
 }
 
 void GameScene::draw() const
