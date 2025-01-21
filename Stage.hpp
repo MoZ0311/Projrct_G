@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "GameScene.hpp"
+
 class Stage
 {
 public:
 
 	// 初期化処理 void(void)
-	static void Init();
+	static void Init(GameScene* instance);
 
 	// 解放処理 void(void)
 	static void Release();
@@ -30,7 +32,7 @@ public:
 private:
 
 	// コンストラクタ
-	Stage();
+	Stage(GameScene* instance);
 
 	// デストラクタ
 	~Stage();
@@ -78,6 +80,9 @@ private:
 
 	// シングルトンクラスのインスタンスのポインタ
 	static Stage* stageInstance;
+
+	// GameScene クラスのインスタンスのポインタ
+	GameScene* gameSceneInstance;
 
 	// タイルのテクスチャ配列
 	Array<Texture> tileTextureArray;

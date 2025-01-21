@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// エディット中かのゲッター関数
+	bool GetIsEditing();
+
 private:
 
 	// カメラの表示範囲の絶対値

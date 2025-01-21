@@ -10,7 +10,7 @@ GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
 	// Stage class の生成
-	Stage::Init();
+	Stage::Init(this);
 
 	// Player class の生成
 	Player::Init();
@@ -114,4 +114,9 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+}
+
+bool GameScene::GetIsEditing()
+{
+	return isEditing;
 }
