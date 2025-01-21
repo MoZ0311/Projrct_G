@@ -77,7 +77,7 @@ void Stage::Update()
 			mouseOveredTile = *index;
 
 			// マウスの左ボタンが押されていたら
-			if (MouseL.pressed())
+			if (MouseL.pressed() && !MouseR.pressed())
 			{
 				// タイルの種類を更新する
 				if (grid[*index] != UI::GetUIInstance()->GetTileTypeSelected())
