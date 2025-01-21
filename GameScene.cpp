@@ -20,6 +20,8 @@ GameScene::GameScene(const InitData& init)
 
 	// 背景の色を設定する | Set the background color
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
+
+	camera.setTargetScale(1.5);
 }
 
 GameScene::~GameScene()
@@ -48,6 +50,9 @@ void GameScene::update()
 		// Player class の更新処理
 		Player::GetPlayerInstance()->Update();
 	}
+
+	// カメラをプレイヤーに追従
+	camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
 
 	// UI class の更新処理
 	UI::GetUIInstance()->Update();

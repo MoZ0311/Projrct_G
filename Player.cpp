@@ -132,3 +132,8 @@ Player* Player::GetPlayerInstance()
 {
 	return playerInstance;
 }
+
+Vec2 Player::GetPlayerPosition()
+{
+	return playerPosition;
+}

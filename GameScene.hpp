@@ -21,6 +21,10 @@ public:
 	void draw() const override;
 
 private:
+
+	// カメラの表示範囲の絶対値
+	const Vec2 CAMERA_RANGE{ 700, 140 };
+
 	// マップ表示用の 2D カメラ
-	Camera2D camera{ { 0, 150 }, 1.5 };
+	Camera2D camera;
 };
