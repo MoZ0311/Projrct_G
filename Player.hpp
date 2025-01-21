@@ -8,16 +8,16 @@ class Player
 {
 public:
 
-	// 初期化処理 void(void)
+	// 初期化処理
 	static void Init(GameScene* instance);
 
-	// 解放処理 void(void)
+	// 解放処理
 	static void Release();
 
-	// 更新処理 void(void)
+	// 更新処理
 	void Update();
 
-	// 描画処理 void(void)
+	// 描画処理
 	void Draw();
 
 	// インスタンスのゲッター関数
@@ -28,13 +28,13 @@ public:
 
 private:
 
-	// コンストラクタ(void)
+	// コンストラクタ
 	Player(GameScene* instance);
 
-	// デストラクタ(void)
+	// デストラクタ
 	~Player();
 
-	// 移動処理 void(void)
+	// 移動処理
 	void Move();
 
 	// シングルトンクラスのインスタンスのポインタ

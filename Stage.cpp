@@ -83,7 +83,6 @@ void Stage::Update()
 				if (grid[*index] != UI::GetUIInstance()->GetTileTypeSelected())
 				{
 					grid[*index] = UI::GetUIInstance()->GetTileTypeSelected();
-					Print << U"地形チェンジ!!";
 				}
 			}
 		}

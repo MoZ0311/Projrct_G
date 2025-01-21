@@ -78,15 +78,12 @@ void GameScene::update()
 		camera.setTargetScale(1.5);
 	}
 
-	//debug
-	ClearPrint();
-	Print << isEditing;
-	Print << camera.getCenter();
-
-	if (KeyM.down())
+	// ゲームモードの切り替え
+	if (KeyF.down())
 	{
 		if (!isEditing)
 		{
+			// エディットモードになった時、カメラを再設定
 			camera.setTargetCenter(Vec2{0, 105});
 			camera.setTargetScale(0.85);
 		}

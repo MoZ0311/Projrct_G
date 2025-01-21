@@ -128,6 +128,7 @@ void Player::Draw()
 	// プレイヤーを描く
 	if (gameSceneInstance->GetIsEditing())
 	{
+		// 編集中であれば、透明にする
 		animation[index].mirrored(flipX).scaled(PLAYER_SCALE).drawAt(playerPosition.x, playerPosition.y, ColorF{1, 0.3});
 	}
 	else
