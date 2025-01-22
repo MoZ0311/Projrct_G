@@ -21,11 +21,11 @@ public:
 private:
 
 	// リトライボタン
-	Rect retryButton = { Arg::center = Scene::Center().movedBy(0, 100),
+	Rect retryButton = { Arg::center = Scene::Center().movedBy(BUTTON_OFFSET),
 		BUTTON_WIDTH, BUTTON_HEIGHT };
 	Transition retryTransition = BUTTON_TRANSITION;
 
 	// 終了ボタン
-	Rect exitButton = retryButton.movedBy(0, 100);
+	Rect exitButton = retryButton.movedBy(BUTTON_OFFSET);
 	Transition exitTransition = BUTTON_TRANSITION;
 };
