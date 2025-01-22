@@ -23,14 +23,14 @@ private:
 	// START ボタンの設定
 	Rect startButton = { Arg::center = Scene::Center(),
 		BUTTON_WIDTH, BUTTON_HEIGHT };
-	Transition startTransition = buttonTransition;
+	Transition startTransition = BUTTON_TRANSITION;
 
 
 	// CONFIG ボタンの設定
-	Rect configButton = startButton.movedBy(0, 100);
-	Transition configTransition = buttonTransition;
+	Rect configButton = startButton.movedBy(BUTTON_OFFSET);
+	Transition configTransition = BUTTON_TRANSITION;
 
 	// EXIT ボタンの設定
-	Rect exitButton = configButton.movedBy(0, 100);
-	Transition exitTransition = buttonTransition;
+	Rect exitButton = configButton.movedBy(BUTTON_OFFSET);
+	Transition exitTransition = BUTTON_TRANSITION;
 };
