@@ -102,6 +102,9 @@ private:
 		TILE_OFFSET.y * 2 * TILE_NUM,
 		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2});
 
+	// CSV ファイルからデータを読み込む
+	const CSV csv{ U"data/sample.csv" };
+
 	// タイルの種類
 	Grid<int32> grid;
 
