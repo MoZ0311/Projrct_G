@@ -13,7 +13,20 @@ Stage::Stage(GameScene* instance)
 	gameSceneInstance = instance;
 
 	// タイルの初期化
-	grid = { Size(TILE_NUM, TILE_NUM), 0 };
+	int32 index = 0;
+	grid = { Size(TILE_NUM, TILE_NUM), -1 };
+	for (int32 column = 0; column < TILE_NUM; column++)
+	{
+		for (int32 row = 0; row < TILE_NUM; row++)
+		{
+			grid[column][row] = index;
+			index++;
+			if (index >= gameSceneInstance->GetTileTextureArray().size())
+			{
+				index = 0;
+			}
+		}
+	}
 
 	onMap = false;
 	showGrid = false;
