@@ -6,8 +6,9 @@
 
 UI* UI::UIInstance = nullptr;
 
-UI::UI()
+UI::UI(GameScene* instance)
 {
+	gameSceneInstance = instance;
 	onTileMenu = false;
 }
 
@@ -16,14 +17,14 @@ UI::~UI()
 
 }
 
-void UI::Init()
+void UI::Init(GameScene* instance)
 {
 	if (UIInstance != nullptr)
 	{
 		return;
 	}
 
-	UIInstance = new UI();
+	UIInstance = new UI(instance);
 }
 
 void UI::Release()
@@ -93,7 +94,7 @@ void UI::Draw()
 			}
 
 			// タイルを表示する
-			Stage::GetStageInstance()->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+			gameSceneInstance->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
 		}
 	}
 }

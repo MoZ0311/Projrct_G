@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "GameScene.hpp"
+
 class UI
 {
 public:
 
 	// 初期化処理
-	static void Init();
+	static void Init(GameScene* instance);
 
 	// 解放処理
 	static void Release();
@@ -30,13 +32,16 @@ public:
 private:
 
 	// コンストラクタ
-	UI();
+	UI(GameScene* instance);
 
 	// デストラクタ
 	~UI();
 
 	// シングルトンクラスのインスタンスのポインタ
 	static UI* UIInstance;
+
+	// GameScene クラスのインスタンスのポインタ
+	GameScene* gameSceneInstance;
 
 	// タイルメニューの四角形の原型
 	const Rect TileMenuRect{ Arg::topCenter(Scene::Center().x, 20), (56 * 22), (50 * 4) };
@@ -48,5 +53,5 @@ private:
 	bool onTileMenu;
 
 	// タイルメニューで選択されているタイルの種類
-	int32 tileTypeSelected = 30;
+	int32 tileTypeSelected;
 };

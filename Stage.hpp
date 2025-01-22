@@ -23,9 +23,6 @@ public:
 	// インスタンスのゲッター関数
 	static Stage* GetStageInstance();
 
-	// テクスチャ配列のゲッター関数
-	Array<Texture> GetTileTextureArray();
-
 	// 当たり判定のゲッター関数
 	Polygon GetMapCollider();
 
@@ -83,9 +80,6 @@ private:
 
 	// GameScene クラスのインスタンスのポインタ
 	GameScene* gameSceneInstance;
-
-	// タイルのテクスチャ配列
-	Array<Texture> tileTextureArray;
 
 	// タイルの一辺の長さ（ピクセル）
 	const Vec2 TILE_OFFSET{ 50, 25 };

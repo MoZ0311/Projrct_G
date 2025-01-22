@@ -20,13 +20,16 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// テクスチャ配列のゲッター関数
+	Array<Texture> GetTileTextureArray();
+
 	// エディット中かのゲッター関数
 	bool GetIsEditing();
 
 private:
 
-	// カメラの表示範囲の絶対値
-	const Vec2 CAMERA_RANGE{ 700, 140 };
+	// タイルのテクスチャ配列
+	Array<Texture> tileTextureArray;
 
 	// マップ表示用の 2D カメラ
 	Camera2D camera;
