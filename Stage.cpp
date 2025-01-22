@@ -9,31 +9,26 @@ Stage* Stage::stageInstance = nullptr;
 
 Stage::Stage(GameScene* instance)
 {
-	// png フォルダ内のファイルを列挙する
-	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
-	{
-		// ファイル名が conifer と tree で始まるファイル（タイルではない）は除外する
-		if (const FilePath baseName = FileSystem::BaseName(filePath);
-			baseName.starts_with(U"conifer") || baseName.starts_with(U"tree"))
-		{
-			continue;
-		}
-
-		tileTextureArray << Texture{ filePath };
-	}
-
-	// 全部で 88 種類のタイルが読み込まれれば正常
-	if (tileTextureArray.size() != 88)
-	{
-		throw Error{ U"ファイルの配置が不正です。" };
-	}
-
 	// GameScene クラスのインスタンスを格納
 	gameSceneInstance = instance;
 
-	// タイルの種類
-	Grid<int32> gr(Size{ TILE_NUM, TILE_NUM });
-	grid = gr;
+	// CSVファイルの読み込み
+	if (!csv)
+	{
+		throw Error{ U"CSVファイルが読み込めません" };
+	}
+
+	// タイルの初期化
+	grid = { Size(TILE_NUM, TILE_NUM), -1 };
+
+	// CSVファイルの内容をマップに反映
+	for (int32 column = 0; column < TILE_NUM; column++)
+	{
+		for (int32 row = 0; row < TILE_NUM; row++)
+		{
+			grid[column][row] = Parse<int32>(csv[column][row]);
+		}
+	}
 
 	onMap = false;
 	showGrid = false;
@@ -115,7 +110,7 @@ void Stage::Draw()
 			const Vec2 pos = ToTileBottomCenter(index, TILE_NUM);
 
 			// 底辺中央を基準にタイルを描く
-			tileTextureArray[grid[index]].draw(Arg::bottomCenter = pos);
+			gameSceneInstance->GetTileTextureArray()[grid[index]].draw(Arg::bottomCenter = pos);
 		}
 	}
 
@@ -245,11 +240,6 @@ Optional<Point> Stage::ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, 
 Stage* Stage::GetStageInstance()
 {
 	return stageInstance;
-}
-
-Array<Texture> Stage::GetTileTextureArray()
-{
-	return tileTextureArray;
 }
 
 Polygon Stage::GetMapCollider()

@@ -23,9 +23,6 @@ public:
 	// インスタンスのゲッター関数
 	static Stage* GetStageInstance();
 
-	// テクスチャ配列のゲッター関数
-	Array<Texture> GetTileTextureArray();
-
 	// 当たり判定のゲッター関数
 	Polygon GetMapCollider();
 
@@ -84,9 +81,6 @@ private:
 	// GameScene クラスのインスタンスのポインタ
 	GameScene* gameSceneInstance;
 
-	// タイルのテクスチャ配列
-	Array<Texture> tileTextureArray;
-
 	// タイルの一辺の長さ（ピクセル）
 	const Vec2 TILE_OFFSET{ 50, 25 };
 
@@ -107,6 +101,9 @@ private:
 		TILE_OFFSET.x * 2 * TILE_NUM,
 		TILE_OFFSET.y * 2 * TILE_NUM,
 		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2});
+
+	// CSV ファイルからデータを読み込む
+	const CSV csv{ U"data/sample.csv" };
 
 	// タイルの種類
 	Grid<int32> grid;

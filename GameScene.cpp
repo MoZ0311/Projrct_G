@@ -9,6 +9,25 @@
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
+	// tile フォルダ内のファイルを列挙する
+	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
+	{
+		// ファイル名が conifer と tree で始まるファイル（タイルではない）は除外する
+		if (const FilePath baseName = FileSystem::BaseName(filePath);
+			baseName.starts_with(U"conifer") || baseName.starts_with(U"tree"))
+		{
+			continue;
+		}
+
+		tileTextureArray << Texture{ filePath };
+	}
+
+	// 全部で 88 種類のタイルが読み込まれれば正常
+	if (tileTextureArray.size() != 88)
+	{
+		throw Error{ U"ファイルの配置が不正です。" };
+	}
+
 	// Stage class の生成
 	Stage::Init(this);
 
@@ -16,7 +35,7 @@ GameScene::GameScene(const InitData& init)
 	Player::Init(this);
 
 	// UI class の生成
-	UI::Init();
+	UI::Init(this);
 
 	// 背景の色を設定する | Set the background color
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
@@ -118,6 +137,11 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+}
+
+Array<Texture> GameScene::GetTileTextureArray()
+{
+	return tileTextureArray;
 }
 
 bool GameScene::GetIsEditing()
