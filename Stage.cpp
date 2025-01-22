@@ -31,9 +31,8 @@ Stage::Stage(GameScene* instance)
 	// GameScene クラスのインスタンスを格納
 	gameSceneInstance = instance;
 
-	// タイルの種類
-	Grid<int32> gr(Size{ TILE_NUM, TILE_NUM });
-	grid = gr;
+	// タイルの初期化
+	grid = { Size(TILE_NUM, TILE_NUM), 0};
 
 	onMap = false;
 	showGrid = false;
