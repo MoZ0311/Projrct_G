@@ -28,6 +28,13 @@ public:
 
 private:
 
+	/// @brief 画像を読み込み、アルファ乗算済みのテクスチャを作成します。
+	/// @param path 画像ファイルのパス
+	/// @return アルファ乗算済みのテクスチャ
+	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
+	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
+	Texture LoadPremultipliedTexture(FilePathView path);
+
 	// タイルのテクスチャ配列
 	Array<Texture> tileTextureArray;
 

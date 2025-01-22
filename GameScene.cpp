@@ -19,7 +19,7 @@ GameScene::GameScene(const InitData& init)
 			continue;
 		}
 
-		tileTextureArray << Texture{ filePath };
+		tileTextureArray << LoadPremultipliedTexture(filePath);
 	}
 
 	// 全部で 88 種類のタイルが読み込まれれば正常
@@ -137,6 +137,21 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+}
+
+Texture GameScene::LoadPremultipliedTexture(FilePathView path)
+{
+	Image image{ path };
+	Color* p = image.data();
+	const Color* const pEnd = (p + image.num_pixels());
+	while (p != pEnd)
+	{
+		p->r = static_cast<uint8>((static_cast<uint16>(p->r) * p->a) / 255);
+		p->g = static_cast<uint8>((static_cast<uint16>(p->g) * p->a) / 255);
+		p->b = static_cast<uint8>((static_cast<uint16>(p->b) * p->a) / 255);
+		++p;
+	}
+	return Texture{ image };
 }
 
 Array<Texture> GameScene::GetTileTextureArray()

@@ -75,26 +75,31 @@ void UI::Draw()
 	// UI背景
 	TileMenuRoundRect.draw();
 
-	// 各タイル
-	for (int32 y = 0; y < 4; ++y)
 	{
-		for (int32 x = 0; x < 22; ++x)
+		// 乗算済みアルファ用のブレンドステートを適用する
+		const ScopedRenderStates2D blend{ BlendState::Premultiplied };
+
+		// 各タイル
+		for (int32 y = 0; y < 4; ++y)
 		{
-			// タイルの長方形
-			const Rect rect{ (TileMenuRect.x + x * 56), (20 + y * 50), 56, 50};
-
-			// タイルの種類
-			const int32 tileType = (y * 22 + x);
-
-			// 現在選択されているタイルであれば
-			if (tileType == tileTypeSelected)
+			for (int32 x = 0; x < 22; ++x)
 			{
-				// 背景を灰色にする
-				rect.draw(ColorF{ 0.85 });
-			}
+				// タイルの長方形
+				const Rect rect{ (TileMenuRect.x + x * 56), (20 + y * 50), 56, 50 };
 
-			// タイルを表示する
-			gameSceneInstance->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+				// タイルの種類
+				const int32 tileType = (y * 22 + x);
+
+				// 現在選択されているタイルであれば
+				if (tileType == tileTypeSelected)
+				{
+					// 背景を灰色にする
+					rect.draw(ColorF{ 0.85 });
+				}
+
+				// タイルを表示する
+				gameSceneInstance->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+			}
 		}
 	}
 }

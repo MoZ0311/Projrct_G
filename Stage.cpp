@@ -32,7 +32,6 @@ Stage::Stage(GameScene* instance)
 	}
 
 	onMap = false;
-	showGrid = false;
 }
 
 Stage::~Stage()
@@ -100,26 +99,31 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	// 上から順にタイルを描く
-	for (int32 i = 0; i < (TILE_NUM * 2 - 1); ++i)
 	{
-		// x の開始インデックス
-		const int32 xi = (i < (TILE_NUM - 1)) ? 0 : (i - (TILE_NUM - 1));
+		// 乗算済みアルファ用のブレンドステートを適用する
+		const ScopedRenderStates2D blend{ BlendState::Premultiplied };
 
-		// y の開始インデックス
-		const int32 yi = (i < (TILE_NUM - 1)) ? i : (TILE_NUM - 1);
-
-		// 左から順にタイルを描く
-		for (int32 k = 0; k < (TILE_NUM - Abs(TILE_NUM - i - 1)); ++k)
+		// 上から順にタイルを描く
+		for (int32 i = 0; i < (TILE_NUM * 2 - 1); ++i)
 		{
-			// タイルのインデックス
-			const Point index{ (xi + k), (yi - k) };
+			// x の開始インデックス
+			const int32 xi = (i < (TILE_NUM - 1)) ? 0 : (i - (TILE_NUM - 1));
 
-			// そのタイルの底辺中央の座標
-			const Vec2 pos = ToTileBottomCenter(index, TILE_NUM);
+			// y の開始インデックス
+			const int32 yi = (i < (TILE_NUM - 1)) ? i : (TILE_NUM - 1);
 
-			// 底辺中央を基準にタイルを描く
-			gameSceneInstance->GetTileTextureArray()[grid[index]].draw(Arg::bottomCenter = pos);
+			// 左から順にタイルを描く
+			for (int32 k = 0; k < (TILE_NUM - Abs(TILE_NUM - i - 1)); ++k)
+			{
+				// タイルのインデックス
+				const Point index{ (xi + k), (yi - k) };
+
+				// そのタイルの底辺中央の座標
+				const Vec2 pos = ToTileBottomCenter(index, TILE_NUM);
+
+				// 底辺中央を基準にタイルを描く
+				gameSceneInstance->GetTileTextureArray()[grid[index]].draw(Arg::bottomCenter = pos);
+			}
 		}
 	}
 
@@ -130,7 +134,7 @@ void Stage::Draw()
 	}
 	
 	// マップ上のグリッドを表示する
-	if (showGrid)
+	if (gameSceneInstance->GetIsEditing())
 	{
 		// 各列の四角形を描く
 		for (const auto& columnQuad : COLUMN_QUADS)
