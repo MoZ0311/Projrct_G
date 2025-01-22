@@ -27,10 +27,10 @@ private:
 
 
 	// CONFIG ボタンの設定
-	Rect configButton = startButton.movedBy(0, 100);
+	Rect configButton = startButton.movedBy(BUTTON_OFFSET);
 	Transition configTransition = BUTTON_TRANSITION;
 
 	// EXIT ボタンの設定
-	Rect exitButton = configButton.movedBy(0, 100);
+	Rect exitButton = configButton.movedBy(BUTTON_OFFSET);
 	Transition exitTransition = BUTTON_TRANSITION;
 };

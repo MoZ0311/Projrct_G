@@ -425,4 +425,4 @@ gmon.out
 !**/example/obj/*.obj
 
 # 自分の設定
-/App/data/*
+**/App/data/*.csv

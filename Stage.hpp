@@ -82,10 +82,10 @@ private:
 	GameScene* gameSceneInstance;
 
 	// タイルの一辺の長さ（ピクセル）
-	const Vec2 TILE_OFFSET{ 50, 25 };
+	const Vec2 TILE_OFFSET{ 48, 24 };
 
 	// タイルの厚み（ピクセル）
-	const int32 TILE_THICKNESS = 15;
+	const int32 TILE_THICKNESS = 17;
 
 	// マップの一辺のタイル数
 	const int32 TILE_NUM = 12;
@@ -117,7 +117,4 @@ private:
 
 	// マウスカーソルが置かれたタイルのインデックス
 	Point mouseOveredTile;
-
-	// マップにグリッドを表示するか
-	bool showGrid;
 };
