@@ -52,10 +52,10 @@ void Player::Update()
 void Player::Move()
 {
 	// キー入力を二次元ベクトルに
-	int upInput = KeyW.pressed() ? 1 : 0;
-	int downInput = KeyS.pressed() ? 1 : 0;
-	int leftInput = KeyA.pressed() ? 1 : 0;
-	int rightInput = KeyD.pressed() ? 1: 0;
+	int32 upInput = KeyW.pressed() ? 1 : 0;
+	int32 downInput = KeyS.pressed() ? 1 : 0;
+	int32 leftInput = KeyA.pressed() ? 1 : 0;
+	int32 rightInput = KeyD.pressed() ? 1: 0;
 
 	playerMovement = { rightInput - leftInput, downInput - upInput };
 
@@ -117,7 +117,7 @@ void Player::Draw()
 
 	// アニメーションを進める
 	animationCount += Scene::DeltaTime() * animationSpeed;
-	int index = static_cast<int>(animationCount);
+	int32 index = static_cast<int32>(animationCount);
 
 	// アニメーションのリセット
 	if (index >= animation.size())
