@@ -13,6 +13,7 @@ Stage::Stage(GameScene* instance)
 	gameSceneInstance = instance;
 
 	// CSVファイルの読み込み
+	csv.load(MAP_DATA_FILE);
 	if (!csv)
 	{
 		throw Error{ U"CSVファイルが読み込めません" };
@@ -74,10 +75,18 @@ void Stage::Update()
 			// マウスの左ボタンが押されていたら
 			if (MouseL.pressed() && !MouseR.pressed())
 			{
+				int32 selectedTyle = UI::GetUIInstance()->GetTileTypeSelected();
+
 				// タイルの種類を更新する
-				if (grid[*index] != UI::GetUIInstance()->GetTileTypeSelected())
+				if (grid[*index] != selectedTyle)
 				{
-					grid[*index] = UI::GetUIInstance()->GetTileTypeSelected();
+					grid[*index] = selectedTyle;
+
+					// CSVファイルを書き換える
+					csv[index.value().y][index.value().x] = Format(selectedTyle);
+
+					// CSVを保存する
+					csv.save(MAP_DATA_FILE);
 				}
 			}
 		}
