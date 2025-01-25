@@ -83,9 +83,6 @@ void Stage::Update()
 
 					// CSVファイルを書き換える
 					csv[index.value().y][index.value().x] = Format(selectedTyle);
-
-					// CSVを保存する
-					csv.save(MAP_DATA_FILE);
 				}
 			}
 		}
@@ -93,6 +90,15 @@ void Stage::Update()
 		{
 			onMap = false;
 		}
+	}
+
+	// Ctrl + S
+	if (KeyControl.pressed() && KeyS.down())
+	{
+		Print << U"SAVE";
+
+		// CSVを保存する
+		csv.save(MAP_DATA_FILE);
 	}
 }
 
