@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// ゲームモードを変更できるかの判定処理
+	bool CanGameModeChange() const;
+
 	// テクスチャ配列のゲッター関数
 	Array<Texture> GetTileTextureArray();
 

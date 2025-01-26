@@ -20,11 +20,14 @@ public:
 	// 描画処理
 	void Draw();
 
+	// CSVのデータと現在のマップデータが同一かの判定処理
+	bool MapEqualsCSV();
+
 	// インスタンスのゲッター関数
 	static Stage* GetStageInstance();
 
 	// 当たり判定のゲッター関数
-	Polygon GetMapCollider();
+	Polygon GetMapCollider() const;
 
 private:
 
@@ -38,7 +41,7 @@ private:
 	/// @param index タイルのインデックス
 	/// @param N マップの一辺のタイル数
 	/// @return タイルの底辺中央の座標
-	Vec2 ToTileBottomCenter(const Point& index, const int32 N);
+	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
 
 	/// @brief タイルのインデックスから、タイルの四角形を計算します。
 	/// @param index タイルのインデックス
