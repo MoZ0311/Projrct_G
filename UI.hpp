@@ -24,10 +24,10 @@ public:
 	static UI* GetUIInstance();
 
 	// カーソル有無の取得
-	bool GetOnTileMenu();
+	bool GetOnTileMenu() const;
 
 	// 選択されたタイルの取得
-	int32 GetTileTypeSelected();
+	int32 GetTileTypeSelected() const;
 
 private:
 

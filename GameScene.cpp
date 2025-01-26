@@ -157,7 +157,7 @@ bool GameScene::CanGameModeChange() const
 	return true;
 }
 
-Texture GameScene::LoadPremultipliedTexture(FilePathView path)
+Texture GameScene::LoadPremultipliedTexture(FilePathView path) const
 {
 	Image image{ path };
 	Color* p = image.data();
@@ -172,12 +172,12 @@ Texture GameScene::LoadPremultipliedTexture(FilePathView path)
 	return Texture{ image };
 }
 
-Array<Texture> GameScene::GetTileTextureArray()
+Array<Texture> GameScene::GetTileTextureArray() const
 {
 	return tileTextureArray;
 }
 
-bool GameScene::GetIsEditing()
+bool GameScene::GetIsEditing() const
 {
 	return isEditing;
 }

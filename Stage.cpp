@@ -187,7 +187,7 @@ bool Stage::MapEqualsCSV()
 	return true;
 }
 
-Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N) const
+Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N)
 {
 	const int32 i = index.manhattanLength();
 	const int32 xi = (i < (N - 1)) ? 0 : (i - (N - 1));

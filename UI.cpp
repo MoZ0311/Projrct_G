@@ -109,12 +109,12 @@ UI* UI::GetUIInstance()
 	return UIInstance;
 }
 
-bool UI::GetOnTileMenu()
+bool UI::GetOnTileMenu() const
 {
 	return onTileMenu;
 }
 
-int32 UI::GetTileTypeSelected()
+int32 UI::GetTileTypeSelected() const
 {
 	return tileTypeSelected;
 }

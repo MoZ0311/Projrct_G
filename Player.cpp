@@ -152,7 +152,7 @@ Player* Player::GetPlayerInstance()
 	return playerInstance;
 }
 
-Vec2 Player::GetPlayerPosition()
+Vec2 Player::GetPlayerPosition() const
 {
 	return playerPosition;
 }
