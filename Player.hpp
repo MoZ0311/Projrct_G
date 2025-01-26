@@ -24,7 +24,7 @@ public:
 	static Player* GetPlayerInstance();
 
 	// プレイヤー座標のゲッター関数
-	Vec2 GetPlayerPosition();
+	Vec2 GetPlayerPosition() const;
 
 private:
 

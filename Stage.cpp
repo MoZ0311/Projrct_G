@@ -92,7 +92,7 @@ void Stage::Update()
 	// Ctrl + S
 	if (KeyControl.pressed() && KeyS.down())
 	{
-		Print << U"SAVE";
+		ClearPrint();
 
 		// マップの内容をCSVファイルに反映
 		for (int32 column = 0; column < TILE_NUM; column++)
@@ -105,6 +105,8 @@ void Stage::Update()
 
 		// CSVを保存する
 		csv.save(MAP_DATA_FILE);
+
+		Print << U"セーブしました";
 	}
 }
 

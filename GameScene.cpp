@@ -100,6 +100,8 @@ void GameScene::update()
 	// ゲームモードの切り替え
 	if (KeyF.down())
 	{
+
+		ClearPrint();
 		if (CanGameModeChange())
 		{
 			if (!isEditing)
@@ -172,12 +174,12 @@ Texture GameScene::LoadPremultipliedTexture(FilePathView path)
 	return Texture{ image };
 }
 
-Array<Texture> GameScene::GetTileTextureArray()
+Array<Texture> GameScene::GetTileTextureArray() const
 {
 	return tileTextureArray;
 }
 
-bool GameScene::GetIsEditing()
+bool GameScene::GetIsEditing() const
 {
 	return isEditing;
 }

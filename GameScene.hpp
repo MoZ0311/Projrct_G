@@ -24,10 +24,10 @@ public:
 	bool CanGameModeChange() const;
 
 	// テクスチャ配列のゲッター関数
-	Array<Texture> GetTileTextureArray();
+	Array<Texture> GetTileTextureArray() const;
 
 	// エディット中かのゲッター関数
-	bool GetIsEditing();
+	bool GetIsEditing() const;
 
 private:
 
