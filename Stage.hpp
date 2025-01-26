@@ -41,7 +41,7 @@ private:
 	/// @param index タイルのインデックス
 	/// @param N マップの一辺のタイル数
 	/// @return タイルの底辺中央の座標
-	Vec2 ToTileBottomCenter(const Point& index, const int32 N);
+	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
 
 	/// @brief タイルのインデックスから、タイルの四角形を計算します。
 	/// @param index タイルのインデックス

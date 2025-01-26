@@ -92,7 +92,7 @@ void Stage::Update()
 	// Ctrl + S
 	if (KeyControl.pressed() && KeyS.down())
 	{
-		Print << U"SAVE";
+		ClearPrint();
 
 		// マップの内容をCSVファイルに反映
 		for (int32 column = 0; column < TILE_NUM; column++)
@@ -105,6 +105,8 @@ void Stage::Update()
 
 		// CSVを保存する
 		csv.save(MAP_DATA_FILE);
+
+		Print << U"セーブしました";
 	}
 }
 
@@ -187,7 +189,7 @@ bool Stage::MapEqualsCSV()
 	return true;
 }
 
-Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N)
+Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N) const
 {
 	const int32 i = index.manhattanLength();
 	const int32 xi = (i < (N - 1)) ? 0 : (i - (N - 1));

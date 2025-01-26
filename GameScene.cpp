@@ -100,6 +100,8 @@ void GameScene::update()
 	// ゲームモードの切り替え
 	if (KeyF.down())
 	{
+
+		ClearPrint();
 		if (CanGameModeChange())
 		{
 			if (!isEditing)
@@ -157,7 +159,7 @@ bool GameScene::CanGameModeChange() const
 	return true;
 }
 
-Texture GameScene::LoadPremultipliedTexture(FilePathView path) const
+Texture GameScene::LoadPremultipliedTexture(FilePathView path)
 {
 	Image image{ path };
 	Color* p = image.data();
