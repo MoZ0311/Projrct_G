@@ -12,15 +12,15 @@ Stage::Stage(GameScene* instance)
 	// GameScene クラスのインスタンスを格納
 	gameSceneInstance = instance;
 
+	// タイルの初期化
+	grid = { Size(TILE_NUM, TILE_NUM), -1 };
+
 	// CSVファイルの読み込み
 	csv.load(MAP_DATA_FILE);
 	if (!csv)
 	{
 		throw Error{ U"CSVファイルが読み込めません" };
 	}
-
-	// タイルの初期化
-	grid = { Size(TILE_NUM, TILE_NUM), -1 };
 
 	// CSVファイルの内容をマップに反映
 	for (int32 column = 0; column < TILE_NUM; column++)
@@ -80,9 +80,6 @@ void Stage::Update()
 				if (grid[*index] != selectedTyle)
 				{
 					grid[*index] = selectedTyle;
-
-					// CSVファイルを書き換える
-					csv[index.value().y][index.value().x] = Format(selectedTyle);
 				}
 			}
 		}
@@ -96,6 +93,15 @@ void Stage::Update()
 	if (KeyControl.pressed() && KeyS.down())
 	{
 		Print << U"SAVE";
+
+		// マップの内容をCSVファイルに反映
+		for (int32 column = 0; column < TILE_NUM; column++)
+		{
+			for (int32 row = 0; row < TILE_NUM; row++)
+			{
+				csv[column][row] = Format(grid[column][row]);
+			}
+		}
 
 		// CSVを保存する
 		csv.save(MAP_DATA_FILE);
@@ -156,7 +162,32 @@ void Stage::Draw()
 	}
 }
 
-Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N)
+bool Stage::MapEqualsCSV()
+{
+	// CSVファイルの読み込み
+	csv.load(MAP_DATA_FILE);
+	if (!csv)
+	{
+		throw Error{ U"CSVファイルが読み込めません" };
+	}
+
+	// CSVファイルの内容とマップを比較
+	for (int32 column = 0; column < TILE_NUM; column++)
+	{
+		for (int32 row = 0; row < TILE_NUM; row++)
+		{
+			// CSVとの差異があった時点でreturn
+			if (grid[column][row] != Parse<int32>(csv[column][row]))
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+Vec2 Stage::ToTileBottomCenter(const Point& index, const int32 N) const
 {
 	const int32 i = index.manhattanLength();
 	const int32 xi = (i < (N - 1)) ? 0 : (i - (N - 1));
@@ -261,7 +292,7 @@ Stage* Stage::GetStageInstance()
 	return stageInstance;
 }
 
-Polygon Stage::GetMapCollider()
+Polygon Stage::GetMapCollider() const
 {
 	return MAP_COLLIDER;
 }

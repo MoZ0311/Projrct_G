@@ -100,13 +100,21 @@ void GameScene::update()
 	// ゲームモードの切り替え
 	if (KeyF.down())
 	{
-		if (!isEditing)
+		if (CanGameModeChange())
 		{
-			// エディットモードになった時、カメラを再設定
-			camera.setTargetCenter(Vec2{0, 105});
-			camera.setTargetScale(0.85);
+			if (!isEditing)
+			{
+				// エディットモードになる時、カメラを再設定
+				camera.setTargetCenter(Vec2{ 0, 105 });
+				camera.setTargetScale(0.85);
+			}
+
+			isEditing = !isEditing;
 		}
-		isEditing = !isEditing;
+		else
+		{
+			Print << U"セーブしろ!!!";
+		}
 	}
 
 	// カメラリセット
@@ -137,6 +145,16 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+}
+
+bool GameScene::CanGameModeChange() const
+{
+	if (isEditing)
+	{
+		return Stage::GetStageInstance()->MapEqualsCSV();
+	}
+
+	return true;
 }
 
 Texture GameScene::LoadPremultipliedTexture(FilePathView path)
