@@ -9,6 +9,12 @@ void Main()
 	// フォントのアセット化
 	FontAsset::Register(U"MAKINAS", FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
 
+	// テクスチャのアセット化
+	TextureAsset::Register(U"PlayerBase", U"image/player/player.png", TextureDesc::Mipped);
+	TextureAsset::Register(U"PlayerIdol", U"image/player/player_idol.png", TextureDesc::Mipped);
+	TextureAsset::Register(U"PlayerWalk_01", U"image/player/player_walk01.png", TextureDesc::Mipped);
+	TextureAsset::Register(U"PlayerWalk_02", U"image/player/player_walk02.png", TextureDesc::Mipped);
+
 	// ウィンドウの名前設定
 	Window::SetTitle(U"世界復興計画");
 

@@ -171,7 +171,7 @@ Texture GameScene::LoadPremultipliedTexture(FilePathView path)
 		p->b = static_cast<uint8>((static_cast<uint16>(p->b) * p->a) / 255);
 		++p;
 	}
-	return Texture{ image };
+	return Texture{ image, TextureDesc::Mipped };
 }
 
 Array<Texture> GameScene::GetTileTextureArray() const

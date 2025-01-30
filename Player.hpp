@@ -43,15 +43,15 @@ private:
 	// GameScene クラスのインスタンスのポインタ
 	GameScene* gameSceneInstance;
 
-	// プレイヤーのテクスチャ
-	const Texture PLAYER_BASE{ U"image/player/player.png" };
-	const Texture PLAYER_IDOL{ U"image/player/player_idol.png" };
-	const Texture PLAYER_WALK_01{ U"image/player/player_walk01.png" };
-	const Texture PLAYER_WALK_02{ U"image/player/player_walk02.png" };
-
 	// テクスチャを配列として確保
-	const Array<Texture> PLAYER_IDOL_ARRAY = { PLAYER_BASE, PLAYER_IDOL };
-	const Array<Texture> PLAYER_WALK_ARRAY = { PLAYER_BASE, PLAYER_WALK_01, PLAYER_WALK_02, PLAYER_WALK_01 };
+	const Array<Texture> PLAYER_IDOL_ARRAY = {
+		TextureAsset(U"PlayerBase"), TextureAsset(U"PlayerIdol")
+	};
+
+	const Array<Texture> PLAYER_WALK_ARRAY = {
+		TextureAsset(U"PlayerBase"), TextureAsset(U"PlayerWalk_01"),
+		TextureAsset(U"PlayerWalk_02"), TextureAsset(U"PlayerWalk_01")
+	};
 
 	// プレイヤーの描画スケール
 	const double PLAYER_SCALE = 0.5;
