@@ -1,4 +1,5 @@
 ﻿#include "TitleScene.hpp"
+#include "NovelScene.hpp"
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
 
@@ -24,6 +25,7 @@ void Main()
 	// 各シーンの登録
 	App manager;
 	manager.add<TitleScene>(State::TITLE);
+	manager.add<NovelScene>(State::NOVEL);
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
 
