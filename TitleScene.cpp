@@ -22,8 +22,20 @@ void TitleScene::update()
 
 	if (startButton.leftClicked())
 	{
-		// ゲームシーンへ
-		changeScene(State::GAME, 0.5s);
+		// セーブデータの読み込み
+		csv.load(SAVE_DATA_FILE);
+
+		// 進行度で分岐
+		if (Parse<int32>(csv[1][0]) == 0)
+		{
+			// ノベルシーンへ
+			changeScene(State::NOVEL, 0.5s);
+		}
+		else
+		{
+			// ゲームシーンへ
+			changeScene(State::GAME, 0.5s);
+		}
 	}
 	else if (configButton.leftClicked())
 	{

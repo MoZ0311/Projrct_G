@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include  "Common.hpp"
+#include "Common.hpp"
+#include "Constants.hpp"
 
 class NovelScene : public App::Scene
 {
@@ -21,5 +22,8 @@ public:
 	void draw() const override;
 
 private:
+
+	const int32 WINDOW_HEIGHT = 150;
+	const Rect MESSAGE_WINDOW{ 0, SCREEN_HEIGHT - WINDOW_HEIGHT, SCREEN_WIDTH, WINDOW_HEIGHT };
 
 };

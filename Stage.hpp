@@ -29,6 +29,8 @@ public:
 	// 当たり判定のゲッター関数
 	Polygon GetMapCollider() const;
 
+	
+
 private:
 
 	// コンストラクタ
@@ -103,11 +105,11 @@ private:
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
 		TILE_OFFSET.x * 2 * TILE_NUM,
 		TILE_OFFSET.y * 2 * TILE_NUM,
-		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2}
+		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2 }
 	);
 
 	// マップデータのCSVファイル
-	const String MAP_DATA_FILE = U"data/sample.csv";
+	const FilePath MAP_DATA_FILE = U"data/mapdata.csv";
 
 	// 読み込み対象のCSVファイル
 	CSV csv;
