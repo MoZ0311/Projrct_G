@@ -52,20 +52,20 @@ void TitleScene::update()
 void TitleScene::draw() const
 {
 	// タイトルの表示
-	FontAsset(U"MAKINAS")(U"総統の世界復興計画")
+	FontAsset(FONT_MAKINAS)(U"総統の世界復興計画")
 		.drawAt(TextStyle::OutlineShadow(0.2, ColorF{ 0.0, 0.0, 0.2 },
 		Vec2{ 3, 3 }, ColorF{ 0.0, 0.5 }),
 		120, Vec2{ Scene::Center().x, 100}, ColorF(0.675, 0.196, 0.196));
 
 	// スタートボタンの描画
 	startButton.draw(ColorF{ 1.0, startTransition.value() }).drawFrame(2);
-	FontAsset(U"MAKINAS")(U"PLAY").drawAt(startButton.center(), ColorF{ 0.25 });
+	FontAsset(FONT_MAKINAS)(U"PLAY").drawAt(startButton.center(), ColorF{ 0.25 });
 
 	// コンフィグボタンの描画
 	configButton.draw(ColorF{ 1.0, configTransition.value() }).drawFrame(2);
-	FontAsset(U"MAKINAS")(U"CONFIG").drawAt(configButton.center(), ColorF{ 0.25 });
+	FontAsset(FONT_MAKINAS)(U"CONFIG").drawAt(configButton.center(), ColorF{ 0.25 });
 
 	// 終了ボタンの描画
 	exitButton.draw(ColorF{ 1.0, exitTransition.value() }).drawFrame(2);
-	FontAsset(U"MAKINAS")(U"EXIT").drawAt(exitButton.center(), ColorF{ 0.25 });
+	FontAsset(FONT_MAKINAS)(U"EXIT").drawAt(exitButton.center(), ColorF{ 0.25 });
 }

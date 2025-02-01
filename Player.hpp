@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameScene.hpp"
+#include "Constants.hpp"
 
 class Player
 {
@@ -45,12 +46,12 @@ private:
 
 	// テクスチャを配列として確保
 	const Array<Texture> PLAYER_IDOL_ARRAY = {
-		TextureAsset(U"PlayerBase"), TextureAsset(U"PlayerIdol")
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
 	};
 
 	const Array<Texture> PLAYER_WALK_ARRAY = {
-		TextureAsset(U"PlayerBase"), TextureAsset(U"PlayerWalk_01"),
-		TextureAsset(U"PlayerWalk_02"), TextureAsset(U"PlayerWalk_01")
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
+		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
 	};
 
 	// プレイヤーの描画スケール
