@@ -20,9 +20,6 @@ public:
 
 private:
 
-	// セーブデータのCSVファイル
-	const FilePath SAVE_DATA_FILE = U"data/savedata.csv";
-
 	// 読み込み対象のCSVファイル
 	CSV csv;
 

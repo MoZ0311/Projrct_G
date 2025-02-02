@@ -6,6 +6,13 @@ TitleScene::TitleScene(const InitData& init)
 	: IScene{init}
 {
 	Scene::SetBackground(ColorF{ 0.443, 0.463, 0.243 });
+
+	// CSVファイルの読み込み
+	csv.load(SAVE_DATA_FILE);
+	if (!csv)
+	{
+		throw Error{ U"CSVファイルが読み込めません" };
+	}
 }
 
 void TitleScene::update()
@@ -22,9 +29,6 @@ void TitleScene::update()
 
 	if (startButton.leftClicked())
 	{
-		// セーブデータの読み込み
-		csv.load(SAVE_DATA_FILE);
-
 		// 進行度で分岐
 		if (Parse<int32>(csv[1][0]) == 0)
 		{

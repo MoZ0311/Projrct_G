@@ -58,7 +58,7 @@ private:
 	const double PLAYER_SCALE = 0.5;
 
 	// プレイヤーの移動スピード
-	const double MOVE_SPEED = 500;
+	const double MOVE_SPEED = 150;
 
 	// アイドルアニメーションの再生速度
 	const double IDOL_ANIMATION_SPEED = 3;

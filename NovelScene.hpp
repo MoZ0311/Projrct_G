@@ -24,7 +24,7 @@ public:
 private:
 
 	// メッセージウィンドウの高さ
-	const int32 WINDOW_HEIGHT = 150;
+	const int32 WINDOW_HEIGHT = 152;
 
 	// ウィンドウの枠の幅
 	const int32 FRAME_THICKNESS = 5;
@@ -43,15 +43,37 @@ private:
 		5
 	};
 
+	// キャラアイコンの種類
+	enum CharacterIcon
+	{
+		ICON_PLAYER,
+		ICON_RED,
+	};
+
+	// 会話キャラの列
+	const int32 CHARACTER_COLUMN = 0;
+
+	// テキストの列
+	const int32 TEXT_COLUMN = 1;
+
+	// 読み込み対象のCSVファイル
+	CSV csv;
+
+	// 表示テキストのインデックス
+	int32 textIndex;
+
 	// アイコン画像
 	Texture iconTexture;
 
 	// 表示するメッセージテキスト
 	String messageText;
 
-	// テキストのインデックス
-	double textIndex;
+	// 表示テキストの長さ
+	double displayTextLength;
 
 	// テキスト送りの速度
 	double typeInterval;
+
+	// 全文を表示し終えたか
+	bool finishSentence;
 };

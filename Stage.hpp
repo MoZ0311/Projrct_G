@@ -108,9 +108,6 @@ private:
 		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2 }
 	);
 
-	// マップデータのCSVファイル
-	const FilePath MAP_DATA_FILE = U"data/mapdata.csv";
-
 	// 読み込み対象のCSVファイル
 	CSV csv;
 
