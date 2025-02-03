@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// フェードアウト
+	void drawFadeOut(double t) const override;
+
 private:
 
 	// メッセージウィンドウの高さ

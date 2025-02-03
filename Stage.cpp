@@ -150,16 +150,19 @@ void Stage::Draw()
 	// マップ上のグリッドを表示する
 	if (gameSceneInstance->GetIsEditing())
 	{
+		// グリッドの幅
+		double frameThickness = 1;
+
 		// 各列の四角形を描く
 		for (const auto& columnQuad : COLUMN_QUADS)
 		{
-			columnQuad.drawFrame(2);
+			columnQuad.drawFrame(frameThickness);
 		}
 
 		// 各行の四角形を描く
 		for (const auto& rowQuad : ROW_QUADS)
 		{
-			rowQuad.drawFrame(2);
+			rowQuad.drawFrame(frameThickness);
 		}
 	}
 }
@@ -285,9 +288,4 @@ Optional<Point> Stage::ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, 
 Stage* Stage::GetStageInstance()
 {
 	return stageInstance;
-}
-
-Polygon Stage::GetMapCollider() const
-{
-	return MAP_COLLIDER;
 }

@@ -20,5 +20,8 @@ public:
 	// 描画処理
 	void draw() const override;
 
+	// フェードイン
+	void drawFadeIn(double t) const override;
+
 private:
 };
