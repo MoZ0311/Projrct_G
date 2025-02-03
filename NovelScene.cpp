@@ -68,8 +68,8 @@ void NovelScene::update()
 			}
 			else
 			{
-				Print << U"ページ限界";
 				// シーンチェンジ演出など
+				changeScene(State::BATTLE, 0.5s);
 			}
 		}
 		else
