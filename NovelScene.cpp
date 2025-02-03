@@ -83,7 +83,7 @@ void NovelScene::draw() const
 {
 	// メッセージウィンドウの描画
 	MESSAGE_WINDOW.draw(ColorF{ 0, 0.8 }).drawFrame(FRAME_THICKNESS, 0, ColorF{ 0.8 });
-	FontAsset(FONT_MAKINAS)(messageText.substr(0, static_cast<size_t>(displayTextLength))).draw(40, ICON_WINDOW.w + FRAME_THICKNESS * 2 + 20, ICON_WINDOW.y + 8);
+	FontAsset(FONT_MAKINAS)(messageText.substr(0, static_cast<size_t>(displayTextLength))).draw(FONT_SIZE, ICON_WINDOW.w + FRAME_THICKNESS * 2 + FONT_SIZE / 2, ICON_WINDOW.y + FONT_SIZE / 5);
 
 	// アイコンの描画
 	ICON_WINDOW.draw(ColorF{ 0.5 }).drawFrame(0, FRAME_THICKNESS, ColorF{ 0.8 });

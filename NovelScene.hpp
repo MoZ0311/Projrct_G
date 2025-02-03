@@ -56,6 +56,9 @@ private:
 	// テキストの列
 	const int32 TEXT_COLUMN = 1;
 
+	// デフォルトのフォントサイズ
+	const int32 FONT_SIZE = 40;
+
 	// 読み込み対象のCSVファイル
 	CSV csv;
 
