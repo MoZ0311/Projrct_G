@@ -8,6 +8,7 @@ enum class State
 {
 	TITLE,
 	NOVEL,
+	BATTLE,
 	GAME,
 	OVER,
 };
