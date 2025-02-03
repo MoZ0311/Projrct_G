@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Common.hpp"
-#include "Constants.hpp"
 
 class NovelScene : public App::Scene
 {
