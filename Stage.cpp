@@ -166,13 +166,6 @@ void Stage::Draw()
 
 bool Stage::MapEqualsCSV()
 {
-	// CSVファイルの読み込み
-	csv.load(MAP_DATA_FILE);
-	if (!csv)
-	{
-		throw Error{ U"CSVファイルが読み込めません" };
-	}
-
 	// CSVファイルの内容とマップを比較
 	for (int32 column = 0; column < TILE_NUM; column++)
 	{

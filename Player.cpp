@@ -80,9 +80,9 @@ void Player::Move()
 
 	// プレイヤーの判定を生成
 	playerCollider = Shape2D::Rhombus(
-		PLAYER_BASE.width() * PLAYER_SCALE / 1.5,
-		PLAYER_BASE.width() * PLAYER_SCALE / 3,
-		playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2));
+		TextureAsset(PLAYER_BASE).width() * PLAYER_SCALE / 1.5,
+		TextureAsset(PLAYER_BASE).width() * PLAYER_SCALE / 3,
+		playerPosition.movedBy(0, TextureAsset(PLAYER_BASE).height() * PLAYER_SCALE / 2));
 
 	// マップ上かの真偽判定
 	onMap = mapCollider.contains(playerCollider);

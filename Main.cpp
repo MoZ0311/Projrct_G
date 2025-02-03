@@ -1,4 +1,5 @@
 ﻿#include "TitleScene.hpp"
+#include "NovelScene.hpp"
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
 
@@ -7,7 +8,15 @@
 void Main()
 {
 	// フォントのアセット化
-	FontAsset::Register(U"MAKINAS", FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
+	FontAsset::Register(FONT_MAKINAS, FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
+
+	// テクスチャのアセット化
+	TextureAsset::Register(PLAYER_BASE, U"image/player/player.png", TextureDesc::Mipped);
+	TextureAsset::Register(PLAYER_IDOL, U"image/player/player_idol.png", TextureDesc::Mipped);
+	TextureAsset::Register(PLAYER_WALK_01, U"image/player/player_walk01.png", TextureDesc::Mipped);
+	TextureAsset::Register(PLAYER_WALK_02, U"image/player/player_walk02.png", TextureDesc::Mipped);
+
+	TextureAsset::Register(RANGER_RED_BASE, U"image/ranger/red1.png", TextureDesc::Mipped);
 
 	// ウィンドウの名前設定
 	Window::SetTitle(U"世界復興計画");
@@ -18,6 +27,7 @@ void Main()
 	// 各シーンの登録
 	App manager;
 	manager.add<TitleScene>(State::TITLE);
+	manager.add<NovelScene>(State::NOVEL);
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
 

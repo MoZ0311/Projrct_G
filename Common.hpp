@@ -2,9 +2,12 @@
 
 #pragma once
 
+#include "Constants.hpp"	// アセット、及び画面関連の定数をインクルード
+
 enum class State
 {
 	TITLE,
+	NOVEL,
 	GAME,
 	OVER,
 };
