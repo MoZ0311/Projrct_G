@@ -3,14 +3,14 @@
 #include "GameScene.hpp"
 
 #include "Player.hpp"
-#include "City.hpp"
+#include "TownField.hpp"
 #include "UI.hpp"
 
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
 	// City class の生成
-	City::Init(this);
+	TownField::Init(this);
 
 	// Player class の生成
 	Player::Init(this);
@@ -31,7 +31,7 @@ GameScene::GameScene(const InitData& init)
 GameScene::~GameScene()
 {
 	// City class の解放
-	City::Release();
+	TownField::Release();
 
 	// Player class の解放
 	Player::Release();
@@ -51,7 +51,7 @@ void GameScene::update()
 		if (isEditing)
 		{
 			// Stage class の更新処理
-			City::GetCityInstance()->Update();
+			TownField::GetCityInstance()->Update();
 		}
 		else
 		{
@@ -114,7 +114,7 @@ void GameScene::draw() const
 		const auto tr = camera.createTransformer();
 
 		// Stage class の描画処理
-		City::GetCityInstance()->Draw();
+		TownField::GetCityInstance()->Draw();
 
 		// Player class の描画処理
 		Player::GetPlayerInstance()->Draw();
@@ -134,7 +134,7 @@ bool GameScene::CanGameModeChange() const
 {
 	if (isEditing)
 	{
-		return City::GetCityInstance()->MapEqualsCSV();
+		return TownField::GetCityInstance()->MapEqualsCSV();
 	}
 
 	return true;

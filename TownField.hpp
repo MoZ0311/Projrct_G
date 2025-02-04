@@ -1,11 +1,11 @@
-﻿// City class
+﻿// TownField class
 
 #pragma once
 
 #include "StageBase.hpp"
 #include "GameScene.hpp"
 
-class City : public StageBase
+class TownField : public StageBase
 {
 public:
 
@@ -16,7 +16,7 @@ public:
 	static void Release();
 
 	// インスタンスのゲッター関数
-	static City* GetCityInstance();
+	static TownField* GetCityInstance();
 
 	// マップ端の当たり判定用図形
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
@@ -28,7 +28,7 @@ public:
 private:
 
 	// コンストラクタ
-	City(GameScene* instance);
+	TownField(GameScene* instance);
 
 	// タイルの強調表示
 	void DrawTileHighlight() override;
@@ -37,7 +37,7 @@ private:
 	void DrawGrid() override;
 
 	// シングルトンクラスのインスタンスのポインタ
-	static City* cityInstance;
+	static TownField* TownFieldInstance;
 
 	// GameScene class のインスタンスのポインタ
 	GameScene* gameSceneInstance;

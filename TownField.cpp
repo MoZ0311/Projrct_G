@@ -1,35 +1,35 @@
-﻿// City class
+﻿// TownField class
 
-#include "City.hpp"
+#include "TownField.hpp"
 
 // インスタンスをnullptrで初期化
-City* City::cityInstance = nullptr;
+TownField* TownField::TownFieldInstance = nullptr;
 
-City::City(GameScene* instance)
+TownField::TownField(GameScene* instance)
 {
 	gameSceneInstance = instance;
 }
 
-void City::Init(GameScene* instance)
+void TownField::Init(GameScene* instance)
 {
-	if (cityInstance != nullptr)
+	if (TownFieldInstance != nullptr)
 	{
 		return;
 	}
 
-	cityInstance = new City(instance);
+	TownFieldInstance = new TownField(instance);
 }
 
-void City::Release()
+void TownField::Release()
 {
-	if (cityInstance != nullptr)
+	if (TownFieldInstance != nullptr)
 	{
-		delete cityInstance;
-		cityInstance = nullptr;
+		delete TownFieldInstance;
+		TownFieldInstance = nullptr;
 	}
 }
 
-void City::DrawTileHighlight()
+void TownField::DrawTileHighlight()
 {
 	if (onMap && gameSceneInstance->GetIsEditing())
 	{
@@ -37,7 +37,7 @@ void City::DrawTileHighlight()
 	}
 }
 
-void City::DrawGrid()
+void TownField::DrawGrid()
 {
 	if (gameSceneInstance->GetIsEditing())
 	{
@@ -58,7 +58,7 @@ void City::DrawGrid()
 	}
 }
 
-City* City::GetCityInstance()
+TownField* TownField::GetCityInstance()
 {
-	return cityInstance;
+	return TownFieldInstance;
 }

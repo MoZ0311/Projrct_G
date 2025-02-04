@@ -168,7 +168,10 @@
     <ClCompile Include="StageBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="City.cpp">
+    <ClCompile Include="TownField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Battlefield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -869,7 +872,10 @@
     <ClInclude Include="StageBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="City.hpp">
+    <ClInclude Include="TownField.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Battlefield.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

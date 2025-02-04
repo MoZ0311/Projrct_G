@@ -2,7 +2,7 @@
 
 #include "UI.hpp"
 
-#include "City.hpp"
+#include "TownField.hpp"
 
 UI* UI::UIInstance = nullptr;
 
@@ -97,7 +97,7 @@ void UI::Draw()
 				}
 
 				// タイルを表示する
-				City::GetCityInstance()->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+				TownField::GetCityInstance()->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
 			}
 		}
 	}
