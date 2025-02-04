@@ -3,39 +3,20 @@
 #include "GameScene.hpp"
 
 #include "Player.hpp"
-#include "Stage.hpp"
+#include "City.hpp"
 #include "UI.hpp"
 
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
-	// tile フォルダ内のファイルを列挙する
-	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
-	{
-		// ファイル名が conifer と tree で始まるファイル（タイルではない）は除外する
-		if (const FilePath baseName = FileSystem::BaseName(filePath);
-			baseName.starts_with(U"conifer") || baseName.starts_with(U"tree"))
-		{
-			continue;
-		}
-
-		tileTextureArray << LoadPremultipliedTexture(filePath);
-	}
-
-	// 全部で 88 種類のタイルが読み込まれれば正常
-	if (tileTextureArray.size() != 88)
-	{
-		throw Error{ U"ファイルの配置が不正です。" };
-	}
-
-	// Stage class の生成
-	Stage::Init(this);
+	// City class の生成
+	City::Init(this);
 
 	// Player class の生成
 	Player::Init(this);
 
 	// UI class の生成
-	UI::Init(this);
+	UI::Init();
 
 	// 背景の色を設定する | Set the background color
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
@@ -49,8 +30,8 @@ GameScene::GameScene(const InitData& init)
 
 GameScene::~GameScene()
 {
-	// Stage class の解放
-	Stage::Release();
+	// City class の解放
+	City::Release();
 
 	// Player class の解放
 	Player::Release();
@@ -70,7 +51,7 @@ void GameScene::update()
 		if (isEditing)
 		{
 			// Stage class の更新処理
-			Stage::GetStageInstance()->Update();
+			City::GetCityInstance()->Update();
 		}
 		else
 		{
@@ -133,7 +114,7 @@ void GameScene::draw() const
 		const auto tr = camera.createTransformer();
 
 		// Stage class の描画処理
-		Stage::GetStageInstance()->Draw();
+		City::GetCityInstance()->Draw();
 
 		// Player class の描画処理
 		Player::GetPlayerInstance()->Draw();
@@ -153,30 +134,10 @@ bool GameScene::CanGameModeChange() const
 {
 	if (isEditing)
 	{
-		return Stage::GetStageInstance()->MapEqualsCSV();
+		return City::GetCityInstance()->MapEqualsCSV();
 	}
 
 	return true;
-}
-
-Texture GameScene::LoadPremultipliedTexture(FilePathView path)
-{
-	Image image{ path };
-	Color* p = image.data();
-	const Color* const pEnd = (p + image.num_pixels());
-	while (p != pEnd)
-	{
-		p->r = static_cast<uint8>((static_cast<uint16>(p->r) * p->a) / 255);
-		p->g = static_cast<uint8>((static_cast<uint16>(p->g) * p->a) / 255);
-		p->b = static_cast<uint8>((static_cast<uint16>(p->b) * p->a) / 255);
-		++p;
-	}
-	return Texture{ image, TextureDesc::Mipped };
-}
-
-Array<Texture> GameScene::GetTileTextureArray() const
-{
-	return tileTextureArray;
 }
 
 bool GameScene::GetIsEditing() const

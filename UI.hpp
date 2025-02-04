@@ -2,14 +2,12 @@
 
 #pragma once
 
-#include "GameScene.hpp"
-
 class UI
 {
 public:
 
 	// 初期化処理
-	static void Init(GameScene* instance);
+	static void Init();
 
 	// 解放処理
 	static void Release();
@@ -32,16 +30,13 @@ public:
 private:
 
 	// コンストラクタ
-	UI(GameScene* instance);
+	UI();
 
 	// デストラクタ
 	~UI();
 
 	// シングルトンクラスのインスタンスのポインタ
 	static UI* UIInstance;
-
-	// GameScene クラスのインスタンスのポインタ
-	GameScene* gameSceneInstance;
 
 	// 選択したタイルの背景用四角形
 	const Size SELECTED_TILE_BACK{ 56, 50 };

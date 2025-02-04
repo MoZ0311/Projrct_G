@@ -1,18 +1,18 @@
-﻿// Stage class
+﻿// StageBase class
 
 #pragma once
 
-#include "GameScene.hpp"
+#include "Common.hpp"
 
-class Stage
+class StageBase
 {
 public:
 
-	// 初期化処理
-	static void Init(GameScene* instance);
+	// コンストラクタ
+	StageBase();
 
-	// 解放処理
-	static void Release();
+	// デストラクタ
+	~StageBase();
 
 	// 更新処理
 	void Update();
@@ -23,11 +23,8 @@ public:
 	// CSVのデータと現在のマップデータが同一かの判定処理
 	bool MapEqualsCSV();
 
-	// インスタンスのゲッター関数
-	static Stage* GetStageInstance();
-
-	// 当たり判定のゲッター関数
-	//Polygon GetMapCollider() const;
+	// タイルのテクスチャ配列のゲッター関数
+	Array<Texture> GetTileTextureArray();
 
 	// タイルの一辺の長さ（ピクセル）
 	const Vec2 TILE_OFFSET{ 48, 24 };
@@ -35,23 +32,16 @@ public:
 	// タイルの厚み（ピクセル）
 	const int32 TILE_THICKNESS = 17;
 
-	// マップの一辺のタイル数
-	const int32 TILE_NUM = 12;
+protected:
 
-	// マップ端の当たり判定用図形
-	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
-		TILE_OFFSET.x * 2 * TILE_NUM,
-		TILE_OFFSET.y * 2 * TILE_NUM,
-		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2 }
-	);
+	// マップデータのセーブ
+	virtual void SaveMapData();
 
-private:
+	// タイルの強調表示
+	virtual void DrawTileHighlight();
 
-	// コンストラクタ
-	Stage(GameScene* instance);
-
-	// デストラクタ
-	~Stage();
+	// グリッドの描画
+	virtual void DrawGrid();
 
 	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
 	/// @param index タイルのインデックス
@@ -94,17 +84,24 @@ private:
 	/// @return タイルのインデックス。指定した座標にタイルが無い場合は none
 	Optional<Point> ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, const Array<Quad>& rowQuads);
 
-	// シングルトンクラスのインスタンスのポインタ
-	static Stage* stageInstance;
+	/// @brief 画像を読み込み、アルファ乗算済みのテクスチャを作成します。
+	/// @param path 画像ファイルのパス
+	/// @return アルファ乗算済みのテクスチャ
+	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
+	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
+	Texture LoadPremultipliedTexture(FilePathView path);
 
-	// GameScene クラスのインスタンスのポインタ
-	GameScene* gameSceneInstance;
+	// マップの一辺のタイル数
+	int32 tileNum;
+
+	// タイルのテクスチャ配列
+	Array<Texture> tileTextureArray;
 
 	// 各列の四角形
-	const Array<Quad> COLUMN_QUADS = MakeColumnQuads(TILE_NUM);
+	Array<Quad> columnQuadArray;
 
 	// 各行の四角形
-	const Array<Quad> ROW_QUADS = MakeRowQuads(TILE_NUM);
+	Array<Quad> rowQuadArray;
 
 	// 読み込み対象のCSVファイル
 	CSV csv;

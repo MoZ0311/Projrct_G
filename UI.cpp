@@ -2,13 +2,12 @@
 
 #include "UI.hpp"
 
-#include "Stage.hpp"
+#include "City.hpp"
 
 UI* UI::UIInstance = nullptr;
 
-UI::UI(GameScene* instance)
+UI::UI()
 {
-	gameSceneInstance = instance;
 	onTileMenu = false;
 	tileTypeSelected = 30;
 }
@@ -18,14 +17,14 @@ UI::~UI()
 
 }
 
-void UI::Init(GameScene* instance)
+void UI::Init()
 {
 	if (UIInstance != nullptr)
 	{
 		return;
 	}
 
-	UIInstance = new UI(instance);
+	UIInstance = new UI();
 }
 
 void UI::Release()
@@ -98,7 +97,7 @@ void UI::Draw()
 				}
 
 				// タイルを表示する
-				gameSceneInstance->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+				City::GetCityInstance()->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
 			}
 		}
 	}

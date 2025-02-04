@@ -116,11 +116,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="City.cpp" />
     <ClCompile Include="GameOverScenecpp.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -334,13 +335,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleScene.hpp" />
+    <ClInclude Include="City.hpp" />
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="GameOverScene.hpp" />
     <ClInclude Include="GameScene.hpp" />
     <ClInclude Include="Player.hpp" />
-    <ClInclude Include="Stage.hpp" />
+    <ClInclude Include="StageBase.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="NovelScene.hpp" />
     <ClInclude Include="TitleScene.hpp" />
