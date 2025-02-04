@@ -3,7 +3,7 @@
 #include "TownField.hpp"
 
 // インスタンスをnullptrで初期化
-TownField* TownField::TownFieldInstance = nullptr;
+TownField* TownField::townFieldInstance = nullptr;
 
 TownField::TownField(GameScene* instance)
 {
@@ -12,20 +12,20 @@ TownField::TownField(GameScene* instance)
 
 void TownField::Init(GameScene* instance)
 {
-	if (TownFieldInstance != nullptr)
+	if (townFieldInstance != nullptr)
 	{
 		return;
 	}
 
-	TownFieldInstance = new TownField(instance);
+	townFieldInstance = new TownField(instance);
 }
 
 void TownField::Release()
 {
-	if (TownFieldInstance != nullptr)
+	if (townFieldInstance != nullptr)
 	{
-		delete TownFieldInstance;
-		TownFieldInstance = nullptr;
+		delete townFieldInstance;
+		townFieldInstance = nullptr;
 	}
 }
 
@@ -58,7 +58,7 @@ void TownField::DrawGrid()
 	}
 }
 
-TownField* TownField::GetCityInstance()
+TownField* TownField::GetTownFieldInstance()
 {
-	return TownFieldInstance;
+	return townFieldInstance;
 }

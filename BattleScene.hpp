@@ -24,4 +24,7 @@ public:
 	void drawFadeIn(double t) const override;
 
 private:
+
+	// マップ表示用の 2D カメラ
+	Camera2D camera;
 };

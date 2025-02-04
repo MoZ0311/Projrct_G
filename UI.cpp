@@ -3,6 +3,7 @@
 #include "UI.hpp"
 
 #include "TownField.hpp"
+#include "Battlefield.hpp"
 
 UI* UI::UIInstance = nullptr;
 
@@ -97,7 +98,16 @@ void UI::Draw()
 				}
 
 				// タイルを表示する
-				TownField::GetCityInstance()->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+				Array<Texture> tileTextureArray{};
+				if (TownField::GetTownFieldInstance() != nullptr)
+				{
+					tileTextureArray = TownField::GetTownFieldInstance()->GetTileTextureArray();
+				}
+				else if (Battlefield::GetBattlefieldInstance() != nullptr)
+				{
+					tileTextureArray = Battlefield::GetBattlefieldInstance()->GetTileTextureArray();
+				}
+				tileTextureArray[tileType].scaled(0.5).drawAt(rect.center());
 			}
 		}
 	}

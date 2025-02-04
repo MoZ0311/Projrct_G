@@ -16,7 +16,7 @@ public:
 	static void Release();
 
 	// インスタンスのゲッター関数
-	static TownField* GetCityInstance();
+	static TownField* GetTownFieldInstance();
 
 	// マップ端の当たり判定用図形
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
@@ -37,7 +37,7 @@ private:
 	void DrawGrid() override;
 
 	// シングルトンクラスのインスタンスのポインタ
-	static TownField* TownFieldInstance;
+	static TownField* townFieldInstance;
 
 	// GameScene class のインスタンスのポインタ
 	GameScene* gameSceneInstance;

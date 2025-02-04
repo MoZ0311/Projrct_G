@@ -34,13 +34,13 @@ public:
 
 protected:
 
-	// マップデータのセーブ
+	// マップデータのセーブ処理
 	virtual void SaveMapData();
 
-	// タイルの強調表示
+	// タイルの強調表示処理
 	virtual void DrawTileHighlight();
 
-	// グリッドの描画
+	// グリッドの描画処理
 	virtual void DrawGrid();
 
 	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。

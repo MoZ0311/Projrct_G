@@ -9,7 +9,7 @@
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
-	// City class の生成
+	// TownField class の生成
 	TownField::Init(this);
 
 	// Player class の生成
@@ -18,7 +18,7 @@ GameScene::GameScene(const InitData& init)
 	// UI class の生成
 	UI::Init();
 
-	// 背景の色を設定する | Set the background color
+	// 背景の色を設定する
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
 
 	// カメラの倍率を設定
@@ -30,7 +30,7 @@ GameScene::GameScene(const InitData& init)
 
 GameScene::~GameScene()
 {
-	// City class の解放
+	// TownField class の解放
 	TownField::Release();
 
 	// Player class の解放
@@ -50,8 +50,8 @@ void GameScene::update()
 
 		if (isEditing)
 		{
-			// Stage class の更新処理
-			TownField::GetCityInstance()->Update();
+			// TownField class の更新処理
+			TownField::GetTownFieldInstance()->Update();
 		}
 		else
 		{
@@ -113,8 +113,8 @@ void GameScene::draw() const
 	{
 		const auto tr = camera.createTransformer();
 
-		// Stage class の描画処理
-		TownField::GetCityInstance()->Draw();
+		// TownField class の描画処理
+		TownField::GetTownFieldInstance()->Draw();
 
 		// Player class の描画処理
 		Player::GetPlayerInstance()->Draw();
@@ -134,7 +134,7 @@ bool GameScene::CanGameModeChange() const
 {
 	if (isEditing)
 	{
-		return TownField::GetCityInstance()->MapEqualsCSV();
+		return TownField::GetTownFieldInstance()->MapEqualsCSV();
 	}
 
 	return true;
