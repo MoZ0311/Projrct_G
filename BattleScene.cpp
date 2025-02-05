@@ -15,7 +15,7 @@ BattleScene::BattleScene(const InitData& init)
 	UI::Init();
 
 	// 背景の色を設定する
-	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });	
+	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });
 }
 
 BattleScene::~BattleScene()
@@ -29,6 +29,15 @@ BattleScene::~BattleScene()
 
 void BattleScene::update()
 {
+	// カメラの初期位置を設定
+	camera.setTargetCenter(Vec2{ 0, 105 });
+
+	// カメラの倍率を設定
+	camera.setTargetScale(0.85);
+
+	// カメラを操作不能に
+	camera.setParameters(Camera2DParameters::NoControl());
+
 	// 2D カメラを更新する
 	camera.update();
 
