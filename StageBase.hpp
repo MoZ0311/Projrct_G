@@ -26,6 +26,12 @@ public:
 	// タイルのテクスチャ配列のゲッター関数
 	Array<Texture> GetTileTextureArray();
 
+	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
+	/// @param index タイルのインデックス
+	/// @param N マップの一辺のタイル数
+	/// @return タイルの底辺中央の座標
+	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
+
 	// タイルの一辺の長さ（ピクセル）
 	const Vec2 TILE_OFFSET{ 48, 24 };
 
@@ -41,13 +47,7 @@ protected:
 	virtual void DrawTileHighlight();
 
 	// グリッドの描画処理
-	virtual void DrawGrid();
-
-	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
-	/// @param index タイルのインデックス
-	/// @param N マップの一辺のタイル数
-	/// @return タイルの底辺中央の座標
-	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
+	virtual void DrawGrid();	
 
 	/// @brief タイルのインデックスから、タイルの四角形を計算します。
 	/// @param index タイルのインデックス

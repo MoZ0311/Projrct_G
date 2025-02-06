@@ -7,12 +7,14 @@ BattleManager* BattleManager::battleManagerInstance = nullptr;
 
 BattleManager::BattleManager()
 {
-
+	currentTurn = PREPARATION;
+	unitBase = new UnitBase();
 }
 
 BattleManager::~BattleManager()
 {
-
+	delete unitBase;
+	unitBase = nullptr;
 }
 
 void BattleManager::Init()
@@ -35,15 +37,38 @@ void BattleManager::Release()
 
 void BattleManager::Update()
 {
+	if (Key1.down())
+	{
+		currentTurn = PREPARATION;
+	}
 
+	if (Key2.down())
+	{
+		currentTurn = PLAYER_TURN;
+	}
+
+	if (Key3.down())
+	{
+		currentTurn = ENEMY_TURN;
+	}
+
+	unitBase->Update();
 }
 
 void BattleManager::Draw()
 {
+	ClearPrint();
+	Print << Format(currentTurn);
 
+	unitBase->Draw();
 }
 
 BattleManager* BattleManager::GetBattleManagerInstance()
 {
 	return battleManagerInstance;
+}
+
+Turn BattleManager::GetCurrentTurn() const
+{
+	return currentTurn;
 }

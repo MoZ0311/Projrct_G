@@ -2,6 +2,7 @@
 
 #include "BattleScene.hpp"
 
+#include "BattleManager.hpp"
 #include "Battlefield.hpp"
 #include "UI.hpp"
 
@@ -14,6 +15,9 @@ BattleScene::BattleScene(const InitData& init)
 	// UI class の生成
 	UI::Init();
 
+	// BattleManager class の生成
+	BattleManager::Init();
+
 	// 背景の色を設定する
 	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });
 }
@@ -25,6 +29,9 @@ BattleScene::~BattleScene()
 
 	// UI class の解放
 	UI::Release();
+
+	// BattleManager class の解放
+	BattleManager::Release();
 }
 
 void BattleScene::update()
@@ -51,6 +58,9 @@ void BattleScene::update()
 	// UI class の更新処理
 	UI::GetUIInstance()->Update();
 
+	// BattleManager の更新処理
+	BattleManager::GetBattleManagerInstance()->Update();
+
 	// debug
 	if (KeySpace.down())
 	{
@@ -66,8 +76,8 @@ void BattleScene::draw() const
 		// Battlefield class の描画処理
 		Battlefield::GetBattlefieldInstance()->Draw();
 
-		// Player class の描画処理
-		//Player::GetPlayerInstance()->Draw();
+		// BattleManager class の描画処理
+		BattleManager::GetBattleManagerInstance()->Draw();
 	}
 
 	// UI class の描画処理

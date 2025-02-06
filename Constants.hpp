@@ -19,3 +19,11 @@ const String RANGER_RED_BASE = U"RangerRedBase";		// レッド基本画像
 const FilePath MAP_DATA_FILE = U"data/mapdata.csv";		// マップデータ
 const FilePath SAVE_DATA_FILE = U"data/savedata.csv";	// セーブデータ
 const FilePath TEXT_DATA_FILE = U"data/textdata.csv";	// テキストデータ
+
+// 各ターン定義
+enum Turn
+{
+	PREPARATION,
+	PLAYER_TURN,
+	ENEMY_TURN,
+};

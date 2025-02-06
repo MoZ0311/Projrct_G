@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "UnitBase.hpp"
+
 class BattleManager
 {
 public:
@@ -21,6 +23,9 @@ public:
 	// インスタンスのゲッター関数
 	static BattleManager* GetBattleManagerInstance();
 
+	// 現在のターンのゲッター関数
+	Turn GetCurrentTurn() const;
+
 private:
 
 	// コンストラクタ
@@ -31,4 +36,9 @@ private:
 
 	// シングルトンクラスのインスタンスのポインタ
 	static BattleManager* battleManagerInstance;
+
+	// 現在のターン
+	Turn currentTurn;
+
+	UnitBase* unitBase = nullptr;
 };

@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Battlefield.cpp" />
+    <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="TownField.cpp" />
     <ClCompile Include="GameOverScenecpp.cpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="NovelScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UnitBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -336,6 +338,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battlefield.hpp" />
+    <ClInclude Include="BattleManager.hpp" />
     <ClInclude Include="BattleScene.hpp" />
     <ClInclude Include="TownField.hpp" />
     <ClInclude Include="Common.hpp" />
@@ -349,6 +352,7 @@
     <ClInclude Include="NovelScene.hpp" />
     <ClInclude Include="TitleScene.hpp" />
     <ClInclude Include="UI.hpp" />
+    <ClInclude Include="UnitBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">
