@@ -1,5 +1,6 @@
 ﻿#include "TitleScene.hpp"
 #include "NovelScene.hpp"
+#include "BattleScene.hpp"
 #include "GameScene.hpp"
 #include "GameOverScene.hpp"
 
@@ -28,6 +29,7 @@ void Main()
 	App manager;
 	manager.add<TitleScene>(State::TITLE);
 	manager.add<NovelScene>(State::NOVEL);
+	manager.add<BattleScene>(State::BATTLE);
 	manager.add<GameScene>(State::GAME);
 	manager.add<GameOverScene>(State::OVER);
 

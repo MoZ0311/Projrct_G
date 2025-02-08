@@ -3,54 +3,43 @@
 #include "GameScene.hpp"
 
 #include "Player.hpp"
-#include "Stage.hpp"
+#include "TownField.hpp"
 #include "UI.hpp"
 
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
-	// tile フォルダ内のファイルを列挙する
-	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
-	{
-		// ファイル名が conifer と tree で始まるファイル（タイルではない）は除外する
-		if (const FilePath baseName = FileSystem::BaseName(filePath);
-			baseName.starts_with(U"conifer") || baseName.starts_with(U"tree"))
-		{
-			continue;
-		}
-
-		tileTextureArray << LoadPremultipliedTexture(filePath);
-	}
-
-	// 全部で 88 種類のタイルが読み込まれれば正常
-	if (tileTextureArray.size() != 88)
-	{
-		throw Error{ U"ファイルの配置が不正です。" };
-	}
-
-	// Stage class の生成
-	Stage::Init(this);
+	// TownField class の生成
+	TownField::Init(this);
 
 	// Player class の生成
 	Player::Init(this);
 
 	// UI class の生成
-	UI::Init(this);
+	UI::Init();
 
-	// 背景の色を設定する | Set the background color
+	// 背景の色を設定する
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
+
+	// ストップウォッチ設定
+	stopwatch.start();
 
 	// カメラの倍率を設定
 	camera.setTargetScale(1.5);
 
 	// ゲームモード設定
 	isEditing = false;
+
+	// メンバ変数の初期化
+	mapNamePosition = { 20, 20 };
+	mapStatusPosition = { SCREEN_WIDTH - 320, 20 };
+	idolCount = 0.5;
 }
 
 GameScene::~GameScene()
 {
-	// Stage class の解放
-	Stage::Release();
+	// TownField class の解放
+	TownField::Release();
 
 	// Player class の解放
 	Player::Release();
@@ -69,8 +58,8 @@ void GameScene::update()
 
 		if (isEditing)
 		{
-			// Stage class の更新処理
-			Stage::GetStageInstance()->Update();
+			// TownField class の更新処理
+			TownField::GetTownFieldInstance()->Update();
 		}
 		else
 		{
@@ -95,6 +84,43 @@ void GameScene::update()
 		// カメラをプレイヤーに追従
 		camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
 		camera.setTargetScale(1.5);
+
+		// プレイヤーの移動入力を取得
+		Vec2 inputVector = Player::GetPlayerInstance()->GetPlayerMovement();
+
+		if (inputVector.isZero())
+		{
+			idolCount += Scene::DeltaTime();
+
+			if (idolCount <= 0.5)
+			{
+				// 一定時間停止状態でUI表示
+				stopwatch.reset();
+				mapNamePosition.x = 20;
+				mapStatusPosition.x = SCREEN_WIDTH - 320;
+			}
+			else
+			{
+				stopwatch.start();
+			}
+		}
+		else
+		{
+			// 停止カウントをリセット
+			idolCount = 0;
+
+			// 移動中なら画面外に向けてUIを移動
+			mapNamePosition.x -= Scene::DeltaTime() * 800;
+			mapStatusPosition.x += Scene::DeltaTime() * 800;
+			if (mapNamePosition.x < -500)
+			{
+				mapNamePosition.x = -500;
+			}
+			if (mapStatusPosition.x > SCREEN_WIDTH)
+			{
+				mapStatusPosition.x = SCREEN_WIDTH;
+			}
+		}
 	}
 
 	// ゲームモードの切り替え
@@ -110,12 +136,17 @@ void GameScene::update()
 				camera.setTargetCenter(Vec2{ 0, 105 });
 				camera.setTargetScale(0.85);
 			}
-
+			else
+			{
+				// プレイモードになるとき、ストップウォッチをリセット
+				stopwatch.restart();
+			}
+			
 			isEditing = !isEditing;
 		}
 		else
 		{
-			Print << U"セーブしろ!!!";
+			Print << U"セーブされていません";
 		}
 	}
 
@@ -132,8 +163,8 @@ void GameScene::draw() const
 	{
 		const auto tr = camera.createTransformer();
 
-		// Stage class の描画処理
-		Stage::GetStageInstance()->Draw();
+		// TownField class の描画処理
+		TownField::GetTownFieldInstance()->Draw();
 
 		// Player class の描画処理
 		Player::GetPlayerInstance()->Draw();
@@ -147,36 +178,68 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+	else
+	{
+		// ストップウォッチの経過を取得
+		const double t = stopwatch.sF();
+
+		// マップの詳細ステータスを取得
+		const Array<int32> MAP_STATUS = TownField::GetTownFieldInstance()->GetMapStatus();
+
+		// マップ名を描画
+		DrawText(
+			FontAsset(FONT_MAKINAS), 32,
+			U"街区\n",
+			mapNamePosition, ColorF{ 0, 0, 1 }, t, 0.08
+		);
+
+		// 詳細ステータスを描画
+		DrawText(
+			FontAsset(FONT_MAKINAS), 32,
+			U"水源:{: >4} 都会:{: >4}\n自然:{: >4} 荒廃:{: >4}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
+			mapStatusPosition, ColorF{0, 0, 1}, t, 0.02
+		);
+	}
 }
 
 bool GameScene::CanGameModeChange() const
 {
 	if (isEditing)
 	{
-		return Stage::GetStageInstance()->MapEqualsCSV();
+		return TownField::GetTownFieldInstance()->MapEqualsCSV();
 	}
 
 	return true;
 }
 
-Texture GameScene::LoadPremultipliedTexture(FilePathView path)
+void GameScene::DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const
 {
-	Image image{ path };
-	Color* p = image.data();
-	const Color* const pEnd = (p + image.num_pixels());
-	while (p != pEnd)
+	const double scale = (fontSize / font.fontSize());
+	Vec2 penPos = pos;
+	const ScopedCustomShader2D shader{ Font::GetPixelShader(font.method()) };
+	ClearPrint();
+	for (auto&& [i, glyph] : Indexed(font.getGlyphs(text)))
 	{
-		p->r = static_cast<uint8>((static_cast<uint16>(p->r) * p->a) / 255);
-		p->g = static_cast<uint8>((static_cast<uint16>(p->g) * p->a) / 255);
-		p->b = static_cast<uint8>((static_cast<uint16>(p->b) * p->a) / 255);
-		++p;
-	}
-	return Texture{ image, TextureDesc::Mipped };
-}
+		if (glyph.codePoint == U'\n')
+		{
+			penPos.x = pos.x;
+			penPos.y += (font.height() * scale);
+			continue;
+		}
 
-Array<Texture> GameScene::GetTileTextureArray() const
-{
-	return tileTextureArray;
+		const double targetTime = (i * characterPerSec);
+
+		if (t < targetTime)
+		{
+			break;
+		}
+
+		const double y = EaseInQuad(Saturate(1 - (t - targetTime) / 0.3)) * -20.0;
+		const double a = Min((t - targetTime) / 0.3, 1.0);
+		glyph.texture.scaled(scale).draw(penPos + glyph.getOffset(scale) + Vec2{ 0, y }, ColorF{ color, a });
+
+		penPos.x += (glyph.xAdvance * scale);
+	}
 }
 
 bool GameScene::GetIsEditing() const

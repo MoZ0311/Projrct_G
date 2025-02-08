@@ -1,18 +1,18 @@
-﻿// Stage class
+﻿// MapBase class
 
 #pragma once
 
-#include "GameScene.hpp"
+#include "Common.hpp"
 
-class Stage
+class MapBase
 {
 public:
 
-	// 初期化処理
-	static void Init(GameScene* instance);
+	// コンストラクタ
+	MapBase();
 
-	// 解放処理
-	static void Release();
+	// デストラクタ
+	~MapBase();
 
 	// 更新処理
 	void Update();
@@ -23,21 +23,11 @@ public:
 	// CSVのデータと現在のマップデータが同一かの判定処理
 	bool MapEqualsCSV();
 
-	// インスタンスのゲッター関数
-	static Stage* GetStageInstance();
+	// タイルのテクスチャ配列のゲッター関数
+	Array<Texture> GetTileTextureArray();
 
-	// 当たり判定のゲッター関数
-	Polygon GetMapCollider() const;
-
-	
-
-private:
-
-	// コンストラクタ
-	Stage(GameScene* instance);
-
-	// デストラクタ
-	~Stage();
+	// マップのステータス算出処理
+	virtual Array<int32> GetMapStatus() const;
 
 	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
 	/// @param index タイルのインデックス
@@ -45,11 +35,28 @@ private:
 	/// @return タイルの底辺中央の座標
 	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
 
+	// タイルの一辺の長さ（ピクセル）
+	const Vec2 TILE_OFFSET{ 48, 24 };
+
+	// タイルの厚み（ピクセル）
+	const int32 TILE_THICKNESS = 17;
+
+protected:
+
+	// マップデータのセーブ処理
+	virtual void SaveMapData();
+
+	// タイルの強調表示処理
+	virtual void DrawTileHighlight();
+
+	// グリッドの描画処理
+	virtual void DrawGrid();	
+
 	/// @brief タイルのインデックスから、タイルの四角形を計算します。
 	/// @param index タイルのインデックス
 	/// @param N マップの一辺のタイル数
 	/// @return タイルの四角形
-	Quad ToTile(const Point& index, const int32 N);
+	Quad ToTile(const Point& index, const int32 N) const;
 
 	/// @brief 指定した列のタイルによって構成される四角形を計算します。
 	/// @param x 列インデックス
@@ -80,33 +87,24 @@ private:
 	/// @return タイルのインデックス。指定した座標にタイルが無い場合は none
 	Optional<Point> ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, const Array<Quad>& rowQuads);
 
-	// シングルトンクラスのインスタンスのポインタ
-	static Stage* stageInstance;
-
-	// GameScene クラスのインスタンスのポインタ
-	GameScene* gameSceneInstance;
-
-	// タイルの一辺の長さ（ピクセル）
-	const Vec2 TILE_OFFSET{ 48, 24 };
-
-	// タイルの厚み（ピクセル）
-	const int32 TILE_THICKNESS = 17;
+	/// @brief 画像を読み込み、アルファ乗算済みのテクスチャを作成します。
+	/// @param path 画像ファイルのパス
+	/// @return アルファ乗算済みのテクスチャ
+	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
+	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
+	Texture LoadPremultipliedTexture(FilePathView path);
 
 	// マップの一辺のタイル数
-	const int32 TILE_NUM = 12;
+	int32 tileNum;
+
+	// タイルのテクスチャ配列
+	Array<Texture> tileTextureArray;
 
 	// 各列の四角形
-	const Array<Quad> COLUMN_QUADS = MakeColumnQuads(TILE_NUM);
+	Array<Quad> columnQuadArray;
 
 	// 各行の四角形
-	const Array<Quad> ROW_QUADS = MakeRowQuads(TILE_NUM);
-
-	// マップ端の当たり判定用図形
-	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
-		TILE_OFFSET.x * 2 * TILE_NUM,
-		TILE_OFFSET.y * 2 * TILE_NUM,
-		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2 }
-	);
+	Array<Quad> rowQuadArray;
 
 	// 読み込み対象のCSVファイル
 	CSV csv;

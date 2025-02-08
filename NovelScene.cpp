@@ -5,6 +5,8 @@
 NovelScene::NovelScene(const InitData& init)
 	:IScene{ init }
 {
+	Scene::SetBackground(ColorF{ 0.502, 0, 0 });
+
 	// CSVファイルの読み込み
 	csv.load(TEXT_DATA_FILE);
 	if (!csv)
@@ -68,8 +70,8 @@ void NovelScene::update()
 			}
 			else
 			{
-				Print << U"ページ限界";
 				// シーンチェンジ演出など
+				changeScene(State::BATTLE, 1s);
 			}
 		}
 		else
@@ -88,4 +90,11 @@ void NovelScene::draw() const
 	// アイコンの描画
 	ICON_WINDOW.draw(ColorF{ 0.5 }).drawFrame(0, FRAME_THICKNESS, ColorF{ 0.8 });
 	ICON_WINDOW(iconTexture(16, 0, 96, 96)).draw();
+}
+
+void NovelScene::drawFadeOut(double t) const
+{
+	draw();
+	const double r = Scene::Center().length();
+	Circle(Scene::Center(), r).drawPie(0_deg, t * 360_deg);
 }

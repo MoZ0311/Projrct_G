@@ -23,27 +23,28 @@ public:
 	// ゲームモードを変更できるかの判定処理
 	bool CanGameModeChange() const;
 
-	// テクスチャ配列のゲッター関数
-	Array<Texture> GetTileTextureArray() const;
-
 	// エディット中かのゲッター関数
 	bool GetIsEditing() const;
 
 private:
 
-	/// @brief 画像を読み込み、アルファ乗算済みのテクスチャを作成します。
-	/// @param path 画像ファイルのパス
-	/// @return アルファ乗算済みのテクスチャ
-	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
-	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
-	Texture LoadPremultipliedTexture(FilePathView path);
+	// Glyph とエフェクトの関数を組み合わせてテキストを描画
+	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
 
-	// タイルのテクスチャ配列
-	Array<Texture> tileTextureArray;
+	Stopwatch stopwatch;
 
 	// マップ表示用の 2D カメラ
 	Camera2D camera;
 
 	// マップのエディット中か
 	bool isEditing;
+
+	// マップ名の表示座標
+	Vec2 mapNamePosition;
+
+	// マップステータスの表示座標
+	Vec2 mapStatusPosition;
+
+	// 停止中のカウント
+	double idolCount;
 };

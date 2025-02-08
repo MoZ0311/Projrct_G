@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Common.hpp"
-#include "Constants.hpp"
 
 class NovelScene : public App::Scene
 {
@@ -20,6 +19,9 @@ public:
 
 	// 描画処理
 	void draw() const override;
+
+	// フェードアウト
+	void drawFadeOut(double t) const override;
 
 private:
 

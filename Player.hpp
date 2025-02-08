@@ -27,6 +27,9 @@ public:
 	// プレイヤー座標のゲッター関数
 	Vec2 GetPlayerPosition() const;
 
+	// プレイヤーの移動ベクトルのゲッター関数
+	Vec2 GetPlayerMovement() const;
+
 private:
 
 	// コンストラクタ

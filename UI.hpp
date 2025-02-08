@@ -9,7 +9,7 @@ class UI
 public:
 
 	// 初期化処理
-	static void Init(GameScene* instance);
+	static void Init();
 
 	// 解放処理
 	static void Release();
@@ -32,7 +32,7 @@ public:
 private:
 
 	// コンストラクタ
-	UI(GameScene* instance);
+	UI();
 
 	// デストラクタ
 	~UI();

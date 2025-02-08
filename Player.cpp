@@ -2,7 +2,7 @@
 
 #include "Player.hpp"
 
-#include "Stage.hpp"
+#include "TownField.hpp"
 
 // インスタンスをnullptrで初期化
 Player* Player::playerInstance = nullptr;
@@ -76,7 +76,7 @@ void Player::Move()
 	playerPosition.moveBy(playerMovement.setLength(MOVE_SPEED)* Scene::DeltaTime());
 
 	// マップの判定を取得
-	Polygon mapCollider = Stage::GetStageInstance()->GetMapCollider();
+	Polygon mapCollider = TownField::GetTownFieldInstance()->MAP_COLLIDER;
 
 	// プレイヤーの判定を生成
 	playerCollider = Shape2D::Rhombus(
@@ -155,4 +155,9 @@ Player* Player::GetPlayerInstance()
 Vec2 Player::GetPlayerPosition() const
 {
 	return playerPosition;
+}
+
+Vec2 Player::GetPlayerMovement() const
+{
+	return playerMovement;
 }
