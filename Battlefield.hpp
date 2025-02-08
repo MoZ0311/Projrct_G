@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "StageBase.hpp"
+#include "MapBase.hpp"
 
-class Battlefield : public StageBase
+class Battlefield : public MapBase
 {
 public:
 

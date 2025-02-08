@@ -1,18 +1,18 @@
-﻿// StageBase class
+﻿// MapBase class
 
 #pragma once
 
 #include "Common.hpp"
 
-class StageBase
+class MapBase
 {
 public:
 
 	// コンストラクタ
-	StageBase();
+	MapBase();
 
 	// デストラクタ
-	~StageBase();
+	~MapBase();
 
 	// 更新処理
 	void Update();
@@ -25,6 +25,9 @@ public:
 
 	// タイルのテクスチャ配列のゲッター関数
 	Array<Texture> GetTileTextureArray();
+
+	// マップのステータス算出処理
+	virtual Array<int32> GetMapStatus() const;
 
 	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
 	/// @param index タイルのインデックス
@@ -53,7 +56,7 @@ protected:
 	/// @param index タイルのインデックス
 	/// @param N マップの一辺のタイル数
 	/// @return タイルの四角形
-	Quad ToTile(const Point& index, const int32 N);
+	Quad ToTile(const Point& index, const int32 N) const;
 
 	/// @brief 指定した列のタイルによって構成される四角形を計算します。
 	/// @param x 列インデックス

@@ -28,9 +28,26 @@ public:
 
 private:
 
+	// Glyph とエフェクトの関数を組み合わせてテキストを描画
+	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
+
+	Stopwatch stopwatch;
+
 	// マップ表示用の 2D カメラ
 	Camera2D camera;
 
 	// マップのエディット中か
 	bool isEditing;
+
+	// マップ名の表示座標
+	Vec2 mapNamePosition;
+
+	// マップステータスの表示座標
+	Vec2 mapStatusPosition;
+
+	// 直前のプレイヤーの移動ベクトル
+	Vec2 prevVector;
+
+	// 現在のプレイヤーの移動ベクトル
+	Vec2 currentVector;
 };

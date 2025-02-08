@@ -156,3 +156,8 @@ Vec2 Player::GetPlayerPosition() const
 {
 	return playerPosition;
 }
+
+Vec2 Player::GetPlayerMovement() const
+{
+	return playerMovement;
+}

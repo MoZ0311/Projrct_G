@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "GameScene.hpp"
+
 class UI
 {
 public:
@@ -37,6 +39,9 @@ private:
 
 	// シングルトンクラスのインスタンスのポインタ
 	static UI* UIInstance;
+
+	// GameScene クラスのインスタンスのポインタ
+	GameScene* gameSceneInstance;
 
 	// 選択したタイルの背景用四角形
 	const Size SELECTED_TILE_BACK{ 56, 50 };

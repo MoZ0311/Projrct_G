@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "StageBase.hpp"
+#include "MapBase.hpp"
 #include "GameScene.hpp"
 
-class TownField : public StageBase
+class TownField : public MapBase
 {
 public:
 

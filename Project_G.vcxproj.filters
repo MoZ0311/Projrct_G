@@ -165,7 +165,7 @@
     <ClCompile Include="BattleScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StageBase.cpp">
+    <ClCompile Include="MapBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TownField.cpp">
@@ -875,7 +875,7 @@
     <ClInclude Include="BattleScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StageBase.hpp">
+    <ClInclude Include="MapBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TownField.hpp">

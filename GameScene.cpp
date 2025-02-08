@@ -21,11 +21,19 @@ GameScene::GameScene(const InitData& init)
 	// 背景の色を設定する
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
 
+	// ストップウォッチ設定
+	stopwatch.start();
+
 	// カメラの倍率を設定
 	camera.setTargetScale(1.5);
 
 	// ゲームモード設定
 	isEditing = false;
+
+	mapNamePosition = { 20, 20 };
+	mapStatusPosition = { SCREEN_WIDTH - 320, 20 };
+	prevVector = {};
+	currentVector = {};
 }
 
 GameScene::~GameScene()
@@ -76,6 +84,33 @@ void GameScene::update()
 		// カメラをプレイヤーに追従
 		camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
 		camera.setTargetScale(1.5);
+
+		// マップ名の表示位置の変更
+		prevVector = currentVector;
+		currentVector = Player::GetPlayerInstance()->GetPlayerMovement();
+
+		if (currentVector.isZero())
+		{
+			if (!prevVector.isZero())
+			{
+				stopwatch.restart();
+			}
+			mapNamePosition.x = 20;
+			mapStatusPosition.x = SCREEN_WIDTH - 320;
+		}
+		else
+		{
+			mapNamePosition.x -= Scene::DeltaTime() * 800;
+			mapStatusPosition.x += Scene::DeltaTime() * 800;
+			if (mapNamePosition.x < -500)
+			{
+				mapNamePosition.x = -500;
+			}
+			if (mapStatusPosition.x > SCREEN_WIDTH)
+			{
+				mapStatusPosition.x = SCREEN_WIDTH;
+			}
+		}
 	}
 
 	// ゲームモードの切り替え
@@ -91,7 +126,12 @@ void GameScene::update()
 				camera.setTargetCenter(Vec2{ 0, 105 });
 				camera.setTargetScale(0.85);
 			}
-
+			else
+			{
+				// プレイモードになるとき、ストップウォッチをリセット
+				stopwatch.restart();
+			}
+			
 			isEditing = !isEditing;
 		}
 		else
@@ -128,6 +168,23 @@ void GameScene::draw() const
 		// 2D カメラの UI を表示する
 		camera.draw(Palette::Deepskyblue);
 	}
+	else
+	{
+		const double t = stopwatch.sF();
+		const Array<int32> MAP_STATUS = TownField::GetTownFieldInstance()->GetMapStatus();
+
+		DrawText(
+			FontAsset(FONT_MAKINAS), 32,
+			U"街区\n",
+			mapNamePosition, ColorF{ 0, 0, 1 }, t, 0.08
+		);
+
+		DrawText(
+			FontAsset(FONT_MAKINAS), 32,
+			U"水源:{: >4} 都会:{: >4}\n自然:{: >4} 荒廃:{: >4}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
+			mapStatusPosition, ColorF{0, 0, 1}, t, 0.02
+		);
+	}
 }
 
 bool GameScene::CanGameModeChange() const
@@ -138,6 +195,36 @@ bool GameScene::CanGameModeChange() const
 	}
 
 	return true;
+}
+
+void GameScene::DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const
+{
+	const double scale = (fontSize / font.fontSize());
+	Vec2 penPos = pos;
+	const ScopedCustomShader2D shader{ Font::GetPixelShader(font.method()) };
+	ClearPrint();
+	for (auto&& [i, glyph] : Indexed(font.getGlyphs(text)))
+	{
+		if (glyph.codePoint == U'\n')
+		{
+			penPos.x = pos.x;
+			penPos.y += (font.height() * scale);
+			continue;
+		}
+
+		const double targetTime = (i * characterPerSec);
+
+		if (t < targetTime)
+		{
+			break;
+		}
+
+		const double y = EaseInQuad(Saturate(1 - (t - targetTime) / 0.3)) * -20.0;
+		const double a = Min((t - targetTime) / 0.3, 1.0);
+		glyph.texture.scaled(scale).draw(penPos + glyph.getOffset(scale) + Vec2{ 0, y }, ColorF{ color, a });
+
+		penPos.x += (glyph.xAdvance * scale);
+	}
 }
 
 bool GameScene::GetIsEditing() const

@@ -57,9 +57,6 @@ void BattleManager::Update()
 
 void BattleManager::Draw()
 {
-	ClearPrint();
-	Print << Format(currentTurn);
-
 	unitBase->Draw();
 }
 

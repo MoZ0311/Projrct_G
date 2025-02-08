@@ -1,10 +1,10 @@
-﻿// StageBase class
+﻿// MapBase class
 
-#include "StageBase.hpp"
+#include "MapBase.hpp"
 
 #include "UI.hpp"
 
-StageBase::StageBase()
+MapBase::MapBase()
 {
 	// tile フォルダ内のファイルを列挙する
 	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
@@ -26,7 +26,7 @@ StageBase::StageBase()
 	}
 
 	// CSVファイルの読み込み
-	csv.load(MAP_DATA_FILE);
+	csv.load(TOWNFIELD_DATA_FILE);
 	if (!csv)
 	{
 		throw Error{ U"CSVファイルが読み込めません" };
@@ -53,12 +53,12 @@ StageBase::StageBase()
 	onMap = false;
 }
 
-StageBase::~StageBase()
+MapBase::~MapBase()
 {
 
 }
 
-void StageBase::Update()
+void MapBase::Update()
 {
 	// マウスカーソルがタイルメニュー上に無ければ
 	if (!UI::GetUIInstance()->GetOnTileMenu())
@@ -97,7 +97,7 @@ void StageBase::Update()
 }
 
 
-void StageBase::Draw()
+void MapBase::Draw()
 {
 	{
 		// 乗算済みアルファ用のブレンドステートを適用する
@@ -134,7 +134,7 @@ void StageBase::Draw()
 	DrawGrid();
 }
 
-bool StageBase::MapEqualsCSV()
+bool MapBase::MapEqualsCSV()
 {
 	// CSVファイルの内容とマップを比較
 	for (int32 column = 0; column < tileNum; column++)
@@ -152,7 +152,7 @@ bool StageBase::MapEqualsCSV()
 	return true;
 }
 
-void StageBase::SaveMapData()
+void MapBase::SaveMapData()
 {
 	ClearPrint();
 
@@ -166,12 +166,38 @@ void StageBase::SaveMapData()
 	}
 
 	// CSVを保存する
-	csv.save(MAP_DATA_FILE);
+	csv.save(TOWNFIELD_DATA_FILE);
 
 	Print << U"セーブしました";
 }
 
-void StageBase::DrawTileHighlight()
+Array<int32> MapBase::GetMapStatus() const
+{
+	// マップの合計ステータス:[Moisture][Urban][Nature][Rough]
+	Array<int32> mapStatus{ 0, 0, 0, 0 };
+
+	CSV tileStatusData;
+	tileStatusData.load(TILE_STATUS_DATA_FILE);
+
+	for (int32 column = 0; column < tileNum; column++)
+	{
+		for (int32 row = 0; row < tileNum; row++)
+		{
+			for (int32 statusIndex = 0; statusIndex < 4; statusIndex++)
+			{
+				mapStatus[statusIndex] += Parse<int32>(tileStatusData[grid[column][row] + 1][statusIndex + 1]);
+				if (mapStatus[statusIndex] < 0)
+				{
+					mapStatus[statusIndex] = 0;
+				}
+			}
+		}
+	}
+
+	return mapStatus;
+}
+
+void MapBase::DrawTileHighlight()
 {
 	if (onMap)
 	{
@@ -179,7 +205,7 @@ void StageBase::DrawTileHighlight()
 	}
 }
 
-void StageBase::DrawGrid()
+void MapBase::DrawGrid()
 {
 	// グリッドの幅
 	double frameThickness = 1;
@@ -197,7 +223,7 @@ void StageBase::DrawGrid()
 	}
 }
 
-Vec2 StageBase::ToTileBottomCenter(const Point& index, const int32 N) const
+Vec2 MapBase::ToTileBottomCenter(const Point& index, const int32 N) const
 {
 	const int32 i = index.manhattanLength();
 	const int32 xi = (i < (N - 1)) ? 0 : (i - (N - 1));
@@ -208,7 +234,7 @@ Vec2 StageBase::ToTileBottomCenter(const Point& index, const int32 N) const
 	return{ (posX + TILE_OFFSET.x * 2 * k), posY };
 }
 
-Quad StageBase::ToTile(const Point& index, const int32 N)
+Quad MapBase::ToTile(const Point& index, const int32 N) const
 {
 	const Vec2 bottomCenter = ToTileBottomCenter(index, N);
 
@@ -220,7 +246,7 @@ Quad StageBase::ToTile(const Point& index, const int32 N)
 	};
 }
 
-Quad StageBase::ToColumnQuad(const int32 x, const int32 N)
+Quad MapBase::ToColumnQuad(const int32 x, const int32 N)
 {
 	return{
 		ToTileBottomCenter(Point{ x, 0 }, N).movedBy(0, -TILE_THICKNESS).movedBy(0, -TILE_OFFSET.y * 2),
@@ -230,7 +256,7 @@ Quad StageBase::ToColumnQuad(const int32 x, const int32 N)
 	};
 }
 
-Quad StageBase::ToRowQuad(const int32 y, const int32 N)
+Quad MapBase::ToRowQuad(const int32 y, const int32 N)
 {
 	return{
 		ToTileBottomCenter(Point{ 0, y }, N).movedBy(0, -TILE_THICKNESS).movedBy(-TILE_OFFSET.x, -TILE_OFFSET.y),
@@ -240,7 +266,7 @@ Quad StageBase::ToRowQuad(const int32 y, const int32 N)
 	};
 }
 
-Array<Quad> StageBase::MakeColumnQuads(const int32 N)
+Array<Quad> MapBase::MakeColumnQuads(const int32 N)
 {
 	Array<Quad> quads;
 
@@ -252,7 +278,7 @@ Array<Quad> StageBase::MakeColumnQuads(const int32 N)
 	return quads;
 }
 
-Array<Quad> StageBase::MakeRowQuads(const int32 N)
+Array<Quad> MapBase::MakeRowQuads(const int32 N)
 {
 	Array<Quad> quads;
 
@@ -264,7 +290,7 @@ Array<Quad> StageBase::MakeRowQuads(const int32 N)
 	return quads;
 }
 
-Optional<Point> StageBase::ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, const Array<Quad>& rowQuads)
+Optional<Point> MapBase::ToIndex(const Vec2& pos, const Array<Quad>& columnQuads, const Array<Quad>& rowQuads)
 {
 	int32 x = -1, y = -1;
 
@@ -297,7 +323,7 @@ Optional<Point> StageBase::ToIndex(const Vec2& pos, const Array<Quad>& columnQua
 	return Point{ x, y };
 }
 
-Texture StageBase::LoadPremultipliedTexture(FilePathView path)
+Texture MapBase::LoadPremultipliedTexture(FilePathView path)
 {
 	Image image{ path };
 	Color* p = image.data();
@@ -312,7 +338,7 @@ Texture StageBase::LoadPremultipliedTexture(FilePathView path)
 	return Texture{ image, TextureDesc::Mipped };
 }
 
-Array<Texture> StageBase::GetTileTextureArray()
+Array<Texture> MapBase::GetTileTextureArray()
 {
 	return tileTextureArray;
 }
