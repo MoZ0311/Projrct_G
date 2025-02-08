@@ -45,9 +45,6 @@ private:
 	// マップステータスの表示座標
 	Vec2 mapStatusPosition;
 
-	// 直前のプレイヤーの移動ベクトル
-	Vec2 prevVector;
-
-	// 現在のプレイヤーの移動ベクトル
-	Vec2 currentVector;
+	// 停止中のカウント
+	double idolCount;
 };

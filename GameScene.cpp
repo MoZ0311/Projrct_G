@@ -30,10 +30,10 @@ GameScene::GameScene(const InitData& init)
 	// ゲームモード設定
 	isEditing = false;
 
+	// メンバ変数の初期化
 	mapNamePosition = { 20, 20 };
 	mapStatusPosition = { SCREEN_WIDTH - 320, 20 };
-	prevVector = {};
-	currentVector = {};
+	idolCount = 0.5;
 }
 
 GameScene::~GameScene()
@@ -85,21 +85,31 @@ void GameScene::update()
 		camera.setTargetCenter(Player::GetPlayerInstance()->GetPlayerPosition());
 		camera.setTargetScale(1.5);
 
-		// マップ名の表示位置の変更
-		prevVector = currentVector;
-		currentVector = Player::GetPlayerInstance()->GetPlayerMovement();
+		// プレイヤーの移動入力を取得
+		Vec2 inputVector = Player::GetPlayerInstance()->GetPlayerMovement();
 
-		if (currentVector.isZero())
+		if (inputVector.isZero())
 		{
-			if (!prevVector.isZero())
+			idolCount += Scene::DeltaTime();
+
+			if (idolCount <= 0.5)
 			{
-				stopwatch.restart();
+				// 一定時間停止状態でUI表示
+				stopwatch.reset();
+				mapNamePosition.x = 20;
+				mapStatusPosition.x = SCREEN_WIDTH - 320;
 			}
-			mapNamePosition.x = 20;
-			mapStatusPosition.x = SCREEN_WIDTH - 320;
+			else
+			{
+				stopwatch.start();
+			}
 		}
 		else
 		{
+			// 停止カウントをリセット
+			idolCount = 0;
+
+			// 移動中なら画面外に向けてUIを移動
 			mapNamePosition.x -= Scene::DeltaTime() * 800;
 			mapStatusPosition.x += Scene::DeltaTime() * 800;
 			if (mapNamePosition.x < -500)
@@ -136,7 +146,7 @@ void GameScene::update()
 		}
 		else
 		{
-			Print << U"セーブしろ!!!";
+			Print << U"セーブされていません";
 		}
 	}
 
@@ -170,15 +180,20 @@ void GameScene::draw() const
 	}
 	else
 	{
+		// ストップウォッチの経過を取得
 		const double t = stopwatch.sF();
+
+		// マップの詳細ステータスを取得
 		const Array<int32> MAP_STATUS = TownField::GetTownFieldInstance()->GetMapStatus();
 
+		// マップ名を描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
 			U"街区\n",
 			mapNamePosition, ColorF{ 0, 0, 1 }, t, 0.08
 		);
 
+		// 詳細ステータスを描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
 			U"水源:{: >4} 都会:{: >4}\n自然:{: >4} 荒廃:{: >4}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
