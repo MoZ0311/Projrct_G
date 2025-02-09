@@ -5,12 +5,16 @@
 
 UnitBase::UnitBase()
 {
-	unitTexture = TextureAsset(PLAYER_BASE);
-	currentGridIndex = { 11, 11 };
-	targetGridIndex = currentGridIndex;
+	SetUnitParameter();
 	drawPosition = {};
-	movePower = 4;
 	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
+	routePath = {};
+	selected = false;
+	flipX = false;
+	isIdol = true;
+	animationSpeed = 0;
+	animationCount = 0;
+	moveIntervalCount = 0;
 	ResetQue();
 }
 
@@ -21,50 +25,153 @@ UnitBase::~UnitBase()
 
 void UnitBase::Update()
 {
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(currentGridIndex, 12);
-
-	if (targetGridIndex != currentGridIndex)
+	// クリックによる各種処理
+	if (MouseL.down())
 	{
-		// 移動処理
-		UnitMove(targetGridIndex);
+		if (Battlefield::GetBattlefieldInstance()->GetOnMap())
+		{
+			// マップ内をクリック
+			if (Battlefield::GetBattlefieldInstance()->GetClickedTileIndex() == gridIndex)
+			{
+				if (selected)
+				{
+					// 立っているタイルがクリックされた かつ ユニット選択中
+					// 選択状態を解除
+					selected = false;
+				}
+				else
+				{
+					// 立っているタイルがクリックされた かつ ユニット未選択
+					//ユニットの選択状況をtrueに
+					selected = true;
+					ResetQue();
+				}
+				
+			}
+			else if (distanceGrid[Battlefield::GetBattlefieldInstance()->GetClickedTileIndex()] <= movePower && selected)
+			{
+				// 移動範囲内のタイルがクリックされた かつ ユニット選択中
+				// 移動処理の開始
+				MakePath(Battlefield::GetBattlefieldInstance()->GetClickedTileIndex());
+				moveIntervalCount = 0.25;
+			}
+		}
+		else
+		{
+			// マップ外をクリック
+			// 選択状態を解除
+			selected = false;
+		}
 	}
 
-	// debug
-	if (KeyQ.down())
-	{
-		targetGridIndex = { 8, 10 };
-	}
+	// 各マスへの距離を算出
+	CalcurateDistanceGrid();
+
+	// 移動処理
+	UnitMove();
+
+	// 描画位置の計算
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridIndex, 12);
 }
 
 void UnitBase::Draw()
 {
-	unitTexture.scaled(unitScale).draw(Arg::bottomCenter = drawPosition
-		.moveBy(0, -Battlefield::GetBattlefieldInstance()->TILE_THICKNESS - Battlefield::GetBattlefieldInstance()->TILE_OFFSET.y / 2));
+	// 移動可能地形を表示
+	if (selected)
+	{
+		Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
+	}
 
-	//debug
-	ClearPrint();
-	Print << CreateDistanceGrid();
+	// ユニットの描画
+	unitTexture
+		.mirrored(flipX).scaled(unitScale)
+		.draw(
+			Arg::bottomCenter = drawPosition
+			.moveBy(0, -Battlefield::GetBattlefieldInstance()->TILE_THICKNESS - Battlefield::GetBattlefieldInstance()->TILE_OFFSET.y / 2));
 }
 
-void UnitBase::UnitMove(Point targetPoint)
+void UnitBase::SetUnitParameter()
 {
-	currentGridIndex = targetPoint;
-	// 初期位置の設定
-	ResetQue();
+	unitTexture = TextureAsset(PLAYER_BASE);
+	gridIndex = { 11, 11 };
+	movePower = 4;
+}
+
+void UnitBase::UnitMove()
+{
+	// DeltaTimeに応じてカウントアップ
+	moveIntervalCount += Scene::DeltaTime();
+	if (moveIntervalCount > 0.25)
+	{
+		if (!routePath.empty())
+		{
+			if (routePath.front().x < gridIndex.x ||
+				routePath.front().y > gridIndex.y)
+			{
+				flipX = true;
+			}
+			if (routePath.front().x > gridIndex.x ||
+				routePath.front().y < gridIndex.y)
+			{
+				flipX = false;
+			}
+
+			gridIndex = routePath.front();
+			routePath.pop_front();
+		}
+
+		// カウントリセット
+		moveIntervalCount = 0;
+	}
+}
+
+void UnitBase::MakePath(Point targetPoint)
+{
+	// 選択状態を解除
+	selected = false;
+
+	// 経路用配列をリセット
+	routePath.clear();
+
+	// 目的地を設定
+	routePath.push_back(targetPoint);
+
+	while (routePath.front() != gridIndex)
+	{
+		// 範囲for文で、隣接4マスの始点からの距離を評価
+		for (const auto& offset : OFFSETS)
+		{
+			// 次の探索目標を設定
+			const Point nextPosition = (routePath.front() + offset);
+
+			// 範囲外アクセスを防ぐcontinue
+			if (!(nextPosition.x < distanceGrid.width() && nextPosition.y < distanceGrid.height()))
+			{
+				continue;
+			}
+
+			// 隣接するマスの中で、侵入可能かつ最も始点に近いものを格納
+			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid()[nextPosition] &&
+				distanceGrid[nextPosition] == distanceGrid[routePath.front()] - 1)
+			{
+				routePath.push_front(nextPosition);
+			}
+		}
+	}
 }
 
 void UnitBase::ResetQue()
 {
 	// 経路をリセットし、現在位置を再設定
 	q.clear();
-	q.push_back(currentGridIndex);
+	q.push_back(gridIndex);
 
 	// 距離の二次元配列を再計算
 	distanceGrid.fill(INF);
-	distanceGrid[currentGridIndex] = 0;
+	distanceGrid[gridIndex] = 0;
 }
 
-Grid<int32> UnitBase::CreateDistanceGrid()
+void UnitBase::CalcurateDistanceGrid()
 {
 	// 幅優先探索
 	if (!q.empty())
@@ -94,5 +201,4 @@ Grid<int32> UnitBase::CreateDistanceGrid()
 			}
 		}
 	}
-	return distanceGrid;
 }

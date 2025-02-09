@@ -15,7 +15,7 @@ public:
 	~MapBase();
 
 	// 更新処理
-	void Update();
+	virtual void Update();
 
 	// 描画処理
 	void Draw();

@@ -52,6 +52,21 @@ void BattleManager::Update()
 		currentTurn = ENEMY_TURN;
 	}
 
+	switch (currentTurn)
+	{
+	case PREPARATION:
+		break;
+
+	case PLAYER_TURN:
+		break;
+
+	case ENEMY_TURN:
+		break;
+
+	default:
+		break;
+	}
+
 	unitBase->Update();
 }
 

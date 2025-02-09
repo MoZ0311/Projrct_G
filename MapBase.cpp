@@ -133,7 +133,7 @@ void MapBase::Draw()
 		}
 	}
 
-	// マウスカーソルがあるタイルを強調表示する
+	// タイルを強調表示する
 	DrawTileHighlight();
 
 	// マップ上のグリッドを表示する
@@ -181,7 +181,7 @@ void MapBase::DrawTileHighlight()
 {
 	if (onMap)
 	{
-		ToTile(mouseOveredTile, tileNum).draw(ColorF{ 1.0, 0.2 });
+		ToTile(mouseOveredTile, tileNum).draw(ColorF{ 1.0, 0.5 });
 	}
 }
 
