@@ -23,13 +23,97 @@ void Battlefield::Release()
 	}
 }
 
+void Battlefield::Update()
+{
+	// マウスカーソルがマップ上のどのタイルの上にあるかを取得する
+	if (const auto index = ToIndex(Cursor::PosF(), columnQuadArray, rowQuadArray))
+	{
+		onMap = true;
+
+		// マウスカーソルがあるタイルを取得
+		mouseOveredTile = *index;
+
+		// マウスの左ボタンが押されていたら
+		if (MouseL.pressed() && !MouseR.pressed())
+		{
+			clickedTileIndex = mouseOveredTile;
+		}
+	}
+	else
+	{
+		onMap = false;
+	}
+}
+
+void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
+{
+	for (int32 row = 0; row < grid.height(); row++)
+	{
+		for (int32 column = 0; column < grid.width(); column++)
+		{
+			ColorF highlightColor{};
+			const double ALPHA = 0.2;
+			if (distanceGrid[row][column] <= movePower)
+			{
+				highlightColor = ColorF{ 0.0, 0.0, 1.0, ALPHA };
+			}
+			else
+			{
+				highlightColor = ColorF{ 1.0, 0.0, 0.0, ALPHA };
+			}
+			ToTile(Point{ column, row }, tileNum).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
+		}
+	}
+}
+
 void Battlefield::SaveMapData()
 {
 	// 戦場のマップデータは上書きさせない
 	return;
 }
 
+void Battlefield::DrawGrid()
+{
+	// グリッド描画は別で行う
+	return;
+}
+
+Grid<bool> Battlefield::GetCanEnterGrid() const
+{
+	// マップと同じサイズのbool型の二次元配列を作成 (0 : 通行不可, 1 : 通行可)
+	Grid<bool> canEnterGrid(grid.size(), 1);
+
+	// CSVファイルの移動可不可に当たる列
+	constexpr int32 COLUMN_CAN_ENTER = 5;
+
+	// 上から地形をチェック
+	for (int32 row = 0; row < grid.height(); row++)
+	{
+		for (int32 column = 0; column < grid.width(); column++)
+		{
+			// CSVの当該データをbool型として代入
+			canEnterGrid[row][column] = Parse<int32>(tileStatus[grid[row][column] + 1][COLUMN_CAN_ENTER]) == 1 ? true : false;
+		}
+	}
+	return canEnterGrid;
+}
+
 Battlefield* Battlefield::GetBattlefieldInstance()
 {
 	return battlefieldInstance;
+}
+
+Grid<int32> Battlefield::GetGrid() const
+{
+	return grid;
+}
+
+Point Battlefield::GetClickedTileIndex() const
+{
+	return clickedTileIndex;
+}
+
+bool Battlefield::GetOnMap() const
+{
+	return onMap;
 }

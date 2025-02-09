@@ -63,12 +63,6 @@ private:
 	// プレイヤーの移動スピード
 	const double MOVE_SPEED = 150;
 
-	// アイドルアニメーションの再生速度
-	const double IDOL_ANIMATION_SPEED = 3;
-
-	// 歩行アニメーションの再生速度
-	const double WALK_ANIMATION_SPEED = 10;
-
 	// プレイヤーの当たり判定用図形
 	Polygon playerCollider;
 

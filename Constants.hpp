@@ -5,6 +5,8 @@
 constexpr int32 SCREEN_WIDTH = 1366;								// 画面の幅
 constexpr int32 SCREEN_HEIGHT = 768;								// 画面の高さ
 
+constexpr int32 INF = 99;											// 無限(非常に大きい数の意)
+
 // アセット用定数
 const String FONT_MAKINAS = U"MAKINAS";								// Makinasフォント
 
@@ -14,6 +16,10 @@ const String PLAYER_WALK_01 = U"PlayerWalk_01";						// プレイヤー歩行画
 const String PLAYER_WALK_02 = U"PlayerWalk_02";						// プレイヤー歩行画像02
 
 const String RANGER_RED_BASE = U"RangerRedBase";					// レッド基本画像
+
+// 各アニメーションの再生速度
+const double IDOL_ANIMATION_SPEED = 3;								// アイドルアニメーションの再生速度
+const double WALK_ANIMATION_SPEED = 10;								// 歩行アニメーションの再生速度
 
 // CSVファイルのパス
 const FilePath TOWNFIELD_DATA_FILE = U"data/townfield.csv";			// マップデータ

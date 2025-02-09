@@ -15,7 +15,7 @@ public:
 	~MapBase();
 
 	// 更新処理
-	void Update();
+	virtual void Update();
 
 	// 描画処理
 	void Draw();
@@ -25,9 +25,6 @@ public:
 
 	// タイルのテクスチャ配列のゲッター関数
 	Array<Texture> GetTileTextureArray();
-
-	// マップのステータス算出処理
-	virtual Array<int32> GetMapStatus() const;
 
 	/// @brief タイルのインデックスから、タイルの底辺中央の座標を計算します。
 	/// @param index タイルのインデックス
@@ -106,8 +103,11 @@ protected:
 	// 各行の四角形
 	Array<Quad> rowQuadArray;
 
-	// 読み込み対象のCSVファイル
-	CSV csv;
+	// マップ配置のCSVファイル
+	CSV mapData;
+
+	// 各タイルのステータスのCSVファイル
+	CSV tileStatus;
 
 	// タイルの種類
 	Grid<int32> grid;

@@ -12,23 +12,20 @@ BattleScene::BattleScene(const InitData& init)
 	// Battlefield class の生成
 	Battlefield::Init();
 
-	// UI class の生成
-	UI::Init();
-
 	// BattleManager class の生成
 	BattleManager::Init();
 
 	// 背景の色を設定する
 	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });
+
+	// カメラを操作不能に
+	camera.setParameters(Camera2DParameters::NoControl());
 }
 
 BattleScene::~BattleScene()
 {
 	// Battlefield class の解放
 	Battlefield::Release();
-
-	// UI class の解放
-	UI::Release();
 
 	// BattleManager class の解放
 	BattleManager::Release();
@@ -37,13 +34,10 @@ BattleScene::~BattleScene()
 void BattleScene::update()
 {
 	// カメラの初期位置を設定
-	camera.setTargetCenter(Vec2{ 0, 105 });
+	camera.setTargetCenter(Vec2{ 0, 220 });
 
 	// カメラの倍率を設定
-	camera.setTargetScale(0.85);
-
-	// カメラを操作不能に
-	camera.setParameters(Camera2DParameters::NoControl());
+	camera.setTargetScale(1.15);
 
 	// 2D カメラを更新する
 	camera.update();
@@ -56,7 +50,7 @@ void BattleScene::update()
 	}
 
 	// UI class の更新処理
-	UI::GetUIInstance()->Update();
+	//UI::GetUIInstance()->Update();
 
 	// BattleManager の更新処理
 	BattleManager::GetBattleManagerInstance()->Update();
@@ -81,7 +75,7 @@ void BattleScene::draw() const
 	}
 
 	// UI class の描画処理
-	UI::GetUIInstance()->Draw();
+	//UI::GetUIInstance()->Draw();
 
 	// 2D カメラの UI を表示する
 	camera.draw(Palette::Deepskyblue);

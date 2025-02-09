@@ -62,3 +62,25 @@ TownField* TownField::GetTownFieldInstance()
 {
 	return townFieldInstance;
 }
+
+Array<int32> TownField::GetMapStatus() const
+{
+	// マップの合計ステータス { Moisture, Urban, Nature, Rough }
+	Array<int32> mapStatus{ 0, 0, 0, 0 };
+
+	for (int32 row = 0; row < grid.height(); row++)
+	{
+		for (int32 column = 0; column < grid.width(); column++)
+		{
+			for (int32 statusIndex = 0; statusIndex < mapStatus.size(); statusIndex++)
+			{
+				mapStatus[statusIndex] += Parse<int32>(tileStatus[grid[row][column] + 1][statusIndex + 1]);
+				if (mapStatus[statusIndex] < 0)
+				{
+					mapStatus[statusIndex] = 0;
+				}
+			}
+		}
+	}
+	return mapStatus;
+}

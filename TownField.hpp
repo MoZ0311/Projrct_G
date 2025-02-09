@@ -18,6 +18,9 @@ public:
 	// インスタンスのゲッター関数
 	static TownField* GetTownFieldInstance();
 
+	// マップのステータス算出処理
+	Array<int32> GetMapStatus() const;
+
 	// マップ端の当たり判定用図形
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
 		TILE_OFFSET.x * 2 * tileNum,
