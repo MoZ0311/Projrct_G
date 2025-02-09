@@ -66,6 +66,11 @@ void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 	}
 }
 
+void Battlefield::SetMapDataFilePath()
+{
+	mapDataFile = BATTLEFIELD_DATA_FILE;
+}
+
 void Battlefield::SaveMapData()
 {
 	// 戦場のマップデータは上書きさせない

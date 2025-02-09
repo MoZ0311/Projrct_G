@@ -25,11 +25,25 @@ MapBase::MapBase()
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
 
+	tileNum = 12;
+	onMap = false;
+	mouseOveredTile = {};
+}
+
+MapBase::~MapBase()
+{
+
+}
+
+void MapBase::LoadMapData()
+{
+	SetMapDataFilePath();
+
 	// CSVファイルの読み込み
-	mapData.load(TOWNFIELD_DATA_FILE);
+	mapData.load(mapDataFile);
 	if (!mapData)
 	{
-		throw Error{ TOWNFIELD_DATA_FILE + U"が読み込めません"};
+		throw Error{ mapDataFile + U"が読み込めません" };
 	}
 
 	tileStatus.load(TILE_STATUS_DATA_FILE);
@@ -55,13 +69,6 @@ MapBase::MapBase()
 			grid[row][column] = Parse<int32>(mapData[row][column]);
 		}
 	}
-
-	onMap = false;
-}
-
-MapBase::~MapBase()
-{
-
 }
 
 void MapBase::Update()
@@ -102,7 +109,6 @@ void MapBase::Update()
 	}
 }
 
-
 void MapBase::Draw()
 {
 	{
@@ -140,6 +146,11 @@ void MapBase::Draw()
 	DrawGrid();
 }
 
+void MapBase::SetMapDataFilePath()
+{
+	//mapDataFile = TOWNFIELD_DATA_FILE;
+}
+
 bool MapBase::MapEqualsCSV()
 {
 	// CSVファイルの内容とマップを比較
@@ -172,7 +183,7 @@ void MapBase::SaveMapData()
 	}
 
 	// CSVを保存する
-	mapData.save(TOWNFIELD_DATA_FILE);
+	mapData.save(mapDataFile);
 
 	Print << U"セーブしました";
 }

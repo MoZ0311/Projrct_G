@@ -38,6 +38,9 @@ public:
 
 private:
 
+	// 読み込み対象のCSVを設定する
+	void SetMapDataFilePath() override;
+
 	// マップデータのセーブ処理
 	void SaveMapData() override;
 

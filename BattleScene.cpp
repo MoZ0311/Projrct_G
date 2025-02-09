@@ -11,6 +11,7 @@ BattleScene::BattleScene(const InitData& init)
 {
 	// Battlefield class の生成
 	Battlefield::Init();
+	Battlefield::GetBattlefieldInstance()->LoadMapData();
 
 	// BattleManager class の生成
 	BattleManager::Init();

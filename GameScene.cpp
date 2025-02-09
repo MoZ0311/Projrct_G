@@ -11,6 +11,7 @@ GameScene::GameScene(const InitData& init)
 {
 	// TownField class の生成
 	TownField::Init(this);
+	TownField::GetTownFieldInstance()->LoadMapData();
 
 	// Player class の生成
 	Player::Init(this);

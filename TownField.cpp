@@ -29,6 +29,11 @@ void TownField::Release()
 	}
 }
 
+void TownField::SetMapDataFilePath()
+{
+	mapDataFile = TOWNFIELD_DATA_FILE;
+}
+
 void TownField::DrawTileHighlight()
 {
 	if (onMap && gameSceneInstance->GetIsEditing())
