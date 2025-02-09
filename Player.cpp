@@ -111,6 +111,7 @@ void Player::Draw()
 	}
 	else
 	{
+		// 上記以外では、歩行モーションをとる
 		animationSpeed = WALK_ANIMATION_SPEED;
 		animation = PLAYER_WALK_ARRAY;
 	}

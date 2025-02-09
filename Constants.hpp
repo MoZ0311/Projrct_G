@@ -17,6 +17,10 @@ const String PLAYER_WALK_02 = U"PlayerWalk_02";						// プレイヤー歩行画
 
 const String RANGER_RED_BASE = U"RangerRedBase";					// レッド基本画像
 
+// 各アニメーションの再生速度
+const double IDOL_ANIMATION_SPEED = 3;								// アイドルアニメーションの再生速度
+const double WALK_ANIMATION_SPEED = 10;								// 歩行アニメーションの再生速度
+
 // CSVファイルのパス
 const FilePath TOWNFIELD_DATA_FILE = U"data/townfield.csv";			// マップデータ
 const FilePath BATTLEFIELD_DATA_FILE = U"data/battlefield.csv";		// 戦場データ

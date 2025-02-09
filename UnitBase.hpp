@@ -58,8 +58,11 @@ protected:
 	// 描画位置
 	Vec2 drawPosition;
 
-	// テクスチャ
-	Texture unitTexture;
+	// アイドルモーションのテクスチャ配列
+	Array<Texture> unitIdolArray;
+
+	// 歩行モーションのテクスチャ配列
+	Array<Texture> unitWalkArray;
 
 	// ユニットの移動力
 	int32 movePower;

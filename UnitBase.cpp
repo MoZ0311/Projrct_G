@@ -85,8 +85,34 @@ void UnitBase::Draw()
 		Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
 	}
 
+	// 描画に使用するテクスチャ配列
+	Array<Texture> animation;
+	if (isMoving)
+	{
+		// 移動中なので、歩行モーションを適用
+		animationSpeed = WALK_ANIMATION_SPEED;
+		animation = unitWalkArray;
+	}
+	else
+	{
+		// アイドルモーションが適用
+		animationSpeed = IDOL_ANIMATION_SPEED;
+		animation = unitIdolArray;
+	}
+
+	// アニメーションを進める
+	animationCount += Scene::DeltaTime() * animationSpeed;
+	int32 index = static_cast<int32>(animationCount);
+
+	// アニメーションのリセット
+	if (index >= animation.size())
+	{
+		index = 0;
+		animationCount = 0;
+	}
+
 	// ユニットの描画
-	unitTexture
+	animation[index]
 		.mirrored(flipX).scaled(unitScale)
 		.draw(
 			Arg::bottomCenter = drawPosition
@@ -95,9 +121,17 @@ void UnitBase::Draw()
 
 void UnitBase::SetUnitParameter()
 {
-	unitTexture = TextureAsset(PLAYER_BASE);
-	gridIndex = { 11, 11 };
-	movePower = 4;
+	unitIdolArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
+	};
+
+	unitWalkArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
+		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
+	};
+
+	gridIndex = { 8, 11 };
+	movePower = 3;
 }
 
 void UnitBase::UnitMove()
