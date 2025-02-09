@@ -5,6 +5,8 @@
 constexpr int32 SCREEN_WIDTH = 1366;								// 画面の幅
 constexpr int32 SCREEN_HEIGHT = 768;								// 画面の高さ
 
+constexpr int32 INF = 99;											// 無限(非常に大きい数の意)
+
 // アセット用定数
 const String FONT_MAKINAS = U"MAKINAS";								// Makinasフォント
 

@@ -26,10 +26,16 @@ MapBase::MapBase()
 	}
 
 	// CSVファイルの読み込み
-	csv.load(TOWNFIELD_DATA_FILE);
-	if (!csv)
+	mapData.load(TOWNFIELD_DATA_FILE);
+	if (!mapData)
 	{
-		throw Error{ U"CSVファイルが読み込めません" };
+		throw Error{ TOWNFIELD_DATA_FILE + U"が読み込めません"};
+	}
+
+	tileStatus.load(TILE_STATUS_DATA_FILE);
+	if (!tileStatus)
+	{
+		throw Error{ TILE_STATUS_DATA_FILE + U"が読み込めません" };
 	}
 
 	tileNum = 12;
@@ -42,11 +48,11 @@ MapBase::MapBase()
 	grid = { Size(tileNum, tileNum), -1 };
 
 	// CSVファイルの内容をマップに反映
-	for (int32 column = 0; column < tileNum; column++)
+	for (int32 row = 0; row < grid.height(); row++)
 	{
-		for (int32 row = 0; row < tileNum; row++)
+		for (int32 column = 0; column < grid.width(); column++)
 		{
-			grid[column][row] = Parse<int32>(csv[column][row]);
+			grid[row][column] = Parse<int32>(mapData[row][column]);
 		}
 	}
 
@@ -137,12 +143,12 @@ void MapBase::Draw()
 bool MapBase::MapEqualsCSV()
 {
 	// CSVファイルの内容とマップを比較
-	for (int32 column = 0; column < tileNum; column++)
+	for (int32 row = 0; row < grid.height(); row++)
 	{
-		for (int32 row = 0; row < tileNum; row++)
+		for (int32 column = 0; column < grid.width(); column++)
 		{
 			// CSVとの差異があった時点でreturn
-			if (grid[column][row] != Parse<int32>(csv[column][row]))
+			if (grid[row][column] != Parse<int32>(mapData[row][column]))
 			{
 				return false;
 			}
@@ -157,44 +163,18 @@ void MapBase::SaveMapData()
 	ClearPrint();
 
 	// マップの内容をCSVファイルに反映
-	for (int32 column = 0; column < tileNum; column++)
+	for (int32 row = 0; row < grid.height(); row++)
 	{
-		for (int32 row = 0; row < tileNum; row++)
+		for (int32 column = 0; column < grid.width(); column++)
 		{
-			csv[column][row] = Format(grid[column][row]);
+			mapData[row][column] = Format(grid[row][column]);
 		}
 	}
 
 	// CSVを保存する
-	csv.save(TOWNFIELD_DATA_FILE);
+	mapData.save(TOWNFIELD_DATA_FILE);
 
 	Print << U"セーブしました";
-}
-
-Array<int32> MapBase::GetMapStatus() const
-{
-	// マップの合計ステータス:[Moisture][Urban][Nature][Rough]
-	Array<int32> mapStatus{ 0, 0, 0, 0 };
-
-	CSV tileStatusData;
-	tileStatusData.load(TILE_STATUS_DATA_FILE);
-
-	for (int32 column = 0; column < tileNum; column++)
-	{
-		for (int32 row = 0; row < tileNum; row++)
-		{
-			for (int32 statusIndex = 0; statusIndex < 4; statusIndex++)
-			{
-				mapStatus[statusIndex] += Parse<int32>(tileStatusData[grid[column][row] + 1][statusIndex + 1]);
-				if (mapStatus[statusIndex] < 0)
-				{
-					mapStatus[statusIndex] = 0;
-				}
-			}
-		}
-	}
-
-	return mapStatus;
 }
 
 void MapBase::DrawTileHighlight()

@@ -5,12 +5,13 @@
 
 UnitBase::UnitBase()
 {
-	unitScale = 0.45;
 	unitTexture = TextureAsset(PLAYER_BASE);
-	gridIndex = { 11, 11 };
-	targetGridIndex = gridIndex;
+	currentGridIndex = { 11, 11 };
+	targetGridIndex = currentGridIndex;
 	drawPosition = {};
 	movePower = 4;
+	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
+	ResetQue();
 }
 
 UnitBase::~UnitBase()
@@ -20,9 +21,9 @@ UnitBase::~UnitBase()
 
 void UnitBase::Update()
 {
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridIndex, 12);
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(currentGridIndex, 12);
 
-	if (targetGridIndex != gridIndex)
+	if (targetGridIndex != currentGridIndex)
 	{
 		// 移動処理
 		UnitMove(targetGridIndex);
@@ -33,10 +34,6 @@ void UnitBase::Update()
 	{
 		targetGridIndex = { 8, 10 };
 	}
-	if (MouseR.down())
-	{
-		CreateMoveRangeGrid();
-	}
 }
 
 void UnitBase::Draw()
@@ -44,73 +41,58 @@ void UnitBase::Draw()
 	unitTexture.scaled(unitScale).draw(Arg::bottomCenter = drawPosition
 		.moveBy(0, -Battlefield::GetBattlefieldInstance()->TILE_THICKNESS - Battlefield::GetBattlefieldInstance()->TILE_OFFSET.y / 2));
 
-	//ClearPrint();
-	//Print << CreateMoveRangeGrid();
+	//debug
+	ClearPrint();
+	Print << CreateDistanceGrid();
 }
 
 void UnitBase::UnitMove(Point targetPoint)
 {
-	gridIndex = targetPoint;
+	currentGridIndex = targetPoint;
+	// 初期位置の設定
+	ResetQue();
 }
 
-Grid<int32> UnitBase::CreateMoveRangeGrid()
+void UnitBase::ResetQue()
 {
-	// 移動範囲の空の二次元配列
-	Grid<Point> mapGrid(Size{ movePower * 2 + 1, movePower * 2 + 1 });
+	// 経路をリセットし、現在位置を再設定
+	q.clear();
+	q.push_back(currentGridIndex);
 
-	// 移動可能範囲の中央を現在のインデックスに
-	mapGrid[movePower][movePower] = gridIndex;	
+	// 距離の二次元配列を再計算
+	distanceGrid.fill(INF);
+	distanceGrid[currentGridIndex] = 0;
+}
 
-	// ユニット周辺の二次元配列を設定
-	for (int32 y = 0; y < movePower; ++y)
+Grid<int32> UnitBase::CreateDistanceGrid()
+{
+	// 幅優先探索
+	if (!q.empty())
 	{
-		for (int32 x = 0; x < movePower - y + 1; x++)
-		{
-			mapGrid[movePower - x][movePower - y] = Point{ gridIndex.x - x, gridIndex.y - y };
-		}
+		const Point currentPos = q.front();
+		q.pop_front();
+		const int32 currentDistance = distanceGrid[currentPos];
 
-	}
-	for (int32 x = 0; x < movePower; ++x)
-	{
-		for (int32 y = 0; y < movePower - x + 1; y++)
+		// 範囲for文で、OFFSETSを要素の数だけ順に代入
+		for (const auto& offset : OFFSETS)
 		{
-			mapGrid[movePower + x][movePower - y] = Point{ gridIndex.x + x, gridIndex.y - y };
-		}
-	}
-	for (int32 y = 0; y < movePower; ++y)
-	{
-		for (int32 x = 0; x < movePower - y + 1; x++)
-		{
-			mapGrid[movePower + x][movePower + y] = Point{ gridIndex.x + x, gridIndex.y + y };
-		}
-	}
-	for (int32 x = 0; x < movePower; ++x)
-	{
-		for (int32 y = 0; y < movePower - x + 1; y++)
-		{
-			mapGrid[movePower - x][movePower + y] = Point{ gridIndex.x - x, gridIndex.y + y };
-		}
-	}
+			// 次の探索目標を設定
+			const Point nextPosition = (currentPos + offset);
 
-	// マス目に応じた残り移動力の二次元配列
-	Grid<int32> moveRemainGrid(mapGrid.size(), -1);
-	for (int32 x = 0; x < moveRemainGrid.width(); x++)
-	{
-		for (int32 y = 0; y < moveRemainGrid.height(); y++)
-		{
-			if (mapGrid[x][y] == Point{ 0, 0 })
+			// 範囲外アクセスを防ぐcontinue
+			if (!(nextPosition.x < distanceGrid.width() && nextPosition.y < distanceGrid.height()))
 			{
-				moveRemainGrid[x][y] = -1;
+				continue;
 			}
-			else
+
+			// 探索したマスを格納
+			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid()[nextPosition] &&
+				currentDistance + 1 < distanceGrid[nextPosition])
 			{
-				moveRemainGrid[x][y] = 0;
+				distanceGrid[nextPosition] = (currentDistance + 1);
+				q.push_back(nextPosition);
 			}
 		}
 	}
-	moveRemainGrid[movePower][movePower] = movePower;
-
-	// 周辺地形の移動コストの二次元配列
-
-	return moveRemainGrid;
+	return distanceGrid;
 }

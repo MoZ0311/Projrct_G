@@ -40,5 +40,5 @@ private:
 	// 現在のターン
 	Turn currentTurn;
 
-	UnitBase* unitBase = nullptr;
+	UnitBase* unitBase;
 };
