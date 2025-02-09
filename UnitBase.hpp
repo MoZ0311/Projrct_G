@@ -65,7 +65,10 @@ protected:
 	int32 movePower;
 
 	// ユニットが選択されたか
-	bool selected;
+	bool isSelected;
+
+	// ユニットは移動中か
+	bool isMoving;
 
 	// 左右反転するか
 	bool flipX;

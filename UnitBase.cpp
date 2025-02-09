@@ -9,7 +9,8 @@ UnitBase::UnitBase()
 	drawPosition = {};
 	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
 	routePath = {};
-	selected = false;
+	isSelected = false;
+	isMoving = false;
 	flipX = false;
 	isIdol = true;
 	animationSpeed = 0;
@@ -26,32 +27,34 @@ UnitBase::~UnitBase()
 void UnitBase::Update()
 {
 	// クリックによる各種処理
-	if (MouseL.down())
+	if (!isMoving && MouseL.down())
 	{
+		// 前提として、移動中のクリックは受付けない
 		if (Battlefield::GetBattlefieldInstance()->GetOnMap())
 		{
-			// マップ内をクリック
+			// マップ内をクリックした
 			if (Battlefield::GetBattlefieldInstance()->GetClickedTileIndex() == gridIndex)
 			{
-				if (selected)
+				if (isSelected)
 				{
 					// 立っているタイルがクリックされた かつ ユニット選択中
 					// 選択状態を解除
-					selected = false;
+					isSelected = false;
 				}
 				else
 				{
 					// 立っているタイルがクリックされた かつ ユニット未選択
 					//ユニットの選択状況をtrueに
-					selected = true;
+					isSelected = true;
 					ResetQue();
 				}
 				
 			}
-			else if (distanceGrid[Battlefield::GetBattlefieldInstance()->GetClickedTileIndex()] <= movePower && selected)
+			else if (distanceGrid[Battlefield::GetBattlefieldInstance()->GetClickedTileIndex()] <= movePower && isSelected)
 			{
 				// 移動範囲内のタイルがクリックされた かつ ユニット選択中
 				// 移動処理の開始
+				isMoving = true;
 				MakePath(Battlefield::GetBattlefieldInstance()->GetClickedTileIndex());
 				moveIntervalCount = 0.25;
 			}
@@ -60,7 +63,7 @@ void UnitBase::Update()
 		{
 			// マップ外をクリック
 			// 選択状態を解除
-			selected = false;
+			isSelected = false;
 		}
 	}
 
@@ -77,7 +80,7 @@ void UnitBase::Update()
 void UnitBase::Draw()
 {
 	// 移動可能地形を表示
-	if (selected)
+	if (isSelected)
 	{
 		Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
 	}
@@ -101,10 +104,18 @@ void UnitBase::UnitMove()
 {
 	// DeltaTimeに応じてカウントアップ
 	moveIntervalCount += Scene::DeltaTime();
-	if (moveIntervalCount > 0.25)
+
+	// 閾値を超えたら一マス進む
+	if (moveIntervalCount > 0.1)
 	{
-		if (!routePath.empty())
+		if (routePath.empty())
 		{
+			// 配列が空、つまり目的地に着いた
+			isMoving = false;
+		}
+		else
+		{
+			// 経路配列の先頭を辿りながら消去
 			if (routePath.front().x < gridIndex.x ||
 				routePath.front().y > gridIndex.y)
 			{
@@ -128,7 +139,7 @@ void UnitBase::UnitMove()
 void UnitBase::MakePath(Point targetPoint)
 {
 	// 選択状態を解除
-	selected = false;
+	isSelected = false;
 
 	// 経路用配列をリセット
 	routePath.clear();
@@ -152,7 +163,7 @@ void UnitBase::MakePath(Point targetPoint)
 
 			// 隣接するマスの中で、侵入可能かつ最も始点に近いものを格納
 			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid()[nextPosition] &&
-				distanceGrid[nextPosition] == distanceGrid[routePath.front()] - 1)
+				distanceGrid[nextPosition] < distanceGrid[routePath.front()])
 			{
 				routePath.push_front(nextPosition);
 			}
