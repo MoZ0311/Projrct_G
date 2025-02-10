@@ -1,10 +1,10 @@
-﻿// BattleManager class
+﻿// UnitManager class
 
 #pragma once
 
 #include "UnitBase.hpp"
 
-class BattleManager
+class UnitManager
 {
 public:
 
@@ -24,7 +24,7 @@ public:
 	void InstantiateUnit();
 
 	// インスタンスのゲッター関数
-	static BattleManager* GetBattleManagerInstance();
+	static UnitManager* GetBattleManagerInstance();
 
 	// 現在のターンのゲッター関数
 	Turn GetCurrentTurn() const;
@@ -32,13 +32,13 @@ public:
 private:
 
 	// コンストラクタ
-	BattleManager();
+	UnitManager();
 
 	// デストラクタ
-	~BattleManager();
+	~UnitManager();
 
 	// シングルトンクラスのインスタンスのポインタ
-	static BattleManager* battleManagerInstance;
+	static UnitManager* battleManagerInstance;
 
 	// 現在のターン
 	Turn currentTurn;

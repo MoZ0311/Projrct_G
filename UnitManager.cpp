@@ -1,14 +1,14 @@
-﻿// BattleManager class
+﻿// UnitManager class
 
-#include "BattleManager.hpp"
+#include "UnitManager.hpp"
 #include "Battlefield.hpp"
 #include "PlayerUnit.hpp"
 #include "RangerRedUnit.hpp"
 
 // インスタンスをnullptrで初期化
-BattleManager* BattleManager::battleManagerInstance = nullptr;
+UnitManager* UnitManager::battleManagerInstance = nullptr;
 
-BattleManager::BattleManager()
+UnitManager::UnitManager()
 {
 	currentTurn = PREPARATION;
 
@@ -20,7 +20,7 @@ BattleManager::BattleManager()
 	allUnitInstanceArray = {};
 }
 
-BattleManager::~BattleManager()
+UnitManager::~UnitManager()
 {
 	// 両軍のユニット配列をクリア
 	playerUnitInstanceArray.clear();
@@ -37,16 +37,16 @@ BattleManager::~BattleManager()
 	allUnitInstanceArray.clear();
 }
 
-void BattleManager::Init()
+void UnitManager::Init()
 {
 	if (battleManagerInstance != nullptr)
 	{
 		return;
 	}
-	battleManagerInstance = new BattleManager();
+	battleManagerInstance = new UnitManager();
 }
 
-void BattleManager::Release()
+void UnitManager::Release()
 {
 	if (battleManagerInstance != nullptr)
 	{
@@ -55,7 +55,7 @@ void BattleManager::Release()
 	}
 }
 
-void BattleManager::Update()
+void UnitManager::Update()
 {
 	if (Key1.down())
 	{
@@ -106,7 +106,7 @@ void BattleManager::Update()
 	
 }
 
-void BattleManager::Draw()
+void UnitManager::Draw()
 {
 	// 選択ユニットの移動範囲の描画
 	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
@@ -129,7 +129,7 @@ void BattleManager::Draw()
 	}
 }
 
-void BattleManager::InstantiateUnit()
+void UnitManager::InstantiateUnit()
 {
 	// マップのタイル配列を取得
 	Grid<int32> tilegrid = Battlefield::GetBattlefieldInstance()->GetGrid();
@@ -176,12 +176,12 @@ void BattleManager::InstantiateUnit()
 	}
 }
 
-BattleManager* BattleManager::GetBattleManagerInstance()
+UnitManager* UnitManager::GetBattleManagerInstance()
 {
 	return battleManagerInstance;
 }
 
-Turn BattleManager::GetCurrentTurn() const
+Turn UnitManager::GetCurrentTurn() const
 {
 	return currentTurn;
 }

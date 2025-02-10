@@ -91,7 +91,7 @@ Grid<bool> Battlefield::GetCanEnterGrid() const
 	// マップと同じサイズのbool型の二次元配列を作成 (0 : 通行不可, 1 : 通行可)
 	Grid<bool> canEnterGrid(grid.size(), 1);
 
-	// CSVファイルの移動可不可に当たる列
+	// CSVファイルの移動可不可を記した列
 	constexpr int32 COLUMN_CAN_ENTER = 5;
 
 	// 上から地形をチェック
