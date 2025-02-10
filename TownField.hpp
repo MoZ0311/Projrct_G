@@ -1,11 +1,11 @@
-﻿// TownField class
+﻿// Townfield class
 
 #pragma once
 
 #include "MapBase.hpp"
 #include "GameScene.hpp"
 
-class TownField : public MapBase
+class Townfield : public MapBase
 {
 public:
 
@@ -16,7 +16,7 @@ public:
 	static void Release();
 
 	// インスタンスのゲッター関数
-	static TownField* GetTownFieldInstance();
+	static Townfield* GetTownFieldInstance();
 
 	// マップのステータス算出処理
 	Array<int32> GetMapStatus() const;
@@ -31,7 +31,7 @@ public:
 private:
 
 	// コンストラクタ
-	TownField(GameScene* instance);
+	Townfield(GameScene* instance);
 
 	// 読み込み対象のCSVを設定する
 	void SetMapDataFilePath() override;
@@ -43,7 +43,7 @@ private:
 	void DrawGrid() override;
 
 	// シングルトンクラスのインスタンスのポインタ
-	static TownField* townFieldInstance;
+	static Townfield* townFieldInstance;
 
 	// GameScene class のインスタンスのポインタ
 	GameScene* gameSceneInstance;

@@ -65,6 +65,9 @@ void BattleScene::update()
 
 void BattleScene::draw() const
 {
+	// グラデーション背景の描画
+	DrawVerticalGradientBackground(ColorF{ 0.0 }, ColorF{ 0.502, 0.0, 0.0 });
+
 	{
 		const auto tr = camera.createTransformer();
 

@@ -168,7 +168,7 @@
     <ClCompile Include="MapBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TownField.cpp">
+    <ClCompile Include="Townfield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Battlefield.cpp">
@@ -184,6 +184,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RangerRedUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -884,7 +887,7 @@
     <ClInclude Include="MapBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TownField.hpp">
+    <ClInclude Include="Townfield.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Battlefield.hpp">

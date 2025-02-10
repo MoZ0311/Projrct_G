@@ -1,26 +1,26 @@
 ﻿// TownField class
 
-#include "TownField.hpp"
+#include "Townfield.hpp"
 
 // インスタンスをnullptrで初期化
-TownField* TownField::townFieldInstance = nullptr;
+Townfield* Townfield::townFieldInstance = nullptr;
 
-TownField::TownField(GameScene* instance)
+Townfield::Townfield(GameScene* instance)
 {
 	gameSceneInstance = instance;
 }
 
-void TownField::Init(GameScene* instance)
+void Townfield::Init(GameScene* instance)
 {
 	if (townFieldInstance != nullptr)
 	{
 		return;
 	}
 
-	townFieldInstance = new TownField(instance);
+	townFieldInstance = new Townfield(instance);
 }
 
-void TownField::Release()
+void Townfield::Release()
 {
 	if (townFieldInstance != nullptr)
 	{
@@ -29,12 +29,12 @@ void TownField::Release()
 	}
 }
 
-void TownField::SetMapDataFilePath()
+void Townfield::SetMapDataFilePath()
 {
 	mapDataFile = TOWNFIELD_DATA_FILE;
 }
 
-void TownField::DrawTileHighlight()
+void Townfield::DrawTileHighlight()
 {
 	if (onMap && gameSceneInstance->GetIsEditing())
 	{
@@ -42,7 +42,7 @@ void TownField::DrawTileHighlight()
 	}
 }
 
-void TownField::DrawGrid()
+void Townfield::DrawGrid()
 {
 	if (gameSceneInstance->GetIsEditing())
 	{
@@ -63,12 +63,12 @@ void TownField::DrawGrid()
 	}
 }
 
-TownField* TownField::GetTownFieldInstance()
+Townfield* Townfield::GetTownFieldInstance()
 {
 	return townFieldInstance;
 }
 
-Array<int32> TownField::GetMapStatus() const
+Array<int32> Townfield::GetMapStatus() const
 {
 	// マップの合計ステータス { Moisture, Urban, Nature, Rough }
 	Array<int32> mapStatus{ 0, 0, 0, 0 };

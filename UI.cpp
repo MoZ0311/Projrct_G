@@ -2,7 +2,7 @@
 
 #include "UI.hpp"
 
-#include "TownField.hpp"
+#include "Townfield.hpp"
 #include "Battlefield.hpp"
 
 UI* UI::UIInstance = nullptr;
@@ -99,9 +99,9 @@ void UI::Draw()
 
 				// タイルを表示する
 				Array<Texture> tileTextureArray{};
-				if (TownField::GetTownFieldInstance() != nullptr)
+				if (Townfield::GetTownFieldInstance() != nullptr)
 				{
-					tileTextureArray = TownField::GetTownFieldInstance()->GetTileTextureArray();
+					tileTextureArray = Townfield::GetTownFieldInstance()->GetTileTextureArray();
 				}
 				else if (Battlefield::GetBattlefieldInstance() != nullptr)
 				{
