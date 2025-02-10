@@ -78,12 +78,6 @@ void UnitBase::Update()
 
 void UnitBase::Draw()
 {
-	// 移動可能地形を表示
-	if (isSelected)
-	{
-		Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
-	}
-
 	// 描画に使用するテクスチャ配列
 	Array<Texture> animation;
 	if (isMoving)
@@ -115,21 +109,6 @@ void UnitBase::Draw()
 		.mirrored(flipX).scaled(unitScale)
 		.draw(Arg::bottomCenter = drawPosition.moveBy(
 			0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2));
-}
-
-void UnitBase::SetUnitParameter(Point point)
-{
-	unitIdolArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
-	};
-
-	unitWalkArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
-		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
-	};
-
-	gridIndex = point;
-	movePower = 3;
 }
 
 void UnitBase::UnitMove()
@@ -244,4 +223,39 @@ void UnitBase::CalcurateDistanceGrid()
 			}
 		}
 	}
+}
+
+void UnitBase::SetUnitParameter(Point point)
+{
+	unitIdolArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
+	};
+
+	unitWalkArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
+		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
+	};
+
+	gridIndex = point;
+	movePower = 3;
+}
+
+Grid<int32> UnitBase::GetDistanceGrid() const
+{
+	return distanceGrid;
+}
+
+Point UnitBase::GetGridIndex() const
+{
+	return gridIndex;
+}
+
+int32 UnitBase::GetMovePower() const
+{
+	return movePower;
+}
+
+bool UnitBase::GetIsSelected() const
+{
+	return isSelected;
 }

@@ -93,26 +93,40 @@ void BattleManager::Update()
 		playerUnitInstanceArray[i]->Update();
 	}
 
-	// 敵軍ユニットを全て解放
+	// 敵軍ユニットの更新処理
 	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
 	{
 		enemyUnitInstanceArray[i]->Update();
 	}
+
+	// 全ユニットのソート処理
+	// 比較関数を用いて、原点からグリッド座標までのマンハッタン距離でソート
+	allUnitInstanceArray.sort_by([](const UnitBase* a, const UnitBase* b)
+		{ return (a->GetGridIndex().manhattanLength() < b->GetGridIndex().manhattanLength()); });
+	
 }
 
 void BattleManager::Draw()
 {
+	// 選択ユニットの移動範囲の描画
+	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
+	{
+		if (allUnitInstanceArray[i]->GetIsSelected())
+		{
+			// ユニットから各パラメータを取得
+			Grid<int32> distanceGrid = allUnitInstanceArray[i]->GetDistanceGrid();
+			int32 movePower = allUnitInstanceArray[i]->GetMovePower();
+
+			// Battlefield class に描画させる
+			Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
+		}
+	}
+
 	// 全ユニットの描画処理
 	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
 	{
 		allUnitInstanceArray[i]->Draw();
 	}
-	
-
-	ClearPrint();
-	Print << allUnitInstanceArray;
-	Print << playerUnitInstanceArray;
-	Print << enemyUnitInstanceArray;
 }
 
 void BattleManager::InstantiateUnit()

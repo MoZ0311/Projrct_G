@@ -23,6 +23,18 @@ public:
 	// ユニットの各種パラメータ設定
 	virtual void SetUnitParameter(Point point);
 
+	// 各マスまでの距離のゲッター関数
+	Grid<int32> GetDistanceGrid() const;
+
+	// グリッド位置のゲッター関数
+	Point GetGridIndex() const;
+
+	// 移動力のゲッター関数
+	int32 GetMovePower() const;
+
+	// 選択状態のゲッター関数
+	bool GetIsSelected() const;
+
 protected:
 
 	// 移動処理

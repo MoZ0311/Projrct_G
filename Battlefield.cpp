@@ -47,12 +47,15 @@ void Battlefield::Update()
 
 void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 {
+	// マップの上から順に評価
 	for (int32 row = 0; row < grid.height(); ++row)
 	{
 		for (int32 column = 0; column < grid.width(); ++column)
 		{
+			// 色の準備
 			ColorF highlightColor{};
-			const double ALPHA = 0.2;
+			const double ALPHA = 0.3;
+
 			if (distanceGrid[row][column] <= movePower)
 			{
 				highlightColor = ColorF{ 0.0, 0.0, 1.0, ALPHA };
