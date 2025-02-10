@@ -1,6 +1,8 @@
 ﻿// BattleManager class
 
 #include "BattleManager.hpp"
+#include "PlayerUnit.hpp"
+#include "RangerRedUnit.hpp"
 
 // インスタンスをnullptrで初期化
 BattleManager* BattleManager::battleManagerInstance = nullptr;
@@ -8,13 +10,31 @@ BattleManager* BattleManager::battleManagerInstance = nullptr;
 BattleManager::BattleManager()
 {
 	currentTurn = PREPARATION;
-	unitBase = new UnitBase();
+
+	// 両軍のユニット配列を初期化
+	playerUnitInstanceArray = {};
+	enemyUnitInstanceArray = {};
 }
 
 BattleManager::~BattleManager()
 {
-	delete unitBase;
-	unitBase = nullptr;
+	// 自軍ユニットを全て解放
+	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+	{
+		delete playerUnitInstanceArray[i];
+		playerUnitInstanceArray[i] = nullptr;
+	}
+
+	// 敵軍ユニットを全て解放
+	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
+	{
+		delete enemyUnitInstanceArray[i];
+		enemyUnitInstanceArray[i] = nullptr;
+	}
+
+	// 両軍のユニット配列をクリア
+	playerUnitInstanceArray.clear();
+	enemyUnitInstanceArray.clear();
 }
 
 void BattleManager::Init()
@@ -67,12 +87,32 @@ void BattleManager::Update()
 		break;
 	}
 
-	unitBase->Update();
+	// 自軍ユニットの更新処理
+	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+	{
+		playerUnitInstanceArray[i]->Update();
+	}
+
+	// 敵軍ユニットを全て解放
+	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
+	{
+		enemyUnitInstanceArray[i]->Update();
+	}
 }
 
 void BattleManager::Draw()
 {
-	unitBase->Draw();
+	// 自軍ユニットの描画処理
+	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+	{
+		playerUnitInstanceArray[i]->Draw();
+	}
+
+	// 敵軍ユニットを全て解放
+	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
+	{
+		enemyUnitInstanceArray[i]->Draw();
+	}
 }
 
 BattleManager* BattleManager::GetBattleManagerInstance()

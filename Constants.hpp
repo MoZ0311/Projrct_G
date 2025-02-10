@@ -16,6 +16,9 @@ const String PLAYER_WALK_01 = U"PlayerWalk_01";						// プレイヤー歩行画
 const String PLAYER_WALK_02 = U"PlayerWalk_02";						// プレイヤー歩行画像02
 
 const String RANGER_RED_BASE = U"RangerRedBase";					// レッド基本画像
+const String RANGER_RED_IDOL = U"RangerRedIdol";					// レッド基本画像
+const String RANGER_RED_WALK_01 = U"RangerRedWalk_01";				// レッド基本画像
+const String RANGER_RED_WALK_02 = U"RangerRedWalk_02";				// レッド基本画像
 
 // 各アニメーションの再生速度
 const double IDOL_ANIMATION_SPEED = 3;								// アイドルアニメーションの再生速度

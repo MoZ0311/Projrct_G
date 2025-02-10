@@ -180,6 +180,12 @@
     <ClCompile Include="UnitBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RangerRedUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -888,6 +894,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUnit.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RangerRedUnit.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
