@@ -38,7 +38,7 @@ void Townfield::DrawTileHighlight()
 {
 	if (onMap && gameSceneInstance->GetIsEditing())
 	{
-		ToTile(mouseOveredTile, tileNum).draw(ColorF{ 1.0, 0.2 });
+		ToTile(mouseOveredTile, TILE_NUM).draw(ColorF{ 1.0, 0.2 });
 	}
 }
 

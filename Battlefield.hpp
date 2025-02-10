@@ -22,7 +22,7 @@ public:
 	void DrawMoveRange(Grid<int32> distanceGrid, int32 movePower);
 
 	// マップの侵入可能、不可能の導出
-	Grid<bool> GetCanEnterGrid() const;
+	Grid<bool> GetCanEnterGrid(Point gridPosition) const;
 
 	// インスタンスのゲッター関数
 	static Battlefield* GetBattlefieldInstance();

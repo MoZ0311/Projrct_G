@@ -1,10 +1,10 @@
-﻿// BattleManager class
+﻿// UnitManager class
 
 #pragma once
 
 #include "UnitBase.hpp"
 
-class BattleManager
+class UnitManager
 {
 public:
 
@@ -20,22 +20,28 @@ public:
 	// 描画処理
 	void Draw();
 
+	// ユニットの生成処理
+	void InstantiateUnit();
+
 	// インスタンスのゲッター関数
-	static BattleManager* GetBattleManagerInstance();
+	static UnitManager* GetUnitManagerInstance();
 
 	// 現在のターンのゲッター関数
 	Turn GetCurrentTurn() const;
 
+	// 全ユニットの座標配列のゲッター関数
+	Array<Point> GetAllUnitPositionArray() const;
+
 private:
 
 	// コンストラクタ
-	BattleManager();
+	UnitManager();
 
 	// デストラクタ
-	~BattleManager();
+	~UnitManager();
 
 	// シングルトンクラスのインスタンスのポインタ
-	static BattleManager* battleManagerInstance;
+	static UnitManager* battleManagerInstance;
 
 	// 現在のターン
 	Turn currentTurn;
@@ -45,4 +51,7 @@ private:
 
 	// 敵軍ユニットのインスタンス配列
 	Array<UnitBase*> enemyUnitInstanceArray;
+
+	// 全ユニットのインスタンス配列
+	Array<UnitBase*> allUnitInstanceArray;
 };

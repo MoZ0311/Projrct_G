@@ -2,22 +2,23 @@
 
 #include "BattleScene.hpp"
 
-#include "BattleManager.hpp"
+#include "UnitManager.hpp"
 #include "Battlefield.hpp"
-#include "UI.hpp"
 
 BattleScene::BattleScene(const InitData& init)
 	:IScene{ init }
 {
 	// Battlefield class の生成
 	Battlefield::Init();
+
+	// マップの読み込み処理
 	Battlefield::GetBattlefieldInstance()->LoadMapData();
 
 	// BattleManager class の生成
-	BattleManager::Init();
+	UnitManager::Init();
 
-	// 背景の色を設定する
-	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });
+	// ユニットの生成処理
+	UnitManager::GetUnitManagerInstance()->InstantiateUnit();
 
 	// カメラを操作不能に
 	camera.setParameters(Camera2DParameters::NoControl());
@@ -28,8 +29,8 @@ BattleScene::~BattleScene()
 	// Battlefield class の解放
 	Battlefield::Release();
 
-	// BattleManager class の解放
-	BattleManager::Release();
+	// UnitManager class の解放
+	UnitManager::Release();
 }
 
 void BattleScene::update()
@@ -53,8 +54,8 @@ void BattleScene::update()
 	// UI class の更新処理
 	//UI::GetUIInstance()->Update();
 
-	// BattleManager の更新処理
-	BattleManager::GetBattleManagerInstance()->Update();
+	// UnitManager の更新処理
+	UnitManager::GetUnitManagerInstance()->Update();
 
 	// debug
 	if (KeySpace.down())
@@ -74,8 +75,8 @@ void BattleScene::draw() const
 		// Battlefield class の描画処理
 		Battlefield::GetBattlefieldInstance()->Draw();
 
-		// BattleManager class の描画処理
-		BattleManager::GetBattleManagerInstance()->Draw();
+		// UnitManager class の描画処理
+		UnitManager::GetUnitManagerInstance()->Draw();
 	}
 
 	// UI class の描画処理

@@ -21,7 +21,19 @@ public:
 	virtual void Draw();
 
 	// ユニットの各種パラメータ設定
-	virtual void SetUnitParameter();
+	virtual void SetUnitParameter(Point point);
+
+	// 各マスまでの距離のゲッター関数
+	Grid<int32> GetDistanceGrid() const;
+
+	// グリッド位置のゲッター関数
+	Point GetGridPosition() const;
+
+	// 移動力のゲッター関数
+	int32 GetMovePower() const;
+
+	// 選択状態のゲッター関数
+	bool GetIsSelected() const;
 
 protected:
 
@@ -53,7 +65,7 @@ protected:
 	Array<Point> routePath;
 
 	// グリッド位置
-	Point gridIndex;
+	Point gridPosition;
 
 	// 描画位置
 	Vec2 drawPosition;

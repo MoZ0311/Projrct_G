@@ -3,13 +3,13 @@
 #include "GameScene.hpp"
 
 #include "Player.hpp"
-#include "TownField.hpp"
+#include "Townfield.hpp"
 #include "UI.hpp"
 
 GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
-	// TownField class の生成
+	// Townfield class の生成
 	Townfield::Init(this);
 	Townfield::GetTownFieldInstance()->LoadMapData();
 
@@ -36,7 +36,7 @@ GameScene::GameScene(const InitData& init)
 
 GameScene::~GameScene()
 {
-	// TownField class の解放
+	// Townfield class の解放
 	Townfield::Release();
 
 	// Player class の解放
@@ -56,7 +56,7 @@ void GameScene::update()
 
 		if (isEditing)
 		{
-			// TownField class の更新処理
+			// Townfield class の更新処理
 			Townfield::GetTownFieldInstance()->Update();
 		}
 		else
@@ -163,7 +163,7 @@ void GameScene::draw() const
 	{
 		const auto tr = camera.createTransformer();
 
-		// TownField class の描画処理
+		// Townfield class の描画処理
 		Townfield::GetTownFieldInstance()->Draw();
 
 		// Player class の描画処理

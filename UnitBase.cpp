@@ -32,7 +32,7 @@ void UnitBase::Update()
 		if (Battlefield::GetBattlefieldInstance()->GetOnMap())
 		{
 			// マップ内をクリックした
-			if (Battlefield::GetBattlefieldInstance()->GetClickedTileIndex() == gridIndex)
+			if (Battlefield::GetBattlefieldInstance()->GetClickedTileIndex() == gridPosition)
 			{
 				if (isSelected)
 				{
@@ -73,17 +73,11 @@ void UnitBase::Update()
 	UnitMove();
 
 	// 描画位置の計算
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridIndex, 12);
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridPosition, MapBase::TILE_NUM);
 }
 
 void UnitBase::Draw()
 {
-	// 移動可能地形を表示
-	if (isSelected)
-	{
-		Battlefield::GetBattlefieldInstance()->DrawMoveRange(distanceGrid, movePower);
-	}
-
 	// 描画に使用するテクスチャ配列
 	Array<Texture> animation;
 	if (isMoving)
@@ -113,24 +107,8 @@ void UnitBase::Draw()
 	// ユニットの描画
 	animation[index]
 		.mirrored(flipX).scaled(unitScale)
-		.draw(
-			Arg::bottomCenter = drawPosition
-			.moveBy(0, -Battlefield::GetBattlefieldInstance()->TILE_THICKNESS - Battlefield::GetBattlefieldInstance()->TILE_OFFSET.y / 2));
-}
-
-void UnitBase::SetUnitParameter()
-{
-	unitIdolArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
-	};
-
-	unitWalkArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
-		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
-	};
-
-	gridIndex = { 8, 11 };
-	movePower = 3;
+		.draw(Arg::bottomCenter = drawPosition.moveBy(
+			0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2));
 }
 
 void UnitBase::UnitMove()
@@ -149,18 +127,18 @@ void UnitBase::UnitMove()
 		else
 		{
 			// 経路配列の先頭を辿りながら消去
-			if (routePath.front().x < gridIndex.x ||
-				routePath.front().y > gridIndex.y)
+			if (routePath.front().x < gridPosition.x ||
+				routePath.front().y > gridPosition.y)
 			{
 				flipX = true;
 			}
-			if (routePath.front().x > gridIndex.x ||
-				routePath.front().y < gridIndex.y)
+			if (routePath.front().x > gridPosition.x ||
+				routePath.front().y < gridPosition.y)
 			{
 				flipX = false;
 			}
 
-			gridIndex = routePath.front();
+			gridPosition = routePath.front();
 			routePath.pop_front();
 		}
 
@@ -180,7 +158,7 @@ void UnitBase::MakePath(Point targetPoint)
 	// 目的地を設定
 	routePath.push_back(targetPoint);
 
-	while (routePath.front() != gridIndex)
+	while (routePath.front() != gridPosition)
 	{
 		// 範囲for文で、隣接4マスの始点からの距離を評価
 		for (const auto& offset : OFFSETS)
@@ -195,7 +173,7 @@ void UnitBase::MakePath(Point targetPoint)
 			}
 
 			// 隣接するマスの中で、侵入可能かつ最も始点に近いものを格納
-			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid()[nextPosition] &&
+			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid(gridPosition)[nextPosition] &&
 				distanceGrid[nextPosition] < distanceGrid[routePath.front()])
 			{
 				routePath.push_front(nextPosition);
@@ -208,11 +186,11 @@ void UnitBase::ResetQue()
 {
 	// 経路をリセットし、現在位置を再設定
 	q.clear();
-	q.push_back(gridIndex);
+	q.push_back(gridPosition);
 
 	// 距離の二次元配列を再計算
 	distanceGrid.fill(INF);
-	distanceGrid[gridIndex] = 0;
+	distanceGrid[gridPosition] = 0;
 }
 
 void UnitBase::CalcurateDistanceGrid()
@@ -237,7 +215,7 @@ void UnitBase::CalcurateDistanceGrid()
 			}
 
 			// 探索したマスを格納
-			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid()[nextPosition] &&
+			if (Battlefield::GetBattlefieldInstance()->GetCanEnterGrid(gridPosition)[nextPosition] &&
 				currentDistance + 1 < distanceGrid[nextPosition])
 			{
 				distanceGrid[nextPosition] = (currentDistance + 1);
@@ -245,4 +223,39 @@ void UnitBase::CalcurateDistanceGrid()
 			}
 		}
 	}
+}
+
+void UnitBase::SetUnitParameter(Point point)
+{
+	unitIdolArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
+	};
+
+	unitWalkArray = {
+		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
+		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
+	};
+
+	gridPosition = point;
+	movePower = 3;
+}
+
+Grid<int32> UnitBase::GetDistanceGrid() const
+{
+	return distanceGrid;
+}
+
+Point UnitBase::GetGridPosition() const
+{
+	return gridPosition;
+}
+
+int32 UnitBase::GetMovePower() const
+{
+	return movePower;
+}
+
+bool UnitBase::GetIsSelected() const
+{
+	return isSelected;
 }

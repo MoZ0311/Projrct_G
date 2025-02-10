@@ -174,7 +174,7 @@
     <ClCompile Include="Battlefield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BattleManager.cpp">
+    <ClCompile Include="UnitManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnitBase.cpp">
@@ -893,7 +893,7 @@
     <ClInclude Include="Battlefield.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BattleManager.hpp">
+    <ClInclude Include="UnitManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitBase.hpp">

@@ -2,7 +2,7 @@
 
 #include "PlayerUnit.hpp"
 
-void PlayerUnit::SetUnitParameter()
+void PlayerUnit::SetUnitParameter(Point index)
 {
 	unitIdolArray = {
 		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
@@ -13,5 +13,6 @@ void PlayerUnit::SetUnitParameter()
 		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
 	};
 
+	gridPosition = index;
 	movePower = 4;
 }

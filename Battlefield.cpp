@@ -1,6 +1,7 @@
 ﻿// Battlefield class
 
 #include "Battlefield.hpp"
+#include "UnitManager.hpp"
 
 // インスタンスをnullptrで初期化
 Battlefield* Battlefield::battlefieldInstance = nullptr;
@@ -47,12 +48,15 @@ void Battlefield::Update()
 
 void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 {
+	// マップの上から順に評価
 	for (int32 row = 0; row < grid.height(); ++row)
 	{
 		for (int32 column = 0; column < grid.width(); ++column)
 		{
+			// 色の準備
 			ColorF highlightColor{};
-			const double ALPHA = 0.2;
+			const double ALPHA = 0.3;
+
 			if (distanceGrid[row][column] <= movePower)
 			{
 				highlightColor = ColorF{ 0.0, 0.0, 1.0, ALPHA };
@@ -61,7 +65,7 @@ void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 			{
 				highlightColor = ColorF{ 1.0, 0.0, 0.0, ALPHA };
 			}
-			ToTile(Point{ column, row }, tileNum).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
+			ToTile(Point{ column, row }, TILE_NUM).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
 		}
 	}
 }
@@ -83,13 +87,16 @@ void Battlefield::DrawGrid()
 	return;
 }
 
-Grid<bool> Battlefield::GetCanEnterGrid() const
+Grid<bool> Battlefield::GetCanEnterGrid(Point gridPosition) const
 {
 	// マップと同じサイズのbool型の二次元配列を作成 (0 : 通行不可, 1 : 通行可)
 	Grid<bool> canEnterGrid(grid.size(), 1);
 
-	// CSVファイルの移動可不可に当たる列
+	// CSVファイルの移動可不可を記した列
 	constexpr int32 COLUMN_CAN_ENTER = 5;
+
+	// ユニットが立っているグリッド座標配列
+	Array<Point> unitPositionArray = UnitManager::GetUnitManagerInstance()->GetAllUnitPositionArray();
 
 	// 上から地形をチェック
 	for (int32 row = 0; row < grid.height(); ++row)
@@ -99,10 +106,13 @@ Grid<bool> Battlefield::GetCanEnterGrid() const
 			// CSVのヘッダを無視するため、+1
 			int32 tileRow = grid[row][column] + 1;
 
-			// CSVの当該データをbool型として代入
-			canEnterGrid[row][column] = Parse<int32>(tileStatus[tileRow][COLUMN_CAN_ENTER]) == 1 ? true : false;
+			// 侵入可能な地形、かつそこにユニットがいないor自分が立っている場合に侵入可能
+			canEnterGrid[row][column] = Parse<int32>(tileStatus[tileRow][COLUMN_CAN_ENTER]) == 1 &&
+			(!unitPositionArray.contains(Point{ column, row }) || gridPosition == Point{ column, row })
+				? true : false;
 		}
 	}
+
 	return canEnterGrid;
 }
 
