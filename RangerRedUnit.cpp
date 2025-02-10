@@ -13,7 +13,7 @@ void RangerRedUnit::SetUnitParameter(Point index)
 		TextureAsset(RANGER_RED_WALK_02), TextureAsset(RANGER_RED_WALK_01)
 	};
 
-	gridIndex = index;
+	gridPosition = index;
 	movePower = 3;
 	flipX = true;
 }

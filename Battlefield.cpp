@@ -1,6 +1,7 @@
 ﻿// Battlefield class
 
 #include "Battlefield.hpp"
+#include "UnitManager.hpp"
 
 // インスタンスをnullptrで初期化
 Battlefield* Battlefield::battlefieldInstance = nullptr;
@@ -86,13 +87,16 @@ void Battlefield::DrawGrid()
 	return;
 }
 
-Grid<bool> Battlefield::GetCanEnterGrid() const
+Grid<bool> Battlefield::GetCanEnterGrid(Point gridPosition) const
 {
 	// マップと同じサイズのbool型の二次元配列を作成 (0 : 通行不可, 1 : 通行可)
 	Grid<bool> canEnterGrid(grid.size(), 1);
 
 	// CSVファイルの移動可不可を記した列
 	constexpr int32 COLUMN_CAN_ENTER = 5;
+
+	// ユニットが立っているグリッド座標配列
+	Array<Point> unitPositionArray = UnitManager::GetUnitManagerInstance()->GetAllUnitPositionArray();
 
 	// 上から地形をチェック
 	for (int32 row = 0; row < grid.height(); ++row)
@@ -102,10 +106,13 @@ Grid<bool> Battlefield::GetCanEnterGrid() const
 			// CSVのヘッダを無視するため、+1
 			int32 tileRow = grid[row][column] + 1;
 
-			// CSVの当該データをbool型として代入
-			canEnterGrid[row][column] = Parse<int32>(tileStatus[tileRow][COLUMN_CAN_ENTER]) == 1 ? true : false;
+			// 侵入可能な地形、かつそこにユニットがいないor自分が立っている場合に侵入可能
+			canEnterGrid[row][column] = Parse<int32>(tileStatus[tileRow][COLUMN_CAN_ENTER]) == 1 &&
+			(!unitPositionArray.contains(Point{ column, row }) || gridPosition == Point{ column, row })
+				? true : false;
 		}
 	}
+
 	return canEnterGrid;
 }
 

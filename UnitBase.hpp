@@ -27,7 +27,7 @@ public:
 	Grid<int32> GetDistanceGrid() const;
 
 	// グリッド位置のゲッター関数
-	Point GetGridIndex() const;
+	Point GetGridPosition() const;
 
 	// 移動力のゲッター関数
 	int32 GetMovePower() const;
@@ -65,7 +65,7 @@ protected:
 	Array<Point> routePath;
 
 	// グリッド位置
-	Point gridIndex;
+	Point gridPosition;
 
 	// 描画位置
 	Vec2 drawPosition;

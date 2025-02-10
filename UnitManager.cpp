@@ -102,7 +102,7 @@ void UnitManager::Update()
 	// 全ユニットのソート処理
 	// 比較関数を用いて、原点からグリッド座標までのマンハッタン距離でソート
 	allUnitInstanceArray.sort_by([](const UnitBase* a, const UnitBase* b)
-		{ return (a->GetGridIndex().manhattanLength() < b->GetGridIndex().manhattanLength()); });
+		{ return (a->GetGridPosition().manhattanLength() < b->GetGridPosition().manhattanLength()); });
 	
 }
 
@@ -176,7 +176,7 @@ void UnitManager::InstantiateUnit()
 	}
 }
 
-UnitManager* UnitManager::GetBattleManagerInstance()
+UnitManager* UnitManager::GetUnitManagerInstance()
 {
 	return battleManagerInstance;
 }
@@ -184,4 +184,19 @@ UnitManager* UnitManager::GetBattleManagerInstance()
 Turn UnitManager::GetCurrentTurn() const
 {
 	return currentTurn;
+}
+
+Array<Point> UnitManager::GetAllUnitPositionArray() const
+{
+	// 空の配列を用意
+	Array<Point> unitPositionArray{};
+
+	// すべてのユニットのグリッド位置を順番に格納
+	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
+	{
+		Point unitPosition = allUnitInstanceArray[i]->GetGridPosition();
+		unitPositionArray.push_back(unitPosition);
+	}
+
+	return unitPositionArray;
 }

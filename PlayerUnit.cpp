@@ -13,6 +13,6 @@ void PlayerUnit::SetUnitParameter(Point index)
 		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
 	};
 
-	gridIndex = index;
+	gridPosition = index;
 	movePower = 4;
 }

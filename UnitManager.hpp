@@ -24,10 +24,13 @@ public:
 	void InstantiateUnit();
 
 	// インスタンスのゲッター関数
-	static UnitManager* GetBattleManagerInstance();
+	static UnitManager* GetUnitManagerInstance();
 
 	// 現在のターンのゲッター関数
 	Turn GetCurrentTurn() const;
+
+	// 全ユニットの座標配列のゲッター関数
+	Array<Point> GetAllUnitPositionArray() const;
 
 private:
 

@@ -18,7 +18,7 @@ BattleScene::BattleScene(const InitData& init)
 	UnitManager::Init();
 
 	// ユニットの生成処理
-	UnitManager::GetBattleManagerInstance()->InstantiateUnit();
+	UnitManager::GetUnitManagerInstance()->InstantiateUnit();
 
 	// カメラを操作不能に
 	camera.setParameters(Camera2DParameters::NoControl());
@@ -55,7 +55,7 @@ void BattleScene::update()
 	//UI::GetUIInstance()->Update();
 
 	// UnitManager の更新処理
-	UnitManager::GetBattleManagerInstance()->Update();
+	UnitManager::GetUnitManagerInstance()->Update();
 
 	// debug
 	if (KeySpace.down())
@@ -76,7 +76,7 @@ void BattleScene::draw() const
 		Battlefield::GetBattlefieldInstance()->Draw();
 
 		// UnitManager class の描画処理
-		UnitManager::GetBattleManagerInstance()->Draw();
+		UnitManager::GetUnitManagerInstance()->Draw();
 	}
 
 	// UI class の描画処理
