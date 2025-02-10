@@ -10,17 +10,14 @@ GameScene::GameScene(const InitData& init)
 	:IScene{ init }
 {
 	// TownField class の生成
-	TownField::Init(this);
-	TownField::GetTownFieldInstance()->LoadMapData();
+	Townfield::Init(this);
+	Townfield::GetTownFieldInstance()->LoadMapData();
 
 	// Player class の生成
 	Player::Init(this);
 
 	// UI class の生成
 	UI::Init();
-
-	// 背景の色を設定する
-	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
 
 	// ストップウォッチ設定
 	stopwatch.start();
@@ -40,7 +37,7 @@ GameScene::GameScene(const InitData& init)
 GameScene::~GameScene()
 {
 	// TownField class の解放
-	TownField::Release();
+	Townfield::Release();
 
 	// Player class の解放
 	Player::Release();
@@ -60,7 +57,7 @@ void GameScene::update()
 		if (isEditing)
 		{
 			// TownField class の更新処理
-			TownField::GetTownFieldInstance()->Update();
+			Townfield::GetTownFieldInstance()->Update();
 		}
 		else
 		{
@@ -127,7 +124,6 @@ void GameScene::update()
 	// ゲームモードの切り替え
 	if (KeyF.down())
 	{
-
 		ClearPrint();
 		if (CanGameModeChange())
 		{
@@ -161,11 +157,14 @@ void GameScene::update()
 
 void GameScene::draw() const
 {
+	// グラデーション背景の描画
+	DrawVerticalGradientBackground(ColorF{ 0.0, 0.808, 0.82 }, ColorF{ 0.961, 1.0, 0.98 });
+
 	{
 		const auto tr = camera.createTransformer();
 
 		// TownField class の描画処理
-		TownField::GetTownFieldInstance()->Draw();
+		Townfield::GetTownFieldInstance()->Draw();
 
 		// Player class の描画処理
 		Player::GetPlayerInstance()->Draw();
@@ -185,7 +184,7 @@ void GameScene::draw() const
 		const double t = stopwatch.sF();
 
 		// マップの詳細ステータスを取得
-		const Array<int32> MAP_STATUS = TownField::GetTownFieldInstance()->GetMapStatus();
+		const Array<int32> MAP_STATUS = Townfield::GetTownFieldInstance()->GetMapStatus();
 
 		// マップ名を描画
 		DrawText(
@@ -207,7 +206,7 @@ bool GameScene::CanGameModeChange() const
 {
 	if (isEditing)
 	{
-		return TownField::GetTownFieldInstance()->MapEqualsCSV();
+		return Townfield::GetTownFieldInstance()->MapEqualsCSV();
 	}
 
 	return true;

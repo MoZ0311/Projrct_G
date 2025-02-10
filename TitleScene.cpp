@@ -55,6 +55,9 @@ void TitleScene::update()
 
 void TitleScene::draw() const
 {
+	// グラデーション背景の描画
+	//DrawVerticalGradientBackground(ColorF{ 0.443, 0.463, 0.243 }, ColorF{ 0.263, 0.283, 0.063 });
+	
 	// タイトルの表示
 	FontAsset(FONT_MAKINAS)(U"総統の世界復興計画")
 		.drawAt(TextStyle::OutlineShadow(0.2, ColorF{ 0.0, 0.0, 0.2 },

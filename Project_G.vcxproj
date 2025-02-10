@@ -118,9 +118,10 @@
     <ClCompile Include="Battlefield.cpp" />
     <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="PlayerUnit.cpp" />
     <ClCompile Include="RangerRedUnit.cpp" />
-    <ClCompile Include="TownField.cpp" />
+    <ClCompile Include="Townfield.cpp" />
     <ClCompile Include="GameOverScenecpp.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -344,7 +345,7 @@
     <ClInclude Include="BattleScene.hpp" />
     <ClInclude Include="PlayerUnit.hpp" />
     <ClInclude Include="RangerRedUnit.hpp" />
-    <ClInclude Include="TownField.hpp" />
+    <ClInclude Include="Townfield.hpp" />
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="Constants.hpp" />

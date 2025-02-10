@@ -5,7 +5,7 @@
 GameOverScene::GameOverScene(const InitData& init)
 	:IScene{ init }
 {
-	Scene::SetBackground(ColorF{ 0.5 });
+
 }
 
 void GameOverScene::update()
@@ -34,6 +34,9 @@ void GameOverScene::update()
 
 void GameOverScene::draw() const
 {
+	// グラデーション背景の描画
+	DrawRadialGradientBackground(ColorF{ 0.5 }, ColorF{ 0.1 });
+
 	// GAME OVERの表示
 	FontAsset(FONT_MAKINAS)(U"GAME OVER")
 		.drawAt(TextStyle::OutlineShadow(0.2, ColorF{ 0.0, 0.0, 0.2 },

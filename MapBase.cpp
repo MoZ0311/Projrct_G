@@ -18,7 +18,7 @@ MapBase::MapBase()
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
 
-	tileNum = 12;
+	tileNum = 13;
 	onMap = false;
 	mouseOveredTile = {};
 }
@@ -44,8 +44,6 @@ void MapBase::LoadMapData()
 	{
 		throw Error{ TILE_STATUS_DATA_FILE + U"が読み込めません" };
 	}
-
-	tileNum = 12;
 
 	// 行列の四角形を算出
 	columnQuadArray = MakeColumnQuads(tileNum);
