@@ -21,7 +21,7 @@ public:
 	virtual void Draw();
 
 	// ユニットの各種パラメータ設定
-	virtual void SetUnitParameter();
+	virtual void SetUnitParameter(Point point);
 
 protected:
 

@@ -4,20 +4,21 @@
 
 #include "BattleManager.hpp"
 #include "Battlefield.hpp"
-#include "UI.hpp"
 
 BattleScene::BattleScene(const InitData& init)
 	:IScene{ init }
 {
 	// Battlefield class の生成
 	Battlefield::Init();
+
+	// マップの読み込み処理
 	Battlefield::GetBattlefieldInstance()->LoadMapData();
 
 	// BattleManager class の生成
 	BattleManager::Init();
 
-	// 背景の色を設定する
-	Scene::SetBackground(ColorF{ 0.69, 0.878, 0.902 });
+	// ユニットの生成処理
+	BattleManager::GetBattleManagerInstance()->InstantiateUnit();
 
 	// カメラを操作不能に
 	camera.setParameters(Camera2DParameters::NoControl());

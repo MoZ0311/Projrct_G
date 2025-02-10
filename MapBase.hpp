@@ -36,10 +36,13 @@ public:
 	Vec2 ToTileBottomCenter(const Point& index, const int32 N) const;
 
 	// タイルの一辺の長さ（ピクセル）
-	const Vec2 TILE_OFFSET{ 48, 24 };
+	static constexpr Vec2 TILE_OFFSET{ 48, 24 };
 
 	// タイルの厚み（ピクセル）
-	const int32 TILE_THICKNESS = 17;
+	static constexpr int32 TILE_THICKNESS = 17;
+
+	// マップの一辺のタイル数
+	static constexpr int32 TILE_NUM = 13;
 
 protected:
 
@@ -99,9 +102,6 @@ protected:
 
 	// マップデータのファイルパス
 	FilePath mapDataFile;
-
-	// マップの一辺のタイル数
-	int32 tileNum;
 
 	// タイルのテクスチャ配列
 	Array<Texture> tileTextureArray;

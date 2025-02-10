@@ -23,9 +23,9 @@ public:
 
 	// マップ端の当たり判定用図形
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
-		TILE_OFFSET.x * 2 * tileNum,
-		TILE_OFFSET.y * 2 * tileNum,
-		Vec2{ 0, TILE_OFFSET.y * tileNum - TILE_THICKNESS - TILE_OFFSET.y * 2 }
+		TILE_OFFSET.x * 2 * TILE_NUM,
+		TILE_OFFSET.y * 2 * TILE_NUM,
+		Vec2{ 0, TILE_OFFSET.y * TILE_NUM - TILE_THICKNESS - TILE_OFFSET.y * 2 }
 	);
 
 private:

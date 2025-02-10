@@ -73,7 +73,7 @@ void UnitBase::Update()
 	UnitMove();
 
 	// 描画位置の計算
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridIndex, 12);
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridIndex, MapBase::TILE_NUM);
 }
 
 void UnitBase::Draw()
@@ -113,12 +113,11 @@ void UnitBase::Draw()
 	// ユニットの描画
 	animation[index]
 		.mirrored(flipX).scaled(unitScale)
-		.draw(
-			Arg::bottomCenter = drawPosition
-			.moveBy(0, -Battlefield::GetBattlefieldInstance()->TILE_THICKNESS - Battlefield::GetBattlefieldInstance()->TILE_OFFSET.y / 2));
+		.draw(Arg::bottomCenter = drawPosition.moveBy(
+			0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2));
 }
 
-void UnitBase::SetUnitParameter()
+void UnitBase::SetUnitParameter(Point point)
 {
 	unitIdolArray = {
 		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
@@ -129,7 +128,7 @@ void UnitBase::SetUnitParameter()
 		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
 	};
 
-	gridIndex = { 8, 11 };
+	gridIndex = point;
 	movePower = 3;
 }
 

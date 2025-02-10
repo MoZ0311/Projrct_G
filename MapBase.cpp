@@ -18,7 +18,6 @@ MapBase::MapBase()
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
 
-	tileNum = 13;
 	onMap = false;
 	mouseOveredTile = {};
 }
@@ -46,11 +45,11 @@ void MapBase::LoadMapData()
 	}
 
 	// 行列の四角形を算出
-	columnQuadArray = MakeColumnQuads(tileNum);
-	rowQuadArray = MakeRowQuads(tileNum);
+	columnQuadArray = MakeColumnQuads(TILE_NUM);
+	rowQuadArray = MakeRowQuads(TILE_NUM);
 
 	// タイルの初期化
-	grid = { Size(tileNum, tileNum), -1 };
+	grid = { Size(TILE_NUM, TILE_NUM), -1 };
 
 	// CSVファイルの内容をマップに反映
 	for (int32 row = 0; row < grid.height(); ++row)
@@ -107,22 +106,22 @@ void MapBase::Draw()
 		const ScopedRenderStates2D blend{ BlendState::Premultiplied };
 
 		// 上から順にタイルを描く
-		for (int32 i = 0; i < (tileNum * 2 - 1); ++i)
+		for (int32 i = 0; i < (TILE_NUM * 2 - 1); ++i)
 		{
 			// x の開始インデックス
-			const int32 xi = (i < (tileNum - 1)) ? 0 : (i - (tileNum - 1));
+			const int32 xi = (i < (TILE_NUM - 1)) ? 0 : (i - (TILE_NUM - 1));
 
 			// y の開始インデックス
-			const int32 yi = (i < (tileNum - 1)) ? i : (tileNum - 1);
+			const int32 yi = (i < (TILE_NUM - 1)) ? i : (TILE_NUM - 1);
 
 			// 左から順にタイルを描く
-			for (int32 k = 0; k < (tileNum - Abs(tileNum - i - 1)); ++k)
+			for (int32 k = 0; k < (TILE_NUM - Abs(TILE_NUM - i - 1)); ++k)
 			{
 				// タイルのインデックス
 				const Point index{ (xi + k), (yi - k) };
 
 				// そのタイルの底辺中央の座標
-				const Vec2 pos = ToTileBottomCenter(index, tileNum);
+				const Vec2 pos = ToTileBottomCenter(index, TILE_NUM);
 
 				// 底辺中央を基準にタイルを描く
 				tileTextureArray[grid[index]].draw(Arg::bottomCenter = pos);
@@ -183,7 +182,7 @@ void MapBase::DrawTileHighlight()
 {
 	if (onMap)
 	{
-		ToTile(mouseOveredTile, tileNum).draw(ColorF{ 1.0, 0.5 });
+		ToTile(mouseOveredTile, TILE_NUM).draw(ColorF{ 1.0, 0.5 });
 	}
 }
 

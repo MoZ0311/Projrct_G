@@ -7,5 +7,5 @@
 class RangerRedUnit : public UnitBase
 {
 private:
-	void SetUnitParameter() override;
+	void SetUnitParameter(Point index) override;
 };

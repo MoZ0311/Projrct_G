@@ -1,6 +1,7 @@
 ﻿// BattleManager class
 
 #include "BattleManager.hpp"
+#include "Battlefield.hpp"
 #include "PlayerUnit.hpp"
 #include "RangerRedUnit.hpp"
 
@@ -14,27 +15,26 @@ BattleManager::BattleManager()
 	// 両軍のユニット配列を初期化
 	playerUnitInstanceArray = {};
 	enemyUnitInstanceArray = {};
+
+	// 全ユニットの配列を初期化
+	allUnitInstanceArray = {};
 }
 
 BattleManager::~BattleManager()
 {
-	// 自軍ユニットを全て解放
-	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
-	{
-		delete playerUnitInstanceArray[i];
-		playerUnitInstanceArray[i] = nullptr;
-	}
-
-	// 敵軍ユニットを全て解放
-	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
-	{
-		delete enemyUnitInstanceArray[i];
-		enemyUnitInstanceArray[i] = nullptr;
-	}
-
 	// 両軍のユニット配列をクリア
 	playerUnitInstanceArray.clear();
 	enemyUnitInstanceArray.clear();
+
+	// 全ユニットのインスタンスを削除
+	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
+	{
+		delete allUnitInstanceArray[i];
+		allUnitInstanceArray[i] = nullptr;
+	}
+
+	// 配列をクリア
+	allUnitInstanceArray.clear();
 }
 
 void BattleManager::Init()
@@ -102,16 +102,63 @@ void BattleManager::Update()
 
 void BattleManager::Draw()
 {
-	// 自軍ユニットの描画処理
-	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+	// 全ユニットの描画処理
+	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
 	{
-		playerUnitInstanceArray[i]->Draw();
+		allUnitInstanceArray[i]->Draw();
 	}
+	
 
-	// 敵軍ユニットを全て解放
-	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
+	ClearPrint();
+	Print << allUnitInstanceArray;
+	Print << playerUnitInstanceArray;
+	Print << enemyUnitInstanceArray;
+}
+
+void BattleManager::InstantiateUnit()
+{
+	// マップのタイル配列を取得
+	Grid<int32> tilegrid = Battlefield::GetBattlefieldInstance()->GetGrid();
+
+	constexpr int32 TILE_PORTAL_BLUE = 12;
+	constexpr int32 TILE_PORTAL_RED = 13;
+
+	// グリッドの全ての要素を評価
+	for (int32 row = 0; row < tilegrid.height(); ++row)
 	{
-		enemyUnitInstanceArray[i]->Draw();
+		for (int32 column = 0; column < tilegrid.width(); ++column)
+		{
+			if (tilegrid[row][column] == TILE_PORTAL_BLUE ||
+				tilegrid[row][column] == TILE_PORTAL_RED)
+			{
+				// ユニットのインスタンスを準備
+				UnitBase* unitInstance = nullptr;
+
+				// 青のポータルマスなら、自軍を生成
+				if (tilegrid[row][column] == TILE_PORTAL_BLUE)
+				{
+					unitInstance = new PlayerUnit();
+
+					// 生成したユニットを自軍用の配列に格納
+					playerUnitInstanceArray.push_back(unitInstance);
+				}
+
+				// 赤のポータルマスなら、敵軍を生成
+				if (tilegrid[row][column] == TILE_PORTAL_RED)
+				{
+					unitInstance = new RangerRedUnit();
+
+					// 生成したユニットを敵軍用の配列に格納
+					enemyUnitInstanceArray.push_back(unitInstance);
+				}
+
+				// 生成したユニットを共用配列に格納
+				allUnitInstanceArray.push_back(unitInstance);
+
+				// 生成したユニットにグリッド座標を与える
+				unitInstance->SetUnitParameter(Point{ column, row });
+			}
+		}
 	}
 }
 

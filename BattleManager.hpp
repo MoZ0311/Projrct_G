@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void Draw();
 
+	// ユニットの生成処理
+	void InstantiateUnit();
+
 	// インスタンスのゲッター関数
 	static BattleManager* GetBattleManagerInstance();
 
@@ -45,4 +48,7 @@ private:
 
 	// 敵軍ユニットのインスタンス配列
 	Array<UnitBase*> enemyUnitInstanceArray;
+
+	// 全ユニットのインスタンス配列
+	Array<UnitBase*> allUnitInstanceArray;
 };

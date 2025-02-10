@@ -61,7 +61,7 @@ void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 			{
 				highlightColor = ColorF{ 1.0, 0.0, 0.0, ALPHA };
 			}
-			ToTile(Point{ column, row }, tileNum).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
+			ToTile(Point{ column, row }, TILE_NUM).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
 		}
 	}
 }
