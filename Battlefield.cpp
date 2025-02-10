@@ -47,9 +47,9 @@ void Battlefield::Update()
 
 void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 {
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
 			ColorF highlightColor{};
 			const double ALPHA = 0.2;
@@ -64,6 +64,11 @@ void Battlefield::DrawMoveRange(Grid<int32> distanceGrid, int32 movePower)
 			ToTile(Point{ column, row }, tileNum).stretched(1.2).draw(highlightColor).drawFrame(1, 0, highlightColor);
 		}
 	}
+}
+
+void Battlefield::SetMapDataFilePath()
+{
+	mapDataFile = BATTLEFIELD_DATA_FILE;
 }
 
 void Battlefield::SaveMapData()
@@ -87,12 +92,15 @@ Grid<bool> Battlefield::GetCanEnterGrid() const
 	constexpr int32 COLUMN_CAN_ENTER = 5;
 
 	// 上から地形をチェック
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
+			// CSVのヘッダを無視するため、+1
+			int32 tileRow = grid[row][column] + 1;
+
 			// CSVの当該データをbool型として代入
-			canEnterGrid[row][column] = Parse<int32>(tileStatus[grid[row][column] + 1][COLUMN_CAN_ENTER]) == 1 ? true : false;
+			canEnterGrid[row][column] = Parse<int32>(tileStatus[tileRow][COLUMN_CAN_ENTER]) == 1 ? true : false;
 		}
 	}
 	return canEnterGrid;

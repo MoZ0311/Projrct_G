@@ -18,6 +18,9 @@ void Main()
 	TextureAsset::Register(PLAYER_WALK_02, U"image/player/player_walk02.png", TextureDesc::Mipped);
 
 	TextureAsset::Register(RANGER_RED_BASE, U"image/ranger/red1.png", TextureDesc::Mipped);
+	TextureAsset::Register(RANGER_RED_IDOL, U"image/ranger/red2.png", TextureDesc::Mipped);
+	TextureAsset::Register(RANGER_RED_WALK_01, U"image/ranger/red3.png", TextureDesc::Mipped);
+	TextureAsset::Register(RANGER_RED_WALK_02, U"image/ranger/red4.png", TextureDesc::Mipped);
 
 	// ウィンドウの名前設定
 	Window::SetTitle(U"世界復興計画");

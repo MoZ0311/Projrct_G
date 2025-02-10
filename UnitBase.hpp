@@ -20,10 +20,10 @@ public:
 	// 描画処理
 	virtual void Draw();
 
-protected:
-
 	// ユニットの各種パラメータ設定
 	virtual void SetUnitParameter();
+
+protected:
 
 	// 移動処理
 	void UnitMove();

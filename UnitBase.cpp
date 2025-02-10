@@ -5,7 +5,6 @@
 
 UnitBase::UnitBase()
 {
-	SetUnitParameter();
 	drawPosition = {};
 	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
 	routePath = {};

@@ -11,6 +11,7 @@ GameScene::GameScene(const InitData& init)
 {
 	// TownField class の生成
 	TownField::Init(this);
+	TownField::GetTownFieldInstance()->LoadMapData();
 
 	// Player class の生成
 	Player::Init(this);
@@ -196,7 +197,7 @@ void GameScene::draw() const
 		// 詳細ステータスを描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
-			U"水源:{: >4} 都会:{: >4}\n自然:{: >4} 荒廃:{: >4}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
+			U"水源:{:0>3} 都会:{:0>3}\n自然:{:0>3} 荒廃:{:0>3}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
 			mapStatusPosition, ColorF{0, 0, 1}, t, 0.02
 		);
 	}

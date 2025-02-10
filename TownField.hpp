@@ -33,6 +33,9 @@ private:
 	// コンストラクタ
 	TownField(GameScene* instance);
 
+	// 読み込み対象のCSVを設定する
+	void SetMapDataFilePath() override;
+
 	// タイルの強調表示
 	void DrawTileHighlight() override;
 

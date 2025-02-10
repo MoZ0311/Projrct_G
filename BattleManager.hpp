@@ -40,5 +40,9 @@ private:
 	// 現在のターン
 	Turn currentTurn;
 
-	UnitBase* unitBase;
+	// 自軍ユニットのインスタンス配列
+	Array<UnitBase*> playerUnitInstanceArray;
+
+	// 敵軍ユニットのインスタンス配列
+	Array<UnitBase*> enemyUnitInstanceArray;
 };

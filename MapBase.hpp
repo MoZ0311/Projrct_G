@@ -20,6 +20,9 @@ public:
 	// 描画処理
 	void Draw();
 
+	// マップデータの初回読み込み
+	void LoadMapData();
+
 	// CSVのデータと現在のマップデータが同一かの判定処理
 	bool MapEqualsCSV();
 
@@ -39,6 +42,9 @@ public:
 	const int32 TILE_THICKNESS = 17;
 
 protected:
+
+	// 読み込み対象のCSVを設定する
+	virtual void SetMapDataFilePath();
 
 	// マップデータのセーブ処理
 	virtual void SaveMapData();
@@ -90,6 +96,9 @@ protected:
 	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
 	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
 	Texture LoadPremultipliedTexture(FilePathView path);
+
+	// マップデータのファイルパス
+	FilePath mapDataFile;
 
 	// マップの一辺のタイル数
 	int32 tileNum;
