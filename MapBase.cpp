@@ -9,18 +9,11 @@ MapBase::MapBase()
 	// tile フォルダ内のファイルを列挙する
 	for (const auto& filePath : FileSystem::DirectoryContents(U"tile/"))
 	{
-		// ファイル名が conifer と tree で始まるファイル（タイルではない）は除外する
-		if (const FilePath baseName = FileSystem::BaseName(filePath);
-			baseName.starts_with(U"conifer") || baseName.starts_with(U"tree"))
-		{
-			continue;
-		}
-
 		tileTextureArray << LoadPremultipliedTexture(filePath);
 	}
 
 	// 全部で 88 種類のタイルが読み込まれれば正常
-	if (tileTextureArray.size() != 88)
+	if (tileTextureArray.size() != 18)
 	{
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
@@ -62,9 +55,9 @@ void MapBase::LoadMapData()
 	grid = { Size(tileNum, tileNum), -1 };
 
 	// CSVファイルの内容をマップに反映
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
 			grid[row][column] = Parse<int32>(mapData[row][column]);
 		}
@@ -154,9 +147,9 @@ void MapBase::SetMapDataFilePath()
 bool MapBase::MapEqualsCSV()
 {
 	// CSVファイルの内容とマップを比較
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
 			// CSVとの差異があった時点でreturn
 			if (grid[row][column] != Parse<int32>(mapData[row][column]))
@@ -174,9 +167,9 @@ void MapBase::SaveMapData()
 	ClearPrint();
 
 	// マップの内容をCSVファイルに反映
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
 			mapData[row][column] = Format(grid[row][column]);
 		}

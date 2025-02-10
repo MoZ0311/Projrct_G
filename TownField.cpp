@@ -73,13 +73,19 @@ Array<int32> TownField::GetMapStatus() const
 	// マップの合計ステータス { Moisture, Urban, Nature, Rough }
 	Array<int32> mapStatus{ 0, 0, 0, 0 };
 
-	for (int32 row = 0; row < grid.height(); row++)
+	for (int32 row = 0; row < grid.height(); ++row)
 	{
-		for (int32 column = 0; column < grid.width(); column++)
+		for (int32 column = 0; column < grid.width(); ++column)
 		{
-			for (int32 statusIndex = 0; statusIndex < mapStatus.size(); statusIndex++)
+			for (int32 statusIndex = 0; statusIndex < mapStatus.size(); ++statusIndex)
 			{
-				mapStatus[statusIndex] += Parse<int32>(tileStatus[grid[row][column] + 1][statusIndex + 1]);
+				// CSVのヘッダ行を無視するため、+1
+				int32 tileRow = grid[row][column] + 1;
+
+				// CSVの"Name"列を無視するため、+1
+				int32 tileColumn = statusIndex + 1;
+
+				mapStatus[statusIndex] += Parse<int32>(tileStatus[tileRow][tileColumn]);
 				if (mapStatus[statusIndex] < 0)
 				{
 					mapStatus[statusIndex] = 0;
