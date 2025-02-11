@@ -31,6 +31,7 @@ private:
 	// Glyph とエフェクトの関数を組み合わせてテキストを描画
 	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
 
+	// フォント演出用のストップウォッチ
 	Stopwatch stopwatch;
 
 	// マップ表示用の 2D カメラ

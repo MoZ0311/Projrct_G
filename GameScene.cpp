@@ -189,8 +189,8 @@ void GameScene::draw() const
 		// マップ名を描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
-			U"街区\n",
-			mapNamePosition, ColorF{ 0, 0, 1 }, t, 0.08
+			U"街区\n",mapNamePosition,
+			ColorF{ 0, 0, 1 }, t, 0.08
 		);
 
 		// 詳細ステータスを描画

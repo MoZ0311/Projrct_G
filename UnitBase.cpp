@@ -71,9 +71,6 @@ void UnitBase::Update()
 
 	// 移動処理
 	UnitMove();
-
-	// 描画位置の計算
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridPosition, MapBase::TILE_NUM);
 }
 
 void UnitBase::Draw()
@@ -103,6 +100,9 @@ void UnitBase::Draw()
 		index = 0;
 		animationCount = 0;
 	}
+
+	// 描画位置の計算
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridPosition, MapBase::TILE_NUM);
 
 	// ユニットの描画
 	animation[index]

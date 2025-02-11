@@ -40,6 +40,9 @@ private:
 	// デストラクタ
 	~UnitManager();
 
+	// Glyph とエフェクトの関数を組み合わせてテキストを描画
+	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
+
 	// シングルトンクラスのインスタンスのポインタ
 	static UnitManager* battleManagerInstance;
 
@@ -54,6 +57,9 @@ private:
 		TILE_PORTAL_PINK,
 		TILE_PORTAL_RED,
 	};
+
+	// フォント演出用のストップウォッチ
+	Stopwatch stopwatch;
 
 	// 現在のターン
 	Turn currentTurn;

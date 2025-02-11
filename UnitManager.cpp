@@ -23,6 +23,9 @@ UnitManager::UnitManager()
 
 	// 全ユニットの配列を初期化
 	allUnitInstanceArray = {};
+
+	// ストップウォッチ設定
+	stopwatch.reset();
 }
 
 UnitManager::~UnitManager()
@@ -80,28 +83,27 @@ void UnitManager::Update()
 	switch (currentTurn)
 	{
 	case PREPARATION:
+		stopwatch.start();
 		break;
 
 	case PLAYER_TURN:
+		// 自軍ユニットの更新処理
+		for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+		{
+			playerUnitInstanceArray[i]->Update();
+		}
 		break;
 
 	case ENEMY_TURN:
+		// 敵軍ユニットの更新処理
+		for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
+		{
+			enemyUnitInstanceArray[i]->Update();
+		}
 		break;
 
 	default:
 		break;
-	}
-
-	// 自軍ユニットの更新処理
-	for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
-	{
-		playerUnitInstanceArray[i]->Update();
-	}
-
-	// 敵軍ユニットの更新処理
-	for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
-	{
-		enemyUnitInstanceArray[i]->Update();
 	}
 
 	// 全ユニットのソート処理
@@ -131,6 +133,50 @@ void UnitManager::Draw()
 	for (int32 i = 0; i < allUnitInstanceArray.size(); ++i)
 	{
 		allUnitInstanceArray[i]->Draw();
+	}
+
+	if (currentTurn == PREPARATION)
+	{
+		// ストップウォッチの経過を取得
+		const double t = stopwatch.sF();
+
+		DrawText(
+			FontAsset(FONT_MAKINAS), 80,
+			U"戦闘開始", Vec2{ -160, SCREEN_HEIGHT / 2 - 80 },
+			ColorF{ 1.0, 0.0, 0.0 }, t, 0.25);
+	}
+}
+
+void UnitManager::DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const
+{
+	const double scale = (fontSize / font.fontSize());
+	Vec2 penPos = pos;
+	const ScopedCustomShader2D shader{ Font::GetPixelShader(font.method()) };
+	ClearPrint();
+	for (auto&& [i, glyph] : Indexed(font.getGlyphs(text)))
+	{
+		if (glyph.codePoint == U'\n')
+		{
+			penPos.x = pos.x;
+			penPos.y += (font.height() * scale);
+			continue;
+		}
+
+		const double targetTime = (i * characterPerSec);
+
+		if (t < targetTime)
+		{
+			break;
+		}
+
+		const double s = Min((t - targetTime) / 0.1, 1.0);
+		const double a = Min((t - targetTime) / 0.2, 1.0);
+
+		const Vec2 offSet{ 3, 3 };
+		glyph.texture.scaled(scale * (3.0 - s * 2)).draw((penPos + glyph.getOffset(scale) + offSet), ColorF{ 0, a });
+		glyph.texture.scaled(scale * (3.0 - s * 2)).draw(penPos + glyph.getOffset(scale), ColorF{color, a});
+
+		penPos.x += (glyph.xAdvance * scale);
 	}
 }
 
