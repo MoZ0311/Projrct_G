@@ -3,6 +3,11 @@
 #include "UnitManager.hpp"
 #include "Battlefield.hpp"
 #include "PlayerUnit.hpp"
+#include "RangerAlphaUnit.hpp"
+#include "RangerBlackUnit.hpp"
+#include "RangerBlueUnit.hpp"
+#include "RangerGreenUnit.hpp"
+#include "RangerPinkUnit.hpp"
 #include "RangerRedUnit.hpp"
 
 // インスタンスをnullptrで初期化
@@ -134,33 +139,60 @@ void UnitManager::InstantiateUnit()
 	// マップのタイル配列を取得
 	Grid<int32> tilegrid = Battlefield::GetBattlefieldInstance()->GetGrid();
 
-	constexpr int32 TILE_PORTAL_BLUE = 12;
-	constexpr int32 TILE_PORTAL_RED = 13;
-
 	// グリッドの全ての要素を評価
 	for (int32 row = 0; row < tilegrid.height(); ++row)
 	{
 		for (int32 column = 0; column < tilegrid.width(); ++column)
 		{
-			if (tilegrid[row][column] == TILE_PORTAL_BLUE ||
-				tilegrid[row][column] == TILE_PORTAL_RED)
+			// タイルの種類をenum型で取得
+			Portal portal = ToEnum<Portal>(tilegrid[row][column]);
+
+			// ヘッダで定義したタイルの範囲であるなら、生成処理開始
+			if (InRange(FromEnum(portal), FromEnum(Portal::TILE_PORTAL_ALPHA), FromEnum(Portal::TILE_PORTAL_RED)))
 			{
 				// ユニットのインスタンスを準備
 				UnitBase* unitInstance = nullptr;
 
-				// 青のポータルマスなら、自軍を生成
-				if (tilegrid[row][column] == TILE_PORTAL_BLUE)
+				if (portal == Portal::TILE_PORTAL_FUHRER)
 				{
+					// 総統のポータルマスなら、自軍を生成
 					unitInstance = new PlayerUnit();
 
 					// 生成したユニットを自軍用の配列に格納
 					playerUnitInstanceArray.push_back(unitInstance);
 				}
-
-				// 赤のポータルマスなら、敵軍を生成
-				if (tilegrid[row][column] == TILE_PORTAL_RED)
+				else
 				{
-					unitInstance = new RangerRedUnit();
+					// 他のポータルマスなら、敵軍を生成
+					switch (portal)
+					{
+					case UnitManager::Portal::TILE_PORTAL_ALPHA:
+						unitInstance = new RangerAlphaUnit();
+						break;
+
+					case UnitManager::Portal::TILE_PORTAL_BLACK:
+						unitInstance = new RangerBlackUnit();
+						break;
+
+					case UnitManager::Portal::TILE_PORTAL_BLUE:
+						unitInstance = new RangerBlueUnit();
+						break;
+
+					case UnitManager::Portal::TILE_PORTAL_GREEN:
+						unitInstance = new RangerGreenUnit();
+						break;
+
+					case UnitManager::Portal::TILE_PORTAL_PINK:
+						unitInstance = new RangerPinkUnit();
+						break;
+
+					case UnitManager::Portal::TILE_PORTAL_RED:
+						unitInstance = new RangerRedUnit();
+						break;
+
+					default:
+						break;
+					}
 
 					// 生成したユニットを敵軍用の配列に格納
 					enemyUnitInstanceArray.push_back(unitInstance);

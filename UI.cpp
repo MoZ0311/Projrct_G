@@ -10,7 +10,7 @@ UI* UI::UIInstance = nullptr;
 UI::UI()
 {
 	onTileMenu = false;
-	tileTypeSelected = 30;
+	tileTypeSelected = 5;
 }
 
 UI::~UI()

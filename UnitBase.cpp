@@ -225,21 +225,6 @@ void UnitBase::CalcurateDistanceGrid()
 	}
 }
 
-void UnitBase::SetUnitParameter(Point point)
-{
-	unitIdolArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
-	};
-
-	unitWalkArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
-		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
-	};
-
-	gridPosition = point;
-	movePower = 3;
-}
-
 Grid<int32> UnitBase::GetDistanceGrid() const
 {
 	return distanceGrid;

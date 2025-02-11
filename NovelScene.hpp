@@ -26,21 +26,21 @@ public:
 private:
 
 	// メッセージウィンドウの高さ
-	const int32 WINDOW_HEIGHT = 152;
+	static constexpr int32 WINDOW_HEIGHT = 152;
 
 	// ウィンドウの枠の幅
-	const int32 FRAME_THICKNESS = 5;
+	static constexpr int32 FRAME_THICKNESS = 5;
 
 	// メッセージウィンドウの矩形
-	const RoundRect MESSAGE_WINDOW{
+	static constexpr RoundRect MESSAGE_WINDOW{
 		0, SCREEN_HEIGHT - WINDOW_HEIGHT,
 		SCREEN_WIDTH, WINDOW_HEIGHT,
 		10
 	};
 
 	// アイコンウィンドウの矩形
-	const RoundRect ICON_WINDOW{
-		FRAME_THICKNESS, MESSAGE_WINDOW.y + FRAME_THICKNESS,
+	static constexpr RoundRect ICON_WINDOW{
+		FRAME_THICKNESS, SCREEN_HEIGHT - WINDOW_HEIGHT + FRAME_THICKNESS,
 		WINDOW_HEIGHT - FRAME_THICKNESS * 2, WINDOW_HEIGHT - FRAME_THICKNESS * 2,
 		5
 	};
@@ -53,13 +53,13 @@ private:
 	};
 
 	// 会話キャラの列
-	const int32 CHARACTER_COLUMN = 0;
+	static constexpr int32 CHARACTER_COLUMN = 0;
 
 	// テキストの列
-	const int32 TEXT_COLUMN = 1;
+	static constexpr int32 TEXT_COLUMN = 1;
 
 	// デフォルトのフォントサイズ
-	const int32 FONT_SIZE = 40;
+	static constexpr int32 FONT_SIZE = 40;
 
 	// 読み込み対象のCSVファイル
 	CSV csv;

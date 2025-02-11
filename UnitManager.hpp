@@ -43,6 +43,18 @@ private:
 	// シングルトンクラスのインスタンスのポインタ
 	static UnitManager* battleManagerInstance;
 
+	// ユニット生成用タイルの列挙
+	const enum class Portal
+	{
+		TILE_PORTAL_ALPHA = 10,
+		TILE_PORTAL_BLACK,
+		TILE_PORTAL_BLUE,
+		TILE_PORTAL_FUHRER,
+		TILE_PORTAL_GREEN,
+		TILE_PORTAL_PINK,
+		TILE_PORTAL_RED,
+	};
+
 	// 現在のターン
 	Turn currentTurn;
 

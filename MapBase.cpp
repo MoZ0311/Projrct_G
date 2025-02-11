@@ -13,7 +13,7 @@ MapBase::MapBase()
 	}
 
 	// 全部で 88 種類のタイルが読み込まれれば正常
-	if (tileTextureArray.size() != 18)
+	if (tileTextureArray.size() != 21)
 	{
 		throw Error{ U"ファイルの配置が不正です。" };
 	}
