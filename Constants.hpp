@@ -9,6 +9,7 @@ constexpr int32 INF = 99;											// 無限(非常に大きい数の意)
 
 // アセット用定数
 const String FONT_MAKINAS = U"MAKINAS";								// Makinasフォント
+const String FONT_EMOJI = U"EMOJI";									// 絵文字
 
 const String PLAYER_BASE = U"PlayerBase";							// プレイヤー基本画像
 const String PLAYER_IDOL = U"PlayerIdol";							// プレイヤー待機画像

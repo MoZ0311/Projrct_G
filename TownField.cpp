@@ -68,7 +68,7 @@ Townfield* Townfield::GetTownFieldInstance()
 	return townFieldInstance;
 }
 
-Array<int32> Townfield::GetMapStatus() const
+Array<int32> Townfield::GetMapStatus()
 {
 	// マップの合計ステータス { Moisture, Urban, Nature, Rough }
 	Array<int32> mapStatus{ 0, 0, 0, 0 };

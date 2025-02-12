@@ -10,6 +10,9 @@ void Main()
 {
 	// フォントのアセット化
 	FontAsset::Register(FONT_MAKINAS, FontMethod::MSDF, 48, U"font/Makinas-4-Square.otf");
+	const Font EMOJI{ FontMethod::MSDF, 48, Typeface::ColorEmoji };
+
+	FontAsset(FONT_MAKINAS).addFallback(EMOJI);
 
 	// テクスチャのアセット化
 	TextureAsset::Register(PLAYER_BASE, U"image/player/player.png", TextureDesc::Mipped);

@@ -36,10 +36,10 @@ BattleScene::~BattleScene()
 void BattleScene::update()
 {
 	// カメラの初期位置を設定
-	camera.setTargetCenter(Vec2{ 0, 220 });
+	camera.setTargetCenter(Vec2{ 0, 232 });
 
 	// カメラの倍率を設定
-	camera.setTargetScale(1.15);
+	camera.setTargetScale(1.05);
 
 	// 2D カメラを更新する
 	camera.update();
@@ -79,8 +79,8 @@ void BattleScene::draw() const
 		UnitManager::GetUnitManagerInstance()->Draw();
 	}
 
-	// UI class の描画処理
-	//UI::GetUIInstance()->Draw();
+	// UnitManager classのUI関連処理
+	UnitManager::GetUnitManagerInstance()->DrawUI();
 
 	// 2D カメラの UI を表示する
 	camera.draw(Palette::Deepskyblue);
@@ -90,5 +90,5 @@ void BattleScene::drawFadeIn(double t) const
 {
 	draw();
 	const double r = Scene::Center().length();
-	Circle(Scene::Center(), r).drawPie(0_deg, -(1.0 - t) * 360_deg);
+	Circle(Scene::Center(), r).drawPie(0_deg, -(1.0 - t) * 360_deg, Palette::Black);
 }

@@ -31,6 +31,21 @@ private:
 	// Glyph とエフェクトの関数を組み合わせてテキストを描画
 	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
 
+	// ステータスをもとに、マップの称号を決定
+	void SetMapTitle();
+
+	// マップの称号
+	String mapTitle;
+
+	// 各ステータスのインデックス
+	static constexpr int32 MOISTURE = 0;
+	static constexpr int32 URBAN = 1;
+	static constexpr int32 NATURE = 2;
+	static constexpr int32 ROUGH = 3;
+
+	// マップの総合ステータス
+	Array<int32> mapStatusArray;
+
 	// フォント演出用のストップウォッチ
 	Stopwatch stopwatch;
 

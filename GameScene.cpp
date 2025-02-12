@@ -29,9 +29,11 @@ GameScene::GameScene(const InitData& init)
 	isEditing = false;
 
 	// メンバ変数の初期化
+	mapStatusArray = { 0, 0, 0, 0 };
 	mapNamePosition = { 20, 20 };
 	mapStatusPosition = { SCREEN_WIDTH - 320, 20 };
 	idolCount = 0.5;
+	mapTitle = U"";
 }
 
 GameScene::~GameScene()
@@ -48,6 +50,9 @@ GameScene::~GameScene()
 
 void GameScene::update()
 {
+	// マップのステータスを取得
+	SetMapTitle();
+
 	// 2D カメラを更新する
 	camera.update();
 
@@ -158,7 +163,7 @@ void GameScene::update()
 void GameScene::draw() const
 {
 	// グラデーション背景の描画
-	DrawVerticalGradientBackground(ColorF{ 0.0, 0.808, 0.82 }, ColorF{ 0.961, 1.0, 0.98 });
+	DrawVerticalGradientBackground(ColorF{ 0.529, 0.808, 0.922 }, ColorF{ 0.545, 0.271, 0.075 });
 
 	{
 		const auto tr = camera.createTransformer();
@@ -183,21 +188,18 @@ void GameScene::draw() const
 		// ストップウォッチの経過を取得
 		const double t = stopwatch.sF();
 
-		// マップの詳細ステータスを取得
-		const Array<int32> MAP_STATUS = Townfield::GetTownFieldInstance()->GetMapStatus();
-
 		// マップ名を描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
-			U"街区\n",mapNamePosition,
-			ColorF{ 0, 0, 1 }, t, 0.08
+			mapTitle,mapNamePosition,
+			ColorF{ 1.0, 0.98, 0.941 }, t, 0.08
 		);
 
 		// 詳細ステータスを描画
 		DrawText(
 			FontAsset(FONT_MAKINAS), 32,
-			U"水源:{:0>3} 都会:{:0>3}\n自然:{:0>3} 荒廃:{:0>3}\n"_fmt(MAP_STATUS[0], MAP_STATUS[1], MAP_STATUS[2], MAP_STATUS[3]),
-			mapStatusPosition, ColorF{0, 0, 1}, t, 0.02
+			U"水源:{:0>3} 都会:{:0>3}\n自然:{:0>3} 荒廃:{:0>3}\n"_fmt(mapStatusArray[0], mapStatusArray[1], mapStatusArray[2], mapStatusArray[3]),
+			mapStatusPosition, ColorF{ 1.0, 0.98, 0.941 }, t, 0.02
 		);
 	}
 }
@@ -210,6 +212,82 @@ bool GameScene::CanGameModeChange() const
 	}
 
 	return true;
+}
+
+void GameScene::SetMapTitle()
+{
+	for (int32 i = 0; i < mapStatusArray.size(); ++i)
+	{
+		mapStatusArray[i] = Townfield::GetTownFieldInstance()->GetMapStatus()[i];
+	}
+
+	String front = U"";
+	String back = U"";
+
+	if (mapStatusArray[ROUGH] == 338)
+	{
+		mapTitle = U"一面の焼野原";
+	}
+	else if (mapStatusArray[MOISTURE] == 169)
+	{
+		mapTitle = U"ただの湖";
+	}
+	else if (mapStatusArray[NATURE] == 19 &&
+			 mapStatusArray[URBAN] == 156)
+	{
+		mapTitle = U"サイクロンメタル";
+	}
+	else 
+	{
+		if (mapStatusArray[NATURE] >= 100)
+		{
+			back = U"草原";
+		}
+		else if (mapStatusArray[NATURE] >= 40)
+		{
+			front = U"緑のある";
+		}
+
+		if (mapStatusArray[MOISTURE] >= 100)
+		{
+			back = U"孤島";
+		}
+		else if (mapStatusArray[MOISTURE] >= 52)
+		{
+			front = U"水の";
+		}
+		else if (mapStatusArray[MOISTURE] >= 13)
+		{
+			front = U"潤う";
+		}		
+
+		if (mapStatusArray[URBAN] >= 70)
+		{
+			back = U"街";
+		}
+
+		if (mapStatusArray[ROUGH] >= 100)
+		{
+			back = U"荒地";
+		}
+		else if (mapStatusArray[ROUGH] >= 20)
+		{
+			front = U"不気味な";
+		}
+
+		if (front == U"")
+		{
+			front = U"謎の";
+		}
+		if (back == U"")
+		{
+			back = U"場所";
+		}
+
+		mapTitle = front + back;
+	}
+	
+	
 }
 
 void GameScene::DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const
@@ -234,8 +312,10 @@ void GameScene::DrawText(const Font& font, double fontSize, const String& text, 
 			break;
 		}
 
+		const Vec2 offSet{ 1.5, 1.5 };
 		const double y = EaseInQuad(Saturate(1 - (t - targetTime) / 0.3)) * -20.0;
 		const double a = Min((t - targetTime) / 0.3, 1.0);
+		glyph.texture.scaled(scale).draw(penPos + glyph.getOffset(scale) + offSet + Vec2{ 0, y }, ColorF{ 0, a });
 		glyph.texture.scaled(scale).draw(penPos + glyph.getOffset(scale) + Vec2{ 0, y }, ColorF{ color, a });
 
 		penPos.x += (glyph.xAdvance * scale);
