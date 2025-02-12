@@ -158,6 +158,12 @@ void GameScene::update()
 		camera.setTargetCenter(Vec2{ 0, 105 });
 		camera.setTargetScale(0.85);
 	}
+
+	// シーン切替
+	if (KeyQ.down())
+	{
+		changeScene(State::TITLE, 0.5s);
+	}
 }
 
 void GameScene::draw() const

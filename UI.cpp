@@ -107,7 +107,7 @@ void UI::Draw()
 				{
 					tileTextureArray = Battlefield::GetBattlefieldInstance()->GetTileTextureArray();
 				}
-				tileTextureArray[tileType].scaled(0.5).drawAt(rect.center());
+				tileTextureArray[tileType].scaled(0.75).drawAt(rect.center());
 			}
 		}
 	}
