@@ -96,5 +96,5 @@ void NovelScene::drawFadeOut(double t) const
 {
 	draw();
 	const double r = Scene::Center().length();
-	Circle(Scene::Center(), r).drawPie(0_deg, t * 360_deg);
+	Circle(Scene::Center(), r).drawPie(0_deg, t * 360_deg, Palette::Black);
 }

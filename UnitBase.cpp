@@ -2,14 +2,14 @@
 
 #include "UnitBase.hpp"
 #include "Battlefield.hpp"
+#include "UnitManager.hpp"
 
 UnitBase::UnitBase()
 {
 	drawPosition = {};
 	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
 	routePath = {};
-	isSelected = false;
-	isMoving = false;
+	UnitActionRefresh();
 	flipX = false;
 	isIdol = true;
 	animationSpeed = 0;
@@ -26,7 +26,8 @@ UnitBase::~UnitBase()
 void UnitBase::Update()
 {
 	// クリックによる各種処理
-	if (!isMoving && MouseL.down())
+	// 移動中でない, 移動後でない, 行動後でない, 状態でのみ反応する
+	if (!isMoving && !hasMoved && !finishAction && MouseL.down())
 	{
 		// 前提として、移動中のクリックは受付けない
 		if (Battlefield::GetBattlefieldInstance()->GetOnMap())
@@ -39,11 +40,13 @@ void UnitBase::Update()
 					// 立っているタイルがクリックされた かつ ユニット選択中
 					// 選択状態を解除
 					isSelected = false;
+					hasMoved = true;
 				}
-				else
+				else if (!UnitManager::GetUnitManagerInstance()->GetUnitControll())
 				{
 					// 立っているタイルがクリックされた かつ ユニット未選択
 					//ユニットの選択状況をtrueに
+					UnitManager::GetUnitManagerInstance()->SetUnitControll(true);
 					isSelected = true;
 					ResetQue();
 				}
@@ -53,7 +56,6 @@ void UnitBase::Update()
 			{
 				// 移動範囲内のタイルがクリックされた かつ ユニット選択中
 				// 移動処理の開始
-				isMoving = true;
 				MakePath(Battlefield::GetBattlefieldInstance()->GetClickedTileIndex());
 				moveIntervalCount = 0.25;
 			}
@@ -62,6 +64,7 @@ void UnitBase::Update()
 		{
 			// マップ外をクリック
 			// 選択状態を解除
+			UnitManager::GetUnitManagerInstance()->SetUnitControll(false);
 			isSelected = false;
 		}
 	}
@@ -71,9 +74,6 @@ void UnitBase::Update()
 
 	// 移動処理
 	UnitMove();
-
-	// 描画位置の計算
-	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridPosition, MapBase::TILE_NUM);
 }
 
 void UnitBase::Draw()
@@ -104,11 +104,27 @@ void UnitBase::Draw()
 		animationCount = 0;
 	}
 
+	// 描画位置の計算
+	drawPosition = Battlefield::GetBattlefieldInstance()->ToTileBottomCenter(gridPosition, MapBase::TILE_NUM);
+
 	// ユニットの描画
-	animation[index]
-		.mirrored(flipX).scaled(unitScale)
-		.draw(Arg::bottomCenter = drawPosition.moveBy(
-			0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2));
+	if (hasMoved)
+	{
+		// 移動後は暗く描画
+		animation[index]
+			.mirrored(flipX).scaled(unitScale)
+			.draw(Arg::bottomCenter = drawPosition.moveBy(
+				0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2),
+				ColorF{ 0.5 });
+	}
+	else
+	{
+		animation[index]
+			.mirrored(flipX).scaled(unitScale)
+			.draw(Arg::bottomCenter = drawPosition.moveBy(
+				0, -MapBase::TILE_THICKNESS - MapBase::TILE_OFFSET.y / 2));
+	}
+	
 }
 
 void UnitBase::UnitMove()
@@ -122,6 +138,12 @@ void UnitBase::UnitMove()
 		if (routePath.empty())
 		{
 			// 配列が空、つまり目的地に着いた
+			if (isMoving)
+			{
+				hasMoved = true;
+				UnitManager::GetUnitManagerInstance()->SetUnitControll(false);
+			}
+
 			isMoving = false;
 		}
 		else
@@ -151,6 +173,9 @@ void UnitBase::MakePath(Point targetPoint)
 {
 	// 選択状態を解除
 	isSelected = false;
+
+	// 移動中である
+	isMoving = true;
 
 	// 経路用配列をリセット
 	routePath.clear();
@@ -225,19 +250,12 @@ void UnitBase::CalcurateDistanceGrid()
 	}
 }
 
-void UnitBase::SetUnitParameter(Point point)
+void UnitBase::UnitActionRefresh()
 {
-	unitIdolArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_IDOL)
-	};
-
-	unitWalkArray = {
-		TextureAsset(PLAYER_BASE), TextureAsset(PLAYER_WALK_01),
-		TextureAsset(PLAYER_WALK_02), TextureAsset(PLAYER_WALK_01)
-	};
-
-	gridPosition = point;
-	movePower = 3;
+	isSelected = false;
+	isMoving = false;
+	hasMoved = false;
+	finishAction = false;
 }
 
 Grid<int32> UnitBase::GetDistanceGrid() const
@@ -258,4 +276,19 @@ int32 UnitBase::GetMovePower() const
 bool UnitBase::GetIsSelected() const
 {
 	return isSelected;
+}
+
+bool UnitBase::GetHasMoved() const
+{
+	return hasMoved;
+}
+
+bool UnitBase::GetFinishAction() const
+{
+	return finishAction;
+}
+
+void UnitBase::SetFinishAction(bool value)
+{
+	finishAction = value;
 }

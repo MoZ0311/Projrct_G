@@ -61,7 +61,7 @@ private:
 	const double PLAYER_SCALE = 0.5;
 
 	// プレイヤーの移動スピード
-	const double MOVE_SPEED = 150;
+	static constexpr double MOVE_SPEED = 150;
 
 	// プレイヤーの当たり判定用図形
 	Polygon playerCollider;

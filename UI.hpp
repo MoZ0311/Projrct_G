@@ -41,10 +41,10 @@ private:
 	static UI* UIInstance;
 
 	// 選択したタイルの背景用四角形
-	const Size SELECTED_TILE_BACK{ 56, 50 };
+	const Size SELECTED_TILE_BACK{ 84, 75 };
 
 	// UIタイルの表示数
-	const Size UI_TILE_DISPLAY{ 6, 3 };
+	const Size UI_TILE_DISPLAY{ 7, 3 };
 
 	// タイルメニューの四角形の原型
 	const Rect TILE_MENU_RECT{ Arg::topCenter(Scene::Center().x, 20), (SELECTED_TILE_BACK.x * UI_TILE_DISPLAY.x), (SELECTED_TILE_BACK.y * UI_TILE_DISPLAY.y) };

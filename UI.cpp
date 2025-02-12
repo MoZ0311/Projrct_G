@@ -10,7 +10,7 @@ UI* UI::UIInstance = nullptr;
 UI::UI()
 {
 	onTileMenu = false;
-	tileTypeSelected = 30;
+	tileTypeSelected = 5;
 }
 
 UI::~UI()
@@ -107,7 +107,7 @@ void UI::Draw()
 				{
 					tileTextureArray = Battlefield::GetBattlefieldInstance()->GetTileTextureArray();
 				}
-				tileTextureArray[tileType].scaled(0.5).drawAt(rect.center());
+				tileTextureArray[tileType].scaled(0.75).drawAt(rect.center());
 			}
 		}
 	}

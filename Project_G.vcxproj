@@ -116,6 +116,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Battlefield.cpp" />
+    <ClCompile Include="RangerAlphaUnit.cpp" />
+    <ClCompile Include="RangerBlackUnit.cpp" />
+    <ClCompile Include="RangerBlue.cpp" />
+    <ClCompile Include="RangerGreenUnit.cpp" />
+    <ClCompile Include="RangerPinkUnit.cpp" />
     <ClCompile Include="UnitManager.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="Common.cpp" />
@@ -341,6 +346,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battlefield.hpp" />
+    <ClInclude Include="RangerAlphaUnit.hpp" />
+    <ClInclude Include="RangerBlackUnit.hpp" />
+    <ClInclude Include="RangerBlueUnit.hpp" />
+    <ClInclude Include="RangerGreenUnit.hpp" />
+    <ClInclude Include="RangerPinkUnit.hpp" />
     <ClInclude Include="UnitManager.hpp" />
     <ClInclude Include="BattleScene.hpp" />
     <ClInclude Include="PlayerUnit.hpp" />

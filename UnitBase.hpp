@@ -12,7 +12,7 @@ public:
 	UnitBase();
 
 	// デストラクタ
-	~UnitBase();
+	virtual ~UnitBase();
 
 	// 更新処理
 	virtual void Update();
@@ -21,7 +21,10 @@ public:
 	virtual void Draw();
 
 	// ユニットの各種パラメータ設定
-	virtual void SetUnitParameter(Point point);
+	virtual void SetUnitParameter(Point point) = 0;
+
+	// ターン開始時の状態初期化
+	void UnitActionRefresh();
 
 	// 各マスまでの距離のゲッター関数
 	Grid<int32> GetDistanceGrid() const;
@@ -34,6 +37,15 @@ public:
 
 	// 選択状態のゲッター関数
 	bool GetIsSelected() const;
+
+	// 移動終了のゲッター関数
+	bool GetHasMoved() const;
+
+	// 行動終了のゲッター関数
+	bool GetFinishAction() const;
+
+	// 行動終了のセッター関数
+	void SetFinishAction(bool value);
 
 protected:
 
@@ -50,10 +62,10 @@ protected:
 	void CalcurateDistanceGrid();
 
 	// 上、左、右、下のマスへのオフセット
-	const Point OFFSETS[4] = { Point{ 0, -1 }, Point{ -1, 0 }, Point{ 1, 0 }, Point{ 0, 1 } };
+	static constexpr Point OFFSETS[4] = { Point{ 0, -1 }, Point{ -1, 0 }, Point{ 1, 0 }, Point{ 0, 1 } };
 
 	// ユニットの大きさ
-	const double unitScale = 0.45;
+	static constexpr double unitScale = 0.45;
 
 	// 探索経路を格納する二重終端キュー
 	std::deque<Point> q;
@@ -84,6 +96,12 @@ protected:
 
 	// ユニットは移動中か
 	bool isMoving;
+
+	// ユニットの移動は終わっているか
+	bool hasMoved;
+
+	// ユニットの行動は終わっているか
+	bool finishAction;
 
 	// 左右反転するか
 	bool flipX;

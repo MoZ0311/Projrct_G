@@ -18,8 +18,8 @@ public:
 	// インスタンスのゲッター関数
 	static Townfield* GetTownFieldInstance();
 
-	// マップのステータス算出処理
-	Array<int32> GetMapStatus() const;
+	// ステータスのゲッター関数
+	Array<int32> GetMapStatus();
 
 	// マップ端の当たり判定用図形
 	const Polygon MAP_COLLIDER = Shape2D::Rhombus(
@@ -47,4 +47,7 @@ private:
 
 	// GameScene class のインスタンスのポインタ
 	GameScene* gameSceneInstance;
+
+	// マップの総合ステータス
+	Array<int32> mapStatusArray;
 };
