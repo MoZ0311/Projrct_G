@@ -4,6 +4,7 @@
 
 #include "Constants.hpp"	// アセット、及び画面関連の定数をインクルード
 
+// 各シーン定義
 enum class State
 {
 	TITLE,
@@ -22,5 +23,8 @@ void DrawRadialGradientBackground(const ColorF& centerColor, const ColorF& outer
 /// @param topColor 上部の色
 /// @param bottomColor 下部の色
 void DrawVerticalGradientBackground(const ColorF& topColor, const ColorF& bottomColor);
+
+// シーンチェンジにかかる時間
+constexpr SecondsF CHANGE_DURARTION = 0.5s;
 
 using App = SceneManager<State>;

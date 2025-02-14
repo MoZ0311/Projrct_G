@@ -71,23 +71,15 @@ void UnitManager::Release()
 
 void UnitManager::Update()
 {
-	if (KeyR.down())
-	{
-		currentTurn = PLAYER_TURN;
-		// 自軍ユニットの行動回復処理
-		for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
-		{
-			playerUnitInstanceArray[i]->UnitActionRefresh();
-		}
-
-		// ストップウォッチのリスタート
-		stopwatch.restart();
-	}
-
 	switch (currentTurn)
 	{
 	case PREPARATION:
 		stopwatch.start();
+		// 行動回復処理
+		for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
+		{
+			playerUnitInstanceArray[i]->SetUnitActionState(false);
+		}
 		break;
 
 	case PLAYER_TURN:
@@ -113,7 +105,7 @@ void UnitManager::Update()
 			// 行動回復処理
 			for (int32 i = 0; i < enemyUnitInstanceArray.size(); ++i)
 			{
-				enemyUnitInstanceArray[i]->UnitActionRefresh();
+				enemyUnitInstanceArray[i]->SetUnitActionState(false);
 			}
 			currentTurn = ENEMY_TURN;
 		}
@@ -142,7 +134,7 @@ void UnitManager::Update()
 			// 行動回復処理
 			for (int32 i = 0; i < playerUnitInstanceArray.size(); ++i)
 			{
-				playerUnitInstanceArray[i]->UnitActionRefresh();
+				playerUnitInstanceArray[i]->SetUnitActionState(false);
 			}
 
 			currentTurn = PLAYER_TURN;
@@ -369,6 +361,7 @@ void UnitManager::InstantiateUnit()
 
 				// 生成したユニットにグリッド座標を与える
 				unitInstance->SetUnitParameter(Point{ column, row });
+				unitInstance->SetUnitActionState(true);
 			}
 		}
 	}
