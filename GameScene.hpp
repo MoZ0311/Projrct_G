@@ -20,27 +20,47 @@ public:
 	// 描画処理
 	void draw() const override;
 
-	// テクスチャ配列のゲッター関数
-	Array<Texture> GetTileTextureArray();
+	// ゲームモードを変更できるかの判定処理
+	bool CanGameModeChange() const;
 
 	// エディット中かのゲッター関数
-	bool GetIsEditing();
+	bool GetIsEditing() const;
 
 private:
 
-	/// @brief 画像を読み込み、アルファ乗算済みのテクスチャを作成します。
-	/// @param path 画像ファイルのパス
-	/// @return アルファ乗算済みのテクスチャ
-	/// @remark 境界付近の品質を向上させるため、アルファ乗算済みのテクスチャを作成します。
-	/// @remark 描画時は `BlendState::Premultiplied` を指定してください。
-	Texture LoadPremultipliedTexture(FilePathView path);
+	// Glyph とエフェクトの関数を組み合わせてテキストを描画
+	void DrawText(const Font& font, double fontSize, const String& text, const Vec2& pos, const ColorF& color, double t, double characterPerSec) const;
 
-	// タイルのテクスチャ配列
-	Array<Texture> tileTextureArray;
+	// ステータスをもとに、マップの称号を決定
+	void SetMapTitle();
+
+	// マップの称号
+	String mapTitle;
+
+	// 各ステータスのインデックス
+	static constexpr int32 MOISTURE = 0;
+	static constexpr int32 URBAN = 1;
+	static constexpr int32 NATURE = 2;
+	static constexpr int32 ROUGH = 3;
+
+	// マップの総合ステータス
+	Array<int32> mapStatusArray;
+
+	// フォント演出用のストップウォッチ
+	Stopwatch stopwatch;
 
 	// マップ表示用の 2D カメラ
 	Camera2D camera;
 
 	// マップのエディット中か
 	bool isEditing;
+
+	// マップ名の表示座標
+	Vec2 mapNamePosition;
+
+	// マップステータスの表示座標
+	Vec2 mapStatusPosition;
+
+	// 停止中のカウント
+	double idolCount;
 };

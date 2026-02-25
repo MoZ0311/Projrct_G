@@ -2,14 +2,15 @@
 
 #include "UI.hpp"
 
-#include "Stage.hpp"
+#include "Townfield.hpp"
+#include "Battlefield.hpp"
 
 UI* UI::UIInstance = nullptr;
 
-UI::UI(GameScene* instance)
+UI::UI()
 {
-	gameSceneInstance = instance;
 	onTileMenu = false;
+	tileTypeSelected = 5;
 }
 
 UI::~UI()
@@ -17,14 +18,14 @@ UI::~UI()
 
 }
 
-void UI::Init(GameScene* instance)
+void UI::Init()
 {
 	if (UIInstance != nullptr)
 	{
 		return;
 	}
 
-	UIInstance = new UI(instance);
+	UIInstance = new UI();
 }
 
 void UI::Release()
@@ -39,18 +40,18 @@ void UI::Release()
 void UI::Update()
 {
 	// タイルメニュー上にカーソルがあるか
-	onTileMenu = TileMenuRoundRect.mouseOver();
+	onTileMenu = TILE_MENU_ROUND_RECT.mouseOver();
 
 	// 各タイル
-	for (int32 y = 0; y < 4; ++y)
+	for (int32 y = 0; y < UI_TILE_DISPLAY.y; ++y)
 	{
-		for (int32 x = 0; x < 22; ++x)
+		for (int32 x = 0; x < UI_TILE_DISPLAY.x; ++x)
 		{
-			// タイルの長方形
-			const Rect rect{ (TileMenuRect.x + x * 56), (20 + y * 50), 56, 50 };
+			// タイルのマウス用当たり判定
+			const Rect rect{ (TILE_MENU_RECT.x + x * SELECTED_TILE_BACK.x), (20 + y * SELECTED_TILE_BACK.y), SELECTED_TILE_BACK };
 
 			// タイルの種類
-			const int32 tileType = (y * 22 + x);
+			const int32 tileType = (y * UI_TILE_DISPLAY.x + x);
 
 			// タイルの上にマウスカーソルがあれば
 			if (rect.mouseOver())
@@ -63,7 +64,6 @@ void UI::Update()
 				{
 					// 選択しているタイルの種類を更新する
 					tileTypeSelected = tileType;
-					ClearPrint();
 				}
 			}
 		}
@@ -73,22 +73,22 @@ void UI::Update()
 void UI::Draw()
 {
 	// UI背景
-	TileMenuRoundRect.draw();
+	TILE_MENU_ROUND_RECT.draw();
 
 	{
 		// 乗算済みアルファ用のブレンドステートを適用する
 		const ScopedRenderStates2D blend{ BlendState::Premultiplied };
 
 		// 各タイル
-		for (int32 y = 0; y < 4; ++y)
+		for (int32 y = 0; y < UI_TILE_DISPLAY.y; ++y)
 		{
-			for (int32 x = 0; x < 22; ++x)
+			for (int32 x = 0; x < UI_TILE_DISPLAY.x; ++x)
 			{
 				// タイルの長方形
-				const Rect rect{ (TileMenuRect.x + x * 56), (20 + y * 50), 56, 50 };
+				const Rect rect{ (TILE_MENU_RECT.x + x * SELECTED_TILE_BACK.x), (20 + y * SELECTED_TILE_BACK.y), SELECTED_TILE_BACK };
 
 				// タイルの種類
-				const int32 tileType = (y * 22 + x);
+				const int32 tileType = (y * UI_TILE_DISPLAY.x + x);
 
 				// 現在選択されているタイルであれば
 				if (tileType == tileTypeSelected)
@@ -98,7 +98,16 @@ void UI::Draw()
 				}
 
 				// タイルを表示する
-				gameSceneInstance->GetTileTextureArray()[tileType].scaled(0.5).drawAt(rect.center());
+				Array<Texture> tileTextureArray{};
+				if (Townfield::GetTownFieldInstance() != nullptr)
+				{
+					tileTextureArray = Townfield::GetTownFieldInstance()->GetTileTextureArray();
+				}
+				else if (Battlefield::GetBattlefieldInstance() != nullptr)
+				{
+					tileTextureArray = Battlefield::GetBattlefieldInstance()->GetTileTextureArray();
+				}
+				tileTextureArray[tileType].scaled(0.75).drawAt(rect.center());
 			}
 		}
 	}
@@ -109,12 +118,12 @@ UI* UI::GetUIInstance()
 	return UIInstance;
 }
 
-bool UI::GetOnTileMenu()
+bool UI::GetOnTileMenu() const
 {
 	return onTileMenu;
 }
 
-int32 UI::GetTileTypeSelected()
+int32 UI::GetTileTypeSelected() const
 {
 	return tileTypeSelected;
 }

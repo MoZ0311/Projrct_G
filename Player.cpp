@@ -2,7 +2,7 @@
 
 #include "Player.hpp"
 
-#include "Stage.hpp"
+#include "TownField.hpp"
 
 // インスタンスをnullptrで初期化
 Player* Player::playerInstance = nullptr;
@@ -76,13 +76,13 @@ void Player::Move()
 	playerPosition.moveBy(playerMovement.setLength(MOVE_SPEED)* Scene::DeltaTime());
 
 	// マップの判定を取得
-	Polygon mapCollider = Stage::GetStageInstance()->GetMapCollider();
+	Polygon mapCollider = Townfield::GetTownFieldInstance()->MAP_COLLIDER;
 
 	// プレイヤーの判定を生成
 	playerCollider = Shape2D::Rhombus(
-		PLAYER_BASE.width() * PLAYER_SCALE / 1.5,
-		PLAYER_BASE.width() * PLAYER_SCALE / 3,
-		playerPosition.movedBy(0, PLAYER_BASE.height() * PLAYER_SCALE / 2));
+		TextureAsset(PLAYER_BASE).width() * PLAYER_SCALE / 1.5,
+		TextureAsset(PLAYER_BASE).width() * PLAYER_SCALE / 3,
+		playerPosition.movedBy(0, TextureAsset(PLAYER_BASE).height() * PLAYER_SCALE / 2));
 
 	// マップ上かの真偽判定
 	onMap = mapCollider.contains(playerCollider);
@@ -111,6 +111,7 @@ void Player::Draw()
 	}
 	else
 	{
+		// 上記以外では、歩行モーションをとる
 		animationSpeed = WALK_ANIMATION_SPEED;
 		animation = PLAYER_WALK_ARRAY;
 	}
@@ -152,7 +153,12 @@ Player* Player::GetPlayerInstance()
 	return playerInstance;
 }
 
-Vec2 Player::GetPlayerPosition()
+Vec2 Player::GetPlayerPosition() const
 {
 	return playerPosition;
+}
+
+Vec2 Player::GetPlayerMovement() const
+{
+	return playerMovement;
 }
