@@ -20,6 +20,15 @@ public:
 
 private:
 
+	// 背景のグラデーション元
+	static constexpr ColorF BACKGROUD_COLOR_FROM{ 0.5 };
+
+	// 背景のグラデーション先
+	static constexpr ColorF BACKGROUD_COLOR_TO{ 0.1 };
+
+	// GAME OVER フォントの色
+	static constexpr ColorF TITLE_FONT_COLOR{ 0.675, 0.196, 0.196 };
+
 	// リトライボタン
 	Rect retryButton = { Arg::center = Scene::Center().movedBy(BUTTON_OFFSET),
 		BUTTON_WIDTH, BUTTON_HEIGHT };

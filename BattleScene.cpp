@@ -36,10 +36,10 @@ BattleScene::~BattleScene()
 void BattleScene::update()
 {
 	// カメラの初期位置を設定
-	camera.setTargetCenter(Vec2{ 0, 232 });
+	camera.setTargetCenter(CAMERA_POSITION);
 
 	// カメラの倍率を設定
-	camera.setTargetScale(1.05);
+	camera.setTargetScale(CAMERA_SCALE);
 
 	// 2D カメラを更新する
 	camera.update();
@@ -60,14 +60,14 @@ void BattleScene::update()
 	// debug
 	if (KeySpace.down())
 	{
-		changeScene(State::GAME, 0.5s);
+		changeScene(State::GAME, CHANGE_DURARTION);
 	}
 }
 
 void BattleScene::draw() const
 {
 	// グラデーション背景の描画
-	DrawVerticalGradientBackground(ColorF{ 0.0 }, ColorF{ 0.502, 0.0, 0.0 });
+	DrawVerticalGradientBackground(Palette::Black, BACKGROUD_COLOR_TO);
 
 	{
 		const auto tr = camera.createTransformer();

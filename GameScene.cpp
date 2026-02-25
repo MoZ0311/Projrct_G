@@ -57,6 +57,7 @@ void GameScene::update()
 	camera.update();
 
 	{
+		// カメラ移動を適用
 		const auto tr = camera.createTransformer();
 
 		if (isEditing)

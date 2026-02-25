@@ -31,12 +31,12 @@ void TitleScene::update()
 	if (startButton.leftClicked())
 	{
 		// ゲームシーンへ
-		changeScene(State::GAME, 0.5s);
+		changeScene(State::GAME, CHANGE_DURARTION);
 	}
 	else if (battleButton.leftClicked())
 	{
 		// ノベルシーンへ
-		changeScene(State::NOVEL, 0.5s);
+		changeScene(State::NOVEL, CHANGE_DURARTION);
 	}
 	else if (exitButton.leftClicked())
 	{

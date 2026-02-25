@@ -24,7 +24,7 @@ public:
 	virtual void SetUnitParameter(Point point) = 0;
 
 	// ターン開始時の状態初期化
-	void UnitActionRefresh();
+	void SetUnitActionState(bool value);
 
 	// 各マスまでの距離のゲッター関数
 	Grid<int32> GetDistanceGrid() const;

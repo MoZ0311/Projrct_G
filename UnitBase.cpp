@@ -9,7 +9,9 @@ UnitBase::UnitBase()
 	drawPosition = {};
 	distanceGrid = { Battlefield::GetBattlefieldInstance()->GetGrid().size(), INF };
 	routePath = {};
-	UnitActionRefresh();
+	isSelected = false;
+	isMoving = false;
+	SetUnitActionState(false);
 	flipX = false;
 	isIdol = true;
 	animationSpeed = 0;
@@ -41,6 +43,7 @@ void UnitBase::Update()
 					// 選択状態を解除
 					isSelected = false;
 					hasMoved = true;
+					UnitManager::GetUnitManagerInstance()->SetUnitControll(false);
 				}
 				else if (!UnitManager::GetUnitManagerInstance()->GetUnitControll())
 				{
@@ -250,12 +253,10 @@ void UnitBase::CalcurateDistanceGrid()
 	}
 }
 
-void UnitBase::UnitActionRefresh()
+void UnitBase::SetUnitActionState(bool value)
 {
-	isSelected = false;
-	isMoving = false;
-	hasMoved = false;
-	finishAction = false;
+	hasMoved = value;
+	finishAction = value;
 }
 
 Grid<int32> UnitBase::GetDistanceGrid() const

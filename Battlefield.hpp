@@ -50,6 +50,15 @@ private:
 	// シングルトンクラスのインスタンスのポインタ
 	static Battlefield* battlefieldInstance;
 
+	// マップの強調表示の青色
+	static constexpr ColorF CLEAR_BLUE{ 0.0, 0.0, 1.0, 0.3 };
+
+	// マップの強調表示の赤色
+	static constexpr ColorF CLEAR_RED{ 1.0, 0.0, 0.0, 0.3 };
+
+	// グリッドの引き延ばし
+	static constexpr double GRID_STRETCH = 1.2;
+
 	// クリックされたタイルのインデックス
 	Point clickedTileIndex;
 };
